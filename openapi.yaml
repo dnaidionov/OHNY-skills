@@ -6,7 +6,7 @@ info:
     Read-only view of the Open House New York Weekend lineup (Oct 16-18, 2026): what is open now,
     what is near a point, and fresh details for one site. Holds no visitor data.
 servers:
-  - url: https://ohny-skills.dnaidionov.workers.dev
+  - url: https://naidionov.com/ohny/skills
 paths:
   /v1/nearby:
     get:

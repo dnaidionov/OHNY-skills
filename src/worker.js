@@ -5,7 +5,7 @@ import { handle } from './handler.js';
 export default {
   async fetch(request, env) {
     try {
-      return await handle(request, { snapshot, base: env?.FESTIVAL_BASE ?? 'https://ohny.org' });
+      return await handle(request, { snapshot, base: env?.FESTIVAL_BASE ?? 'https://ohny.org', basePath: env?.BASE_PATH });
     } catch (e) {
       return new Response(JSON.stringify({ error: 'Something went wrong on our side.' }), {
         status: 500, headers: { 'content-type': 'application/json', 'access-control-allow-origin': '*' },

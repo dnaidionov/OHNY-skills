@@ -87,6 +87,9 @@ export async function handle(request, deps) {
   const rawFetch = deps.fetchImpl;
   deps.fetchImpl = (...args) => rawFetch(...args);
   const url = new URL(request.url);
+  // Also served under a path prefix on a custom domain (e.g. naidionov.com/ohny/skills/mcp).
+  const prefix = deps.basePath ?? '/ohny/skills';
+  if (url.pathname === prefix || url.pathname.startsWith(`${prefix}/`)) url.pathname = url.pathname.slice(prefix.length) || '/';
   const q = url.searchParams;
   if (url.pathname.replace(/\/+$/, '') === '/mcp') {
     // The connector: each tool call runs one of the /v1 routes below, in-process.
@@ -108,6 +111,8 @@ export async function handle(request, deps) {
   if (path === '/' || path === '/v1') {
     return json({
       name: 'OHNY helper (unofficial)',
+      by: 'Dmitry Naidionov, https://naidionov.com',
+      source: 'https://github.com/dnaidionov/OHNY-skills',
       festival: { dates: FESTIVAL.dates, timezone: FESTIVAL.tz },
       endpoints: {
         'GET /v1/meta': 'Freshness, counts, festival dates',

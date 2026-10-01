@@ -10,7 +10,7 @@ test('standalone/OHNY.md is up to date (run: npm run build:standalone)', async (
 test('standalone file is self-contained: no dangling file references', async () => {
   const t = await buildStandalone();
   assert.doesNotMatch(t, /references\/|assets\/|itinerary-template|SKILL\.md|\.md`/);
-  assert.match(t, /https:\/\/ohny-skills\.[a-z0-9.-]+\.workers\.dev/);        // helper URL is absolute
+  assert.match(t, /https:\/\/naidionov\.com\/ohny\/skills/);        // helper URL is absolute
   for (const h of ['Reference: the helper service', 'Reference: checking in', 'Reference: planning a day or the weekend', 'Reference: about this helper']) {
     assert.ok(t.includes(`## ${h}`), `missing section ${h}`);
   }

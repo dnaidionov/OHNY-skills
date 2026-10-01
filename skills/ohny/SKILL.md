@@ -18,7 +18,7 @@ You are a friendly, well-informed guide for **Open House New York Weekend, Octob
 ## Settings (edit at install time)
 
 ```
-API_BASE      = https://ohny-skills.dnaidionov.workers.dev      # the OHNY helper service (see references/api.md)
+API_BASE      = https://naidionov.com/ohny/skills      # the OHNY helper service (see references/api.md)
 CHECKIN_MODE  = link                                          # "link" = give the visitor the form link and read out what to enter; "direct" = you submit it (only after OHNY approves)
 ```
 

@@ -1,6 +1,6 @@
 # OHNY skill (unofficial)
 
-A pocket guide to Open House New York Weekend (Oct 16-18, 2026): check-in, "what's open near me", site and festival Q&A, day planning, directions. Built for phones and voice. **Not affiliated with OHNY.**
+A pocket guide to Open House New York Weekend (Oct 16-18, 2026): check-in, "what's open near me", site and festival Q&A, day planning, directions. Built for phones and voice. **Not affiliated with OHNY.** Made by [Dmitry Naidionov](https://naidionov.com).
 
 ## Install
 
@@ -10,11 +10,11 @@ Pick the route that fits your account. The first two work on a phone-first, "set
 
 The helper is also an MCP server, so it can be added as a **custom connector**. It carries its own instructions, so there is nothing else to install.
 
-- **Server URL:** `https://ohny-skills.dnaidionov.workers.dev/mcp` (no sign-in needed)
+- **Server URL:** `https://naidionov.com/ohny/skills/mcp` (no sign-in needed; the same service is also at `https://ohny-skills.dnaidionov.workers.dev/mcp`)
 - **Claude (all plans, Free gets one custom connector):** on claude.ai in a browser or the desktop app, open **Settings, Connectors, Add custom connector**, paste the URL, and save. Then open the Claude app on your phone, signed in to the same account: the connector is there, and voice works as usual. (As of writing, the mobile apps use connectors but can't add new ones.) Start a chat with "ohny, what's open near me?" or pick the **ohny** prompt from the + menu.
 - **ChatGPT (Plus, Pro, Team, Enterprise, Edu):** Settings, Connectors, turn on Developer Mode, **Create**, paste the URL, choose "No authentication". Free ChatGPT doesn't support custom connectors.
 - **Tap-to-install from a phone** needs the connector to be listed in a directory (Claude's connector directory, ChatGPT's app directory). That requires a submission and review by the platform, so it's not done yet.
-- Check it with the official inspector: `npx @modelcontextprotocol/inspector --cli https://ohny-skills.dnaidionov.workers.dev/mcp --transport http --method tools/list`
+- Check it with the official inspector: `npx @modelcontextprotocol/inspector --cli https://naidionov.com/ohny/skills/mcp --transport http --method tools/list`
 
 The five tools are `ohny_nearby`, `ohny_search`, `ohny_site`, `ohny_changes` and `ohny_guide` (the detailed playbook, read on demand). They are read-only and take no personal information.
 
@@ -40,7 +40,7 @@ Outside those dates the assistant asks what day and time to pretend it is, for e
 
 ### Run your own copy of the backend (optional)
 
-Fork this repo and see "Deploy" below; then change `API_BASE` in `skills/ohny/SKILL.md`, `servers.url` in `openapi.yaml`, and the connector URL to your Worker's address.
+Fork this repo and see "Deploy" below (the Worker also answers under a path prefix: set `routes` in `wrangler.toml` for your own domain). Then change `API_BASE` in `skills/ohny/SKILL.md`, `servers.url` in `openapi.yaml`, and the connector URL to your Worker's address.
 
 ## How it fits together
 
@@ -92,7 +92,7 @@ curl 'http://localhost:8787/v1/nearby?lat=40.7295&lng=-73.9965&interests=history
 npm install
 npx wrangler login
 npm run build:data
-npx wrangler deploy         # prints https://ohny-skills.dnaidionov.workers.dev
+npx wrangler deploy         # prints https://ohny-skills.<you>.workers.dev
 ```
 
 Then put that URL in `API_BASE` in `skills/ohny/SKILL.md` and in `servers.url` in `openapi.yaml`. The Workers free plan allows roughly 100k requests a day; this uses no storage products. Refresh the snapshot and redeploy before the festival and whenever convenient after OHNY adds sites; the Worker already handles new ones live (see Freshness), the rebuild just makes their positions exact.

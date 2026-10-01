@@ -96,3 +96,14 @@ test('ohny_guide serves each playbook topic; prompts and unknown methods behave'
   const batch = await (await rpc([{ jsonrpc: '2.0', id: 11, method: 'ping' }, { jsonrpc: '2.0', id: 12, method: 'tools/list' }])).json();
   assert.equal(batch.length, 2);
 });
+
+test('works under a path prefix on a custom domain (/ohny/skills/mcp, /ohny/skills/v1/...)', async () => {
+  const init = { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ jsonrpc: '2.0', id: 1, method: 'tools/list' }) };
+  const viaPrefix = await handle(new Request('https://naidionov.com/ohny/skills/mcp', init), deps);
+  assert.equal((await viaPrefix.json()).result.tools.length, 5);
+  const v1 = await handle(new Request('https://naidionov.com/ohny/skills/v1/search?q=alpha'), deps);
+  assert.equal((await v1.json()).results[0].slug, 'a-26');
+  assert.equal((await handle(new Request('https://naidionov.com/ohny/skills'), deps)).status, 200);       // help page
+  assert.equal((await handle(new Request('https://naidionov.com/ohny/skills/'), deps)).status, 200);
+  assert.equal((await handle(new Request('https://naidionov.com/ohny/skillsfoo'), deps)).status, 404);     // not a prefix match
+});

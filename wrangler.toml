@@ -4,6 +4,15 @@ compatibility_date = "2026-09-01"
 
 # Free-plan friendly: no KV, D1, R2 or Durable Objects. Live data is read from ohny.org
 # (edge-cached ~30s); the bundled data/lineup.json supplies descriptions and coordinates.
+# Keep the original workers.dev address working alongside the custom-domain routes.
+workers_dev = true
+
+# Also reachable at https://naidionov.com/ohny/skills/... (the Worker strips that prefix itself).
+routes = [
+  { pattern = "naidionov.com/ohny/skills", zone_name = "naidionov.com" },
+  { pattern = "naidionov.com/ohny/skills/*", zone_name = "naidionov.com" },
+]
+
 [vars]
 FESTIVAL_BASE = "https://ohny.org"
 
