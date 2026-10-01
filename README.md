@@ -28,7 +28,7 @@ It works for that conversation only (paste it again next time), needs the chatbo
 
 ### 3. Claude skill (paid plans; add from a computer)
 
-1. Get the skill folder: on this page choose **Code, Download ZIP** and unzip it, or run `npm install && npm run package` to build `dist/ohny-skill.zip`. The zip must contain the `ohny` folder (the one with `SKILL.md`) at its top level, i.e. zip `skills/ohny` itself.
+1. Download **[ohny-skill.zip (v0.2.0)](https://github.com/dnaidionov/OHNY-skills/releases/download/v0.2.0/ohny-skill.zip)** from the [Releases page](https://github.com/dnaidionov/OHNY-skills/releases). It already has the `ohny` folder (the one with `SKILL.md`) at its top level, which is what Claude expects. Developers can instead build it with `npm install && npm run package`, which writes `dist/ohny-skill.zip`.
 2. In claude.ai or the desktop app open **Customize, Skills** (menu names change) and upload the zip. Code execution must be on. The phone apps then use it too, but can't upload skills themselves.
 3. Say **"ohny, what's open near me?"**. You can also say "Open House New York" or tag **#ohny**.
 
