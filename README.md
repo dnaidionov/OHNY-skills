@@ -2,29 +2,45 @@
 
 A pocket guide to Open House New York Weekend (Oct 16-18, 2026): check-in, "what's open near me", site and festival Q&A, day planning, directions. Built for phones and voice. **Not affiliated with OHNY.**
 
-## Install (about two minutes)
+## Install
 
-You need an AI account that supports custom skills (see "Free accounts" below) and a phone or computer.
+Pick the route that fits your account. The first two work on a phone-first, "set it up once" basis.
 
-**Claude**
-1. Get the skill folder: on this page choose **Code, Download ZIP** and unzip it, or run `npm install && npm run package` to build `dist/ohny-skill.zip`. The zip must contain the `ohny` folder (the one with `SKILL.md`) at its top level, i.e. zip `skills/ohny` itself.
-2. In Claude open **Customize, Skills** (the exact menu names change; look for where skills are added) and upload the zip. Make sure code execution is on.
-3. Open a new chat and say **"ohny, what's open near me?"**. You can also say "Open House New York" or tag **#ohny**.
-4. On the Claude phone app the skill is available once it's in your account; use voice the same way.
+### 1. Connector (recommended; works on Claude Free, and then on your phone)
 
-**ChatGPT**: create a skill or custom GPT (what your plan allows): paste `skills/ohny/SKILL.md` as the instructions, add `skills/ohny/references/` and `skills/ohny/assets/` as files, and add an Action using `openapi.yaml`.
+The helper is also an MCP server, so it can be added as a **custom connector**. It carries its own instructions, so there is nothing else to install.
 
-**Gemini**: create a skill, paste `skills/ohny/SKILL.md`, and add the files if there's a place for them. Gemini may not be able to call the helper service, so expect a reduced experience.
+- **Server URL:** `https://ohny-skills.dnaidionov.workers.dev/mcp` (no sign-in needed)
+- **Claude (all plans, Free gets one custom connector):** on claude.ai in a browser or the desktop app, open **Settings, Connectors, Add custom connector**, paste the URL, and save. Then open the Claude app on your phone, signed in to the same account: the connector is there, and voice works as usual. (As of writing, the mobile apps use connectors but can't add new ones.) Start a chat with "ohny, what's open near me?" or pick the **ohny** prompt from the + menu.
+- **ChatGPT (Plus, Pro, Team, Enterprise, Edu):** Settings, Connectors, turn on Developer Mode, **Create**, paste the URL, choose "No authentication". Free ChatGPT doesn't support custom connectors.
+- **Tap-to-install from a phone** needs the connector to be listed in a directory (Claude's connector directory, ChatGPT's app directory). That requires a submission and review by the platform, so it's not done yet.
+- Check it with the official inspector: `npx @modelcontextprotocol/inspector --cli https://ohny-skills.dnaidionov.workers.dev/mcp --transport http --method tools/list`
 
-**No install at all (any chatbot that can browse the web).** Paste this into a new chat:
+The five tools are `ohny_nearby`, `ohny_search`, `ohny_site`, `ohny_changes` and `ohny_guide` (the detailed playbook, read on demand). They are read-only and take no personal information.
+
+### 2. No install at all (any chatbot that can browse the web)
+
+Paste this into a new chat:
 
 > Use https://raw.githubusercontent.com/dnaidionov/OHNY-skills/main/standalone/OHNY.md as your guide to Open House New York Weekend for this chat. Then ask me what I'd like to do.
 
 It works for that conversation only (paste it again next time), needs the chatbot's web browsing to be on, and has no itinerary page; it can work on free accounts. `standalone/OHNY.md` is generated from the skill by `npm run build:standalone`, and a test fails if it gets out of date.
 
-**Try it before the festival (Oct 16-18, 2026).** Outside those dates the skill will ask what day and time to pretend it is, for example "Saturday 2:30 PM"; you can change it any time ("make it Sunday morning").
+### 3. Claude skill (paid plans; add from a computer)
 
-**Run your own copy of the backend** (optional; the skill points to a shared one): fork this repo, then see "Deploy" below and change `API_BASE` in `skills/ohny/SKILL.md` and `servers.url` in `openapi.yaml` to your Worker's URL.
+1. Get the skill folder: on this page choose **Code, Download ZIP** and unzip it, or run `npm install && npm run package` to build `dist/ohny-skill.zip`. The zip must contain the `ohny` folder (the one with `SKILL.md`) at its top level, i.e. zip `skills/ohny` itself.
+2. In claude.ai or the desktop app open **Customize, Skills** (menu names change) and upload the zip. Code execution must be on. The phone apps then use it too, but can't upload skills themselves.
+3. Say **"ohny, what's open near me?"**. You can also say "Open House New York" or tag **#ohny**.
+
+For ChatGPT or Gemini skills: paste `skills/ohny/SKILL.md` as the instructions, add `skills/ohny/references/` as files, and for ChatGPT add an Action from `openapi.yaml`. Gemini may not be able to call the helper service.
+
+### Trying it before the festival (Oct 16-18, 2026)
+
+Outside those dates the assistant asks what day and time to pretend it is, for example "Saturday 2:30 PM"; you can change it any time ("make it Sunday morning").
+
+### Run your own copy of the backend (optional)
+
+Fork this repo and see "Deploy" below; then change `API_BASE` in `skills/ohny/SKILL.md`, `servers.url` in `openapi.yaml`, and the connector URL to your Worker's address.
 
 ## How it fits together
 
@@ -55,6 +71,8 @@ It works for that conversation only (paste it again next time), needs the chatbo
 | `skills/ohny/` | The skill: `SKILL.md`, `references/` (api, checkin, planning, about), `assets/itinerary-template.html` |
 | `src/core/` | Parsing, open-now/closing-soon logic, interest matching, nearest-first search, live merge |
 | `src/handler.js`, `src/worker.js` | The HTTP API and the Cloudflare entry point |
+| `src/mcp.js`, `src/guide-data.js` | The MCP connector (`/mcp`) and its generated playbook text |
+| `standalone/OHNY.md` | The whole skill in one file, for paste-and-go use (generated) |
 | `scripts/build-snapshot.mjs` | Builds `data/lineup.json` (fetches everything, geocodes via OpenStreetMap Nominatim, 1 req/s, cached) |
 | `openapi.yaml` | Description of the API for ChatGPT Actions |
 | `test/` | `npm test` (Node's built-in runner, no dependencies) |
@@ -62,7 +80,7 @@ It works for that conversation only (paste it again next time), needs the chatbo
 ## Run and test
 
 ```bash
-npm test                    # 19 unit tests, no network
+npm test                    # 34 unit tests, no network
 npm run build:data          # refresh data/lineup.json (do this again right before the festival)
 npx wrangler dev            # local API at http://localhost:8787
 curl 'http://localhost:8787/v1/nearby?lat=40.7295&lng=-73.9965&interests=history&now=2026-10-17T14:30'

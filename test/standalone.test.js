@@ -15,3 +15,8 @@ test('standalone file is self-contained: no dangling file references', async () 
     assert.ok(t.includes(`## ${h}`), `missing section ${h}`);
   }
 });
+
+test('src/guide-data.js (served by the MCP ohny_guide tool) is up to date', async () => {
+  const { buildGuideData, GUIDE_OUT } = await import('../scripts/build-standalone.mjs');
+  assert.equal(await readFile(GUIDE_OUT, 'utf8'), await buildGuideData());
+});

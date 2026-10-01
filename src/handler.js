@@ -6,6 +6,7 @@ import { nearby, search, card } from './core/search.js';
 import { mapsLinks, haversineKm, walkMinutes } from './core/geo.js';
 import { enrichSites } from './core/enrich.js';
 import { policyFlags } from './core/policy.js';
+import { handleMcp } from './mcp.js';
 
 const LIVE_TTL_MS = 20_000;
 let liveCache = { at: 0, base: '', data: null, lineup: null };
@@ -87,6 +88,13 @@ export async function handle(request, deps) {
   deps.fetchImpl = (...args) => rawFetch(...args);
   const url = new URL(request.url);
   const q = url.searchParams;
+  if (url.pathname.replace(/\/+$/, '') === '/mcp') {
+    // The connector: each tool call runs one of the /v1 routes below, in-process.
+    return handleMcp(request, async (p) => {
+      const res = await handle(new Request(new URL(p, url.origin), { method: 'GET' }), deps);
+      return { ok: res.ok, text: await res.text() };
+    });
+  }
   if (request.method === 'OPTIONS') {
     return new Response(null, { status: 204, headers: { 'access-control-allow-origin': '*', 'access-control-allow-methods': 'GET' } });
   }
@@ -107,6 +115,7 @@ export async function handle(request, deps) {
         'GET /v1/search?q=': 'Find sites by name, partner, neighborhood or topic',
         'GET /v1/site/<slug>': 'Full, freshly fetched details for one site',
         'GET /v1/changes': 'What changed on ohny.org since the saved copy (cancellations, new times, new sites)',
+        'POST /mcp': 'MCP connector endpoint (Streamable HTTP) for Claude, ChatGPT and other MCP clients',
         'any request': 'Add now=2026-10-17T14:30 (New York time) to test as if it were another moment',
       },
     });
