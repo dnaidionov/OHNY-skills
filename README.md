@@ -16,6 +16,12 @@ You need an AI account that supports custom skills (see "Free accounts" below) a
 
 **Gemini**: create a skill, paste `skills/ohny/SKILL.md`, and add the files if there's a place for them. Gemini may not be able to call the helper service, so expect a reduced experience.
 
+**No install at all (any chatbot that can browse the web).** Paste this into a new chat:
+
+> Use https://raw.githubusercontent.com/dnaidionov/OHNY-skills/main/standalone/OHNY.md as your guide to Open House New York Weekend for this chat. Then ask me what I'd like to do.
+
+It works for that conversation only (paste it again next time), needs the chatbot's web browsing to be on, and has no itinerary page; it can work on free accounts. `standalone/OHNY.md` is generated from the skill by `npm run build:standalone`, and a test fails if it gets out of date.
+
 **Try it before the festival (Oct 16-18, 2026).** Outside those dates the skill will ask what day and time to pretend it is, for example "Saturday 2:30 PM"; you can change it any time ("make it Sunday morning").
 
 **Run your own copy of the backend** (optional; the skill points to a shared one): fork this repo, then see "Deploy" below and change `API_BASE` in `skills/ohny/SKILL.md` and `servers.url` in `openapi.yaml` to your Worker's URL.
