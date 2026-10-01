@@ -36,7 +36,7 @@ export function landingHtml() {
   *{box-sizing:border-box}
   body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
   main{max-width:680px;margin:0 auto;padding:28px 16px 56px}
-  .head{display:flex;align-items:center;gap:14px;margin:0 0 10px}
+  .head{display:flex;align-items:center;gap:26px;margin:0 0 10px}
   .head .ohny-logo{width:64px;height:auto;flex:none;color:var(--ink)}
   h1{font-size:2rem;line-height:1.15;margin:0;letter-spacing:-.01em}
   .sub{margin:0;color:var(--muted);font-size:.9rem}
