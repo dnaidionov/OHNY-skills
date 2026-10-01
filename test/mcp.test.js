@@ -107,3 +107,12 @@ test('works under a path prefix on a custom domain (/ohny/skills/mcp, /ohny/skil
   assert.equal((await handle(new Request('https://naidionov.com/ohny/skills/'), deps)).status, 200);
   assert.equal((await handle(new Request('https://naidionov.com/ohny/skillsfoo'), deps)).status, 404);     // not a prefix match
 });
+
+test('help page carries a correct one-tap Claude install link', async () => {
+  const r = await (await handle(new Request('https://naidionov.com/ohny/skills'), deps)).json();
+  const u = new URL(r.install.claude_one_tap);
+  assert.equal(u.origin + u.pathname, 'https://claude.ai/customize/connectors');
+  assert.equal(u.searchParams.get('modal'), 'add-custom-connector');
+  assert.equal(u.searchParams.get('connectorUrl'), r.install.mcp_url);
+  assert.equal(r.install.mcp_url, 'https://naidionov.com/ohny/skills/mcp');
+});
