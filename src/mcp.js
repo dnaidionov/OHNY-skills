@@ -6,13 +6,12 @@ const SERVER = { name: 'ohny-skills', title: 'Ask OHNY (unofficial)', version: '
 const KNOWN_VERSIONS = ['2025-11-25', '2025-06-18', '2025-03-26', '2024-11-05'];
 
 // Shown to the model when the connector is added, so it knows how to behave. The full guide is a tool.
-export const INSTRUCTIONS = `You are the visitor's guide to Open House New York (OHNY) Weekend, October 16-18, 2026 (300+ buildings and tours across NYC). This is an independent helper, NOT affiliated with OHNY; say so once, briefly, after your first answer.
+export const INSTRUCTIONS = `You are a guide to Open House New York (OHNY) Weekend, Oct 16-18, 2026. Unofficial: NOT affiliated with OHNY. For hours, status, tickets or what's nearby ALWAYS call the ohny_* tools (never answer from memory); at the start of a session call ohny_guide with topic "overview". Visitors are on phones, often by voice: short replies, max three options.
 
-Tools: ohny_nearby (what's open near a point, ranked for the visitor), ohny_search (find a site by name/topic), ohny_site (full fresh details for one site), ohny_changes (what changed on ohny.org), ohny_guide (the full playbook: call it with topic "overview" at the start of a session, and "checkin", "planning" or "api" before doing those things).
+Tools: ohny_nearby (what's open near a point, ranked for the visitor), ohny_search (find a site by name/topic), ohny_site (full fresh details for one site), ohny_changes (what changed on ohny.org), ohny_guide (the full playbook: "overview" at the start, and "checkin", "planning" or "api" before doing those things).
 
 Rules that always apply:
-- Never state hours, status or ticket availability from memory; always call a tool. OHNY changes things up to the last minute. Tell the visitor first if something is canceled or sold out. Mention results' as_of time / live flag when it isn't live.
-- Visitors are on phones, often by voice: short, speakable replies, at most three options at a time, no tables, times said naturally ("until five PM").
+- OHNY changes things up to the last minute. Tell the visitor first if something is canceled or sold out, and mention when results aren't live (as_of / live flag).
 - Ask about interests, kids' ages, wheelchair needs and walking limit once, remember them (use your memory only if the visitor agrees), and pass them to ohny_nearby every time. Name any places you left out (the "skipped" list) and why.
 - Check-in: never check anyone in without reading back the details AND the photo/risk waiver in plain words and getting a clear yes; the form is https://ohny.fillout.com/26weekend and cannot be pre-filled, so give the link and read out what to enter. Call ohny_guide topic "checkin" first.
 - If today is not Oct 16-18, ask what day and time to pretend it is, and pass it as the "now" argument (YYYY-MM-DDTHH:MM, New York time).
@@ -26,7 +25,7 @@ export const TOOLS = [
   {
     name: 'ohny_nearby',
     title: 'Find OHNY sites near a place',
-    description: 'Sites that will be OPEN when the visitor arrives (now + walking time), closest/best-fitting first, with OHNY\'s own suggestions, heads-up hints and a list of places skipped and why. Pass the visitor\'s interests, child age and wheelchair need. Needs lat+lng or near=<site slug>.',
+    description: 'Use this when the visitor asks what to see, what is open, or what is near them or near a place they just visited. Returns sites that will be OPEN when the visitor arrives (now + walking time), closest/best-fitting first, with OHNY\'s own suggestions, heads-up hints and a list of places skipped and why. Pass the visitor\'s interests, child age and wheelchair need. Needs lat+lng or near=<site slug>.',
     inputSchema: {
       type: 'object',
       properties: {
@@ -53,28 +52,28 @@ export const TOOLS = [
   {
     name: 'ohny_search',
     title: 'Search OHNY sites',
-    description: 'Find a site by name, partner, neighborhood or topic. Returns up to 5 cards with live status and directions links.',
+    description: 'Use this when the visitor names a place or topic ("the Grolier Club", "rooftops in Brooklyn") or you need a site slug. Finds a site by name, partner, neighborhood or topic. Returns up to 5 cards with live status and directions links.',
     inputSchema: { type: 'object', properties: { q: str('Name or topic, e.g. "grolier" or "rooftop"'), limit: int('Max results (default 5, max 10)'), now: NOW }, required: ['q'] },
     path: '/v1/search',
   },
   {
     name: 'ohny_site',
     title: 'Get details for one OHNY site',
-    description: 'Everything about one site, fetched fresh: description, access notes (entry rules), accessibility, websites, all visit times with ticket links, status now, directions links, heads-up hints, OHNY\'s related nearby sites, and check-in info.',
+    description: 'Use this when the visitor asks about one specific site, before sending anyone to it, and before planning with it. Everything about the site, fetched fresh: description, access notes (entry rules), accessibility, websites, all visit times with ticket links, status now, directions links, heads-up hints, OHNY\'s related nearby sites, and check-in info.',
     inputSchema: { type: 'object', properties: { slug: str('Site slug from a search or nearby result, e.g. "dieu-donne-26"'), now: NOW }, required: ['slug'] },
     path: '/v1/site/{slug}',
   },
   {
     name: 'ohny_changes',
     title: 'What changed on OHNY\'s lineup',
-    description: 'Cancellations, new sites and changed times on ohny.org since the saved copy. Use before finalising a plan or when asked "anything new?".',
+    description: 'Use this before finalising a plan, or when asked "anything new or canceled?". Lists cancellations, new sites and changed times on ohny.org since the saved copy.',
     inputSchema: { type: 'object', properties: { now: NOW } },
     path: '/v1/changes',
   },
   {
     name: 'ohny_guide',
     title: 'OHNY playbook',
-    description: 'The detailed playbook for this guide. topic: "overview" (start of session), "checkin" (before any check-in), "planning" (before planning a day), "api" (how to read tool results), "about" (explaining what this helper is). Read the topic before doing that task.',
+    description: 'Use this at the start of a session (topic "overview") and before checking anyone in, planning a day, or explaining this helper. The detailed playbook for this guide. topic: "overview" (start of session), "checkin" (before any check-in), "planning" (before planning a day), "api" (how to read tool results), "about" (explaining what this helper is). Read the topic before doing that task.',
     inputSchema: { type: 'object', properties: { topic: { type: 'string', enum: Object.keys(GUIDE), description: 'Which part of the playbook' } }, required: ['topic'] },
     local: true,
   },
