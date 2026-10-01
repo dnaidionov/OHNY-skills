@@ -7,6 +7,7 @@ import { mapsLinks, haversineKm, walkMinutes } from './core/geo.js';
 import { enrichSites } from './core/enrich.js';
 import { policyFlags } from './core/policy.js';
 import { handleMcp } from './mcp.js';
+import { landingHtml } from './landing.js';
 
 const LIVE_TTL_MS = 20_000;
 let liveCache = { at: 0, base: '', data: null, lineup: null };
@@ -107,6 +108,13 @@ export async function handle(request, deps) {
   try { now = resolveNow(q.get('now'), deps.realNow); } catch (e) { return fail(400, e.message); }
 
   const path = url.pathname.replace(/\/+$/, '') || '/';
+
+  // Browsers get the human page at the root; scripts and API clients (and ?format=json) get JSON.
+  if (path === '/' && q.get('format') !== 'json' && (request.headers.get('accept') ?? '').includes('text/html')) {
+    return new Response(landingHtml(), {
+      headers: { 'content-type': 'text/html; charset=utf-8', 'cache-control': 'public, max-age=300', 'x-content-type-options': 'nosniff' },
+    });
+  }
 
   if (path === '/' || path === '/v1') {
     return json({

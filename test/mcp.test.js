@@ -116,3 +116,28 @@ test('help page carries a correct one-tap Claude install link', async () => {
   assert.equal(u.searchParams.get('connectorUrl'), r.install.mcp_url);
   assert.equal(r.install.mcp_url, 'https://naidionov.com/ohny/skills/mcp');
 });
+
+test('landing page for browsers, JSON for everyone else', async () => {
+  const html = await handle(new Request('https://naidionov.com/ohny/skills', { headers: { accept: 'text/html,application/xhtml+xml' } }), deps);
+  assert.equal(html.status, 200);
+  assert.match(html.headers.get('content-type'), /text\/html/);
+  const t = await html.text();
+  for (const needle of ['Not affiliated with, endorsed by or sponsored by Open House New York', 'https://claude.ai/customize/connectors?modal=add-custom-connector',
+    'https://naidionov.com/ohny/skills/mcp', 'https://naidionov.com', 'releases/download/v0.2.0/ohny-skill.zip', 'width=device-width']) {
+    assert.ok(t.includes(needle), `landing page missing: ${needle}`);
+  }
+  assert.doesNotMatch(t, /<script[^>]+src=|<link[^>]+href="https?:\/\/(?!naidionov)/);       // no third-party loads
+  const json = await handle(new Request('https://naidionov.com/ohny/skills', { headers: { accept: '*/*' } }), deps);
+  assert.match(json.headers.get('content-type'), /json/);
+  const forced = await handle(new Request('https://naidionov.com/ohny/skills?format=json', { headers: { accept: 'text/html' } }), deps);
+  assert.match(forced.headers.get('content-type'), /json/);
+  const v1 = await handle(new Request('https://naidionov.com/ohny/skills/v1', { headers: { accept: 'text/html' } }), deps);
+  assert.match(v1.headers.get('content-type'), /json/);
+});
+
+test('landing page links match the install link in the help JSON', async () => {
+  const { LINKS } = await import('../src/landing.js');
+  const r = await (await handle(new Request('https://naidionov.com/ohny/skills?format=json'), deps)).json();
+  assert.equal(LINKS.claude, r.install.claude_one_tap);
+  assert.equal(LINKS.mcp, r.install.mcp_url);
+});
