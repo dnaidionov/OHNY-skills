@@ -141,3 +141,14 @@ test('landing page links match the install link in the help JSON', async () => {
   assert.equal(LINKS.claude, r.install.claude_one_tap);
   assert.equal(LINKS.mcp, r.install.mcp_url);
 });
+
+test('landing page shows the OHNY logo (dark-mode safe) and the Claude icon on the Claude button, with trademark notes', async () => {
+  const t = await (await handle(new Request('https://naidionov.com/ohny/skills', { headers: { accept: 'text/html' } }), deps)).text();
+  assert.match(t, /<svg[^>]+aria-label="Open House New York logo"/);
+  assert.ok(t.includes('#2952CC') && t.includes('currentColor'));
+  assert.doesNotMatch(t, /#1A1A1A/);                                              // lettering adapts to dark mode
+  assert.match(t, /<a class="btn" href="https:\/\/claude\.ai[^>]*><svg[^>]*class="ico"[^>]*>.*<\/svg>Add to Claude<\/a>/s);
+  assert.match(t, /name and logo belong to OHNY[^<]*not affiliated with OHNY/);
+  assert.match(t, /Claude is a trademark of Anthropic/);
+  assert.doesNotMatch(t, /<img[^>]+src=/);                                         // all artwork is inline
+});

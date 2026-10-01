@@ -1,3 +1,5 @@
+import { OHNY_LOGO_SVG, CLAUDE_ICON_SVG } from './brand.js';
+
 // The human-facing page at naidionov.com/ohny/skills. Self-contained: inline CSS and JS, no third-party requests.
 
 export const LINKS = {
@@ -34,7 +36,11 @@ export function landingHtml() {
   *{box-sizing:border-box}
   body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
   main{max-width:680px;margin:0 auto;padding:28px 16px 56px}
-  h1{font-size:2rem;line-height:1.15;margin:0 0 6px;letter-spacing:-.01em}
+  .head{display:flex;align-items:center;gap:14px;margin:0 0 10px}
+  .head .ohny-logo{width:64px;height:auto;flex:none;color:var(--ink)}
+  h1{font-size:2rem;line-height:1.15;margin:0;letter-spacing:-.01em}
+  .sub{margin:0;color:var(--muted);font-size:.9rem}
+  .ico{width:22px;height:22px;flex:none;margin-right:9px}
   h2{font-size:1.15rem;margin:34px 0 10px}
   .lead{color:var(--muted);margin:0 0 18px;font-size:1.05rem}
   .notice{background:var(--soft);border:1px solid var(--line);border-radius:12px;padding:12px 14px;font-size:.92rem;color:var(--muted);margin:0 0 8px}
@@ -56,7 +62,10 @@ export function landingHtml() {
 </head>
 <body>
 <main>
-  <h1>Ask OHNY</h1>
+  <div class="head">
+    ${OHNY_LOGO_SVG}
+    <div><h1>Ask OHNY</h1><p class="sub">Unofficial guide</p></div>
+  </div>
   <p class="lead">An unofficial pocket guide to <strong>Open House New York Weekend</strong>, October 16&ndash;18, 2026. Ask it in your AI chat app, by voice on your phone.</p>
   <p class="notice"><strong>Independent project.</strong> Not affiliated with, endorsed by or sponsored by Open House New York. For anything official, see <a href="${esc(LINKS.ohny)}">ohny.org</a>.</p>
 
@@ -74,7 +83,7 @@ export function landingHtml() {
   <div class="card">
     <h3>Claude <span class="tag">works on free accounts</span></h3>
     <p>One tap opens Claude's "Add custom connector" box with everything filled in. Check it and confirm. Easiest on a computer; once added it also works in the Claude phone app.</p>
-    <a class="btn" href="${esc(LINKS.claude)}" rel="noopener">Add to Claude</a>
+    <a class="btn" href="${esc(LINKS.claude)}" rel="noopener">${CLAUDE_ICON_SVG}Add to Claude</a>
     <p>Then start a chat and say <em>"ohny, what's open near me?"</em></p>
   </div>
 
@@ -105,6 +114,7 @@ export function landingHtml() {
     Made by <a href="${esc(LINKS.site)}">Dmitry Naidionov</a> &middot;
     <a href="${esc(LINKS.github)}">Source on GitHub</a> (MIT) &middot;
     <a href="?format=json">For developers</a>
+    <br>The Open House New York name and logo belong to OHNY and are shown for identification only; this project is not affiliated with OHNY. Claude is a trademark of Anthropic.
     <br>This page is part of naidionov.com and is covered by that site's usual analytics.
   </footer>
 </main>
