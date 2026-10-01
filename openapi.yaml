@@ -1,0 +1,59 @@
+openapi: 3.1.0
+info:
+  title: OHNY helper (unofficial)
+  version: 0.1.0
+  description: >
+    Read-only view of the Open House New York Weekend lineup (Oct 16-18, 2026): what is open now,
+    what is near a point, and fresh details for one site. Holds no visitor data.
+servers:
+  - url: https://ohny-skills.dnaidionov.workers.dev
+paths:
+  /v1/nearby:
+    get:
+      operationId: nearbySites
+      summary: Closest sites that will be open when the visitor arrives and match interests (closest first)
+      parameters:
+        - { name: lat, in: query, schema: { type: number }, description: Visitor latitude }
+        - { name: lng, in: query, schema: { type: number }, description: Visitor longitude }
+        - { name: near, in: query, schema: { type: string }, description: Site slug to measure from instead of lat/lng }
+        - { name: interests, in: query, schema: { type: string }, description: "Comma separated, e.g. rooftops, history" }
+        - { name: limit, in: query, schema: { type: integer, default: 3, maximum: 10 } }
+        - { name: offset, in: query, schema: { type: integer, default: 0 } }
+        - { name: max_walk_min, in: query, schema: { type: integer }, description: "Only sites within this many minutes' walk (e.g. 15)" }
+        - { name: radius_km, in: query, schema: { type: number } }
+        - { name: min_time_left_min, in: query, schema: { type: integer, default: 10 }, description: Skip places with less than this many minutes left on arrival }
+        - { name: child_age, in: query, schema: { type: integer }, description: Age of the youngest child in the group; excludes sites with a higher age limit }
+        - { name: wheelchair, in: query, schema: { type: boolean }, description: Exclude sites OHNY lists as not wheelchair accessible }
+        - { name: interests_mode, in: query, schema: { type: string, enum: [require, prefer], default: require } }
+        - { name: borough, in: query, schema: { type: string } }
+        - { name: include_ticketed, in: query, schema: { type: boolean, default: true } }
+        - { name: exclude, in: query, schema: { type: string }, description: Comma separated slugs to skip }
+        - { name: now, in: query, schema: { type: string }, description: "Test mode: pretend it is this New York time, e.g. 2026-10-17T14:30" }
+      responses: { "200": { description: Result cards plus freshness info } }
+  /v1/search:
+    get:
+      operationId: searchSites
+      summary: Find a site by name, partner, neighborhood or topic
+      parameters:
+        - { name: q, in: query, required: true, schema: { type: string } }
+        - { name: limit, in: query, schema: { type: integer, default: 5 } }
+        - { name: now, in: query, schema: { type: string } }
+      responses: { "200": { description: Matching site cards } }
+  /v1/site/{slug}:
+    get:
+      operationId: getSite
+      summary: Full, freshly fetched details for one site
+      parameters:
+        - { name: slug, in: path, required: true, schema: { type: string } }
+        - { name: now, in: query, schema: { type: string } }
+      responses: { "200": { description: Site details, status, tickets, directions links }, "404": { description: Unknown site } }
+  /v1/changes:
+    get:
+      operationId: recentChanges
+      summary: What changed on ohny.org since the saved copy (cancellations, new times, new sites)
+      responses: { "200": { description: Added, removed and modified sites } }
+  /v1/meta:
+    get:
+      operationId: freshness
+      summary: How fresh the data is
+      responses: { "200": { description: Freshness and counts } }

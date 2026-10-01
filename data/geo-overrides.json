@@ -1,0 +1,19 @@
+{
+ "_readme": "Hand fixes for sites the automatic lookup got wrong. {lat,lng} = exact; {\"fallback\": true} = use the neighborhood centre (flagged approximate).",
+ "overrides": {
+  "snow-ops-26": {
+   "fallback": true
+  },
+  "rat-academy-26": {
+   "fallback": true
+  },
+  "rockaway-village-26": {
+   "fallback": true
+  },
+  "hopper-26": {
+   "lat": 40.7316,
+   "lng": -73.9969,
+   "note": "3 Washington Square North"
+  }
+ }
+}

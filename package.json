@@ -1,0 +1,18 @@
+{
+  "name": "ohny-skill",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Unofficial OHNY Weekend assistant: data snapshot builder, stateless Cloudflare Worker, and the cross-platform skill.",
+  "scripts": {
+    "build:data": "node scripts/build-snapshot.mjs",
+    "build:data:nogeo": "node scripts/build-snapshot.mjs --no-geocode",
+    "test": "node --test \"test/*.test.js\"",
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "package": "mkdir -p dist && cd skills && rm -f ../dist/ohny-skill.zip && zip -qr ../dist/ohny-skill.zip ohny"
+  },
+  "devDependencies": {
+    "wrangler": "^4.0.0"
+  }
+}

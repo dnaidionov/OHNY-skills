@@ -1,0 +1,11 @@
+name = "ohny-skills"
+main = "src/worker.js"
+compatibility_date = "2026-09-01"
+
+# Free-plan friendly: no KV, D1, R2 or Durable Objects. Live data is read from ohny.org
+# (edge-cached ~30s); the bundled data/lineup.json supplies descriptions and coordinates.
+[vars]
+FESTIVAL_BASE = "https://ohny.org"
+
+[observability]
+enabled = false

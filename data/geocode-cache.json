@@ -1,0 +1,1331 @@
+{
+ "3 Times Square, Manhattan, New York": {
+  "lat": 40.7566057,
+  "lng": -73.9870084,
+  "label": "3 Times Square, 3, Times Square, Manhattan Community Board 5, Manhattan, New York County, New York, 10036, United States"
+ },
+ "3 World Trade Center: WTC Rebuilding Gallery & Artists Studios, Manhattan, New York": null,
+ "3 World Trade Center, Manhattan, New York": {
+  "lat": 40.711006,
+  "lng": -74.0116426,
+  "label": "3 World Trade Center, 175, Greenwich Street, Tribeca, Lower Manhattan, Manhattan, New York County, New York, 10048, United States"
+ },
+ "20 Exchange Place, Manhattan, New York": {
+  "lat": 40.7055927,
+  "lng": -74.0094539,
+  "label": "20, Exchange Place, Financial District, Lower Manhattan, Manhattan, New York County, New York, 10005, United States"
+ },
+ "47 East 60th Street, New York, NY, 10022": {
+  "lat": 40.7640226,
+  "lng": -73.969835,
+  "label": "Grolier Club, 47, East 60th Street, Manhattan Community Board 8, Manhattan, New York County, New York, 10065, United States"
+ },
+ "77 Water Street, Manhattan, New York": {
+  "lat": 40.7042035,
+  "lng": -74.0082436,
+  "label": "77 Water Street, 77, Water Street, Financial District, Lower Manhattan, Manhattan, New York County, New York, 10005, United States"
+ },
+ "610 Fifth Avenue, 7th Floor, New York, NY, 10111": null,
+ "610 Loft & Garden, Manhattan, New York": null,
+ "Rockefeller Center, Manhattan, New York": {
+  "lat": 40.7592576,
+  "lng": -73.9799569,
+  "label": "Rockefeller Center, 45, Rockefeller Plaza, Midtown, Manhattan Community Board 5, Manhattan, New York County, New York, 10111, United States"
+ },
+ "620 Fifth Avenue, 7th Floor, New York, NY, 10111": null,
+ "620 Loft & Garden, Manhattan, New York": null,
+ "290 Conover Street, Brooklyn, NY, 11231": {
+  "lat": 40.6752578,
+  "lng": -74.0182882,
+  "label": "The Waterfront Museum, 290, Conover Street, Brooklyn, Kings County, New York, 11231, United States"
+ },
+ "ABC No Rio, Manhattan, New York": {
+  "lat": 40.7193229,
+  "lng": -73.9853812,
+  "label": "ABC No Rio, 156, Manhattan Community Board 3, Manhattan, New York County, New York, 10002, United States"
+ },
+ "Adventure Playground, Manhattan, New York": {
+  "lat": 40.7733145,
+  "lng": -73.9775031,
+  "label": "Adventure Playground, Central Park West, Manhattan Community Board 7, Manhattan, New York County, New York, 10023, United States"
+ },
+ "African Burial Ground National Monument, Manhattan, New York": {
+  "lat": 40.7145252,
+  "lng": -74.0044657,
+  "label": "African Burial Ground National Monument, 290, Lower Manhattan, Manhattan, New York County, New York, 10007, United States"
+ },
+ "2 Hylan Boulevard, Staten Island, NY, 10305-2002": {
+  "lat": 40.6151206,
+  "lng": -74.063036,
+  "label": "Alice Austen House, 2, Hylan Boulevard, Rosebank, Staten Island, Richmond County, New York, 10305, United States"
+ },
+ "164 Cook Street, Brooklyn, NY, 11206": {
+  "lat": 40.7026522,
+  "lng": -73.9364134,
+  "label": "164, Cook Street, Brooklyn, Kings County, New York, 11206, United States"
+ },
+ "315 Maujer Street, Brooklyn, NY, 11206": {
+  "lat": 40.7122822,
+  "lng": -73.9370106,
+  "label": "315, Maujer Street, Brooklyn, Kings County, New York, 11206, United States"
+ },
+ "3718 Broadway, New York, NY, 10021": {
+  "lat": 40.8321127,
+  "lng": -73.9452983,
+  "label": "Church of the Intercession, 3718, Broadway, Sugar Hill, Manhattan Community Board 9, Manhattan, New York County, New York, 10032, United States"
+ },
+ "2 Lincoln Square, New York, NY, 10023": {
+  "lat": 40.7723194,
+  "lng": -73.9844012,
+  "label": "Lincoln Square, Manhattan Community Board 7, Manhattan, New York County, New York, 10023, United States"
+ },
+ "Andrew Carnegie Mansion: Cooper Hewitt, Smithsonian Design Museum, Manhattan, New York": null,
+ "Andrew Carnegie Mansion, Manhattan, New York": null,
+ "Cooper Hewitt, Manhattan, New York": null,
+ "Andy Kessler Skatepark, New York, NY, 10025": {
+  "lat": 40.8050658,
+  "lng": -73.9705689,
+  "label": "Andy Kessler Skate Park, Henry Hudson Parkway, Manhattan Valley, Manhattan Community Board 7, Manhattan, New York County, New York, 10205, United States"
+ },
+ "Astoria Park Pool, Queens, New York": null,
+ "NYC Parks, Queens, New York": null,
+ "Atlantic Yards: A Megaproject Rebooted?, Brooklyn, New York": null,
+ "Atlantic Yards, Brooklyn, New York": {
+  "lat": 40.6820089,
+  "lng": -73.9708664,
+  "label": "Atlantic Yards, Brooklyn, Kings County, New York, United States"
+ },
+ "Atrium at Sumner, Brooklyn, New York": null,
+ "Urban Builders Collaborative LLC, Brooklyn, New York": null,
+ "BAM Hamm Archives, Brooklyn, New York": null,
+ "Brooklyn Academy of Music, Brooklyn, New York": null,
+ "Barclays Center & Brooklyn Basketball Training Center, Brooklyn, New York": null,
+ "Brooklyn Sports and Entertainment, Brooklyn, New York": null,
+ "80 58th Street, Suite 403, Brooklyn, NY, 11220": null,
+ "BAT Clay Studio at Brooklyn Army Terminal, Brooklyn, New York": null,
+ "BAT Clay Studio, Brooklyn, New York": null,
+ "208 Totten Avenue, Bayside, NY, 11359": null,
+ "Bayside Historical Society Castle, Queens, New York": null,
+ "Bayside Historical Society, Queens, New York": null,
+ "Bella Abzug Park, Manhattan, New York": {
+  "lat": 40.7549351,
+  "lng": -74.0011982,
+  "label": "Bella Abzug Park, Manhattan Community Board 4, Manhattan, New York County, New York, 10018, United States"
+ },
+ "Better Sheds Ahead, Manhattan, New York": null,
+ "Practice for Architecture and Urbanism (PAU) and LERA Consulting Structural Engineers, Manhattan, New York": null,
+ "140 58th Street, Brooklyn Army Terminal, Brooklyn, NY, 11220": {
+  "lat": 40.6434271,
+  "lng": -74.0258923,
+  "label": "FABSCRAP, 140, 58th Street, Sunset Park, Brooklyn, Kings County, New York, 11220, United States"
+ },
+ "Black Bedford-Stuyvesant Memories 1930's–1970's Walking Tour, Brooklyn, New York": null,
+ "Sanctuary Spaces, Brooklyn, New York": null,
+ "321 East 73rd Street, New York, NY, 10021": {
+  "lat": 40.7690899,
+  "lng": -73.9564439,
+  "label": "Bohemian National Hall, 321, East 73rd Street, Lenox Hill, Manhattan Community Board 8, Manhattan, New York County, New York, 10021, United States"
+ },
+ "BookOps, Queens, New York": null,
+ "37-01 Bowne Street, Flushing, NY, 11354": {
+  "lat": 40.7628912,
+  "lng": -73.8248834,
+  "label": "John Bowne House, 37-01, Bowne Street, Flushing Chinatown, Flushing, Queens, Queens County, New York, 11354, United States"
+ },
+ "614 Courtlandt Avenue, Bronx, NY, 10451": {
+  "lat": 40.8180309,
+  "lng": -73.9187287,
+  "label": "614, Courtlandt Avenue, The Bronx, Bronx County, New York, 10455, United States"
+ },
+ "700 Manida Street, Bronx, NY, 10474": {
+  "lat": 40.814364,
+  "lng": -73.888256,
+  "label": "700, Manida Street, Hunts Point, The Bronx, Bronx County, New York, 10474, United States"
+ },
+ "910 Hunts Point Avenue, Bronx, NY, 10474": {
+  "lat": 40.819896,
+  "lng": -73.8900142,
+  "label": "910, Hunts Point Avenue, The Bronx, Bronx County, New York, 10474, United States"
+ },
+ "140 58th Street, Brooklyn, NY, 11220": {
+  "lat": 40.6456748,
+  "lng": -74.0250124,
+  "label": "140, 58th Street, Sunset Park, Brooklyn, Kings County, New York, 11220, United States"
+ },
+ "209 Joralemon Street, Brooklyn, NY, 11209": {
+  "lat": 40.6927731,
+  "lng": -73.9903041,
+  "label": "Brooklyn Borough Hall, 209, Joralemon Street, Downtown Brooklyn, Brooklyn, Kings County, New York, 11201, United States"
+ },
+ "Brooklyn Conservatory of Music, Brooklyn, New York": {
+  "lat": 40.6759573,
+  "lng": -73.9747228,
+  "label": "Brooklyn Conservatory of Music, 58, 7th Avenue, Park Slope, Brooklyn, Kings County, New York, 11217, United States"
+ },
+ "142 13th Street, Brooklyn, NY, 11215": {
+  "lat": 40.6687457,
+  "lng": -73.9925956,
+  "label": "142, 13th Street, Park Slope, Brooklyn, Kings County, New York, 11215, United States"
+ },
+ "850 Third Avenue, Brooklyn, NY, 11232": null,
+ "Brooklyn Grange Sunset Park, Brooklyn, New York": {
+  "lat": 40.6592416,
+  "lng": -74.0042111,
+  "label": "Brooklyn Grange, Sunset Park, Brooklyn, Kings County, New York, United States"
+ },
+ "141 Flushing Avenue, Building 77, Brooklyn, NY, 11205": null,
+ "Brooklyn Navy Yard: Creative Currents, Brooklyn, New York": null,
+ "Brooklyn Navy Yard, Brooklyn, New York": {
+  "lat": 40.6993266,
+  "lng": -73.9755562,
+  "label": "Brooklyn Navy Yard, 1, Brooklyn, Kings County, New York, 11205, United States"
+ },
+ "141 Flushing Ave, Building 77, Brooklyn, NY, 11205": null,
+ "Brooklyn Navy Yard: Past, Present, & Future, Brooklyn, New York": null,
+ "474 Hemlock Street, Brooklyn, NY, 11208": {
+  "lat": 40.6777841,
+  "lng": -73.8699358,
+  "label": "474, Hemlock Street, Brooklyn, Kings County, New York, 11208, United States"
+ },
+ "200 6th Street, Suite 3G, Brooklyn, NY, 11215": null,
+ "Brooklyn SolarWorks, Brooklyn, New York": {
+  "lat": 40.6729307,
+  "lng": -73.9890714,
+  "label": "Brooklyn Solarworks, 232, 6th Street, Park Slope, Brooklyn, Kings County, New York, 11215, United States"
+ },
+ "Brooklyn Tower, Brooklyn, New York": {
+  "lat": 40.690517,
+  "lng": -73.9823155,
+  "label": "The Brooklyn Tower, Albee Square, Downtown Brooklyn, Brooklyn, Kings County, New York, 11243, United States"
+ },
+ "Brotherhood Sister Sol, Manhattan, New York": null,
+ "The Brotherhood Sister Sol, Manhattan, New York": null,
+ "4746 Amboy Road, Staten Island, NY, 10312": {
+  "lat": 40.5396774,
+  "lng": -74.1700029,
+  "label": "4746, Amboy Road, Staten Island, Richmond County, New York, 10312, United States"
+ },
+ "120 East 125th Street, New York, NY, 10035": {
+  "lat": 40.8044052,
+  "lng": -73.9381846,
+  "label": "120, East 125th Street, Manhattan Community Board 11, Manhattan, New York County, New York, 10035, United States"
+ },
+ "Carnegie Hall, Manhattan, New York": {
+  "lat": 40.76503,
+  "lng": -73.9798868,
+  "label": "Carnegie Hall, West 57th Street, Midtown East, Manhattan Community Board 5, Manhattan, New York County, New York, 10106, United States"
+ },
+ "20 West 44th Street, 6th Floor, New York, NY, 10036": null,
+ "Cast Hall at the Institute of Classical Architecture & Art, Manhattan, New York": null,
+ "Institute of Classical Architecture & Art, Manhattan, New York": null,
+ "Castle Clinton National Monument, New York, NY, 10004": {
+  "lat": 40.7034567,
+  "lng": -74.016561,
+  "label": "Castle Clinton, 10, Battery Place, Whitehall, Lower Manhattan, Manhattan, New York County, New York, 10004, United States"
+ },
+ "Castle Williams, Manhattan, New York": {
+  "lat": 40.6928335,
+  "lng": -74.0190654,
+  "label": "Castle Williams, 501, Hay Road, Nolan Park, Colonels Row, Manhattan, New York County, New York, 10004, United States"
+ },
+ "Amsterdam Avenue and 110th Street, New York, NY, 10025": null,
+ "Cathedral of St. John the Divine: Synod Hall, Manhattan, New York": null,
+ "Cathedral of St. John the Divine, Manhattan, New York": {
+  "lat": 40.803766,
+  "lng": -73.9617843,
+  "label": "Cathedral of Saint John the Divine, 1047, Amsterdam Avenue, Manhattan Community Board 9, Manhattan, New York County, New York, 10025, United States"
+ },
+ "Cathedral of St. John the Divine: Textile Conservation Laboratory, Manhattan, New York": null,
+ "Cathedral of St. John the Divine: Vertical Tour, Manhattan, New York": null,
+ "141 Convent Avenue, New York, NY, 10031": {
+  "lat": 40.817986,
+  "lng": -73.9505888,
+  "label": "141, Convent Avenue, Manhattanville, Manhattan Community Board 9, Manhattan, New York County, New York, 10027, United States"
+ },
+ "259 Convent Avenue, New York, NY, 10031": {
+  "lat": 40.8219587,
+  "lng": -73.9483176,
+  "label": "259, Convent Avenue, Sugar Hill, Manhattan Community Board 9, Manhattan, New York County, New York, 10031, United States"
+ },
+ "28 West 27th Street, 3rd Floor, New York, NY, 10001": null,
+ "Center for Book Arts, Manhattan, New York": {
+  "lat": 40.7447456,
+  "lng": -73.9899221,
+  "label": "Center for book arts, 28, West 27th Street, NoMad, Manhattan Community Board 5, Manhattan, New York County, New York, 10118, United States"
+ },
+ "128 Pierrepont Street, Brooklyn, NY, 11201": {
+  "lat": 40.6947569,
+  "lng": -73.9924297,
+  "label": "Center for Brooklyn History, 128, Pierrepont Street, Brooklyn Heights, Brooklyn, Kings County, New York, 11201, United States"
+ },
+ "Grand Army Plaza, New York, NY, 10019": {
+  "lat": 40.6762012,
+  "lng": -73.9716715,
+  "label": "Grand Army Plaza, Flatbush Avenue, Prospect Heights, Brooklyn, Kings County, New York, 11238, United States"
+ },
+ "652 Lexington Avenue, New York, NY, 10022": {
+  "lat": 40.7595994,
+  "lng": -73.9705535,
+  "label": "Central Synagogue, 652, Lexington Avenue, Midtown East, Manhattan Community Board 5, Manhattan, New York County, New York, 10022, United States"
+ },
+ "Centre 360, Manhattan, New York": {
+  "lat": 40.7134,
+  "lng": -74.0038719,
+  "label": "Centre Street, Civic Center, Lower Manhattan, Manhattan, New York County, New York, 10278, United States"
+ },
+ "Changing Change Walking Tour, Manhattan, New York": null,
+ "NYC Department of Records & Information Services (DORIS) and Citygroup Inc., Manhattan, New York": null,
+ "13 42nd Street, Brooklyn, NY, 11232": {
+  "lat": 40.6553346,
+  "lng": -74.0149797,
+  "label": "13, 42nd Street, Sunset Park, Brooklyn, Kings County, New York, 11232, United States"
+ },
+ "1 East 29th Street, New York, NY, 10016": {
+  "lat": 40.745322,
+  "lng": -73.9861486,
+  "label": "1, East 29th Street, Rose Hill, Manhattan Community Board 5, Manhattan, New York County, New York, 10016, United States"
+ },
+ "201 West 13th Street, New York, NY, 10011": {
+  "lat": 40.7381566,
+  "lng": -74.0003905,
+  "label": "Church of the Village, 201, West 13th Street, Union Square, Manhattan, New York County, New York, 10011, United States"
+ },
+ "4100 First Avenue, 3N, Brooklyn, NY, 11232": null,
+ "Circular Construction Hub at MADE Bush Terminal, Brooklyn, New York": null,
+ "Circular Construction Hub, Brooklyn, New York": null,
+ "370 Metropolitan Avenue, Brooklyn, NY, 11211": {
+  "lat": 40.7138981,
+  "lng": -73.9557211,
+  "label": "370, Metropolitan Avenue, Williamsburg, Brooklyn, Kings County, New York, 11211, United States"
+ },
+ "406A Comfort Road, New York, NY, 10004": {
+  "lat": 40.689606,
+  "lng": -74.0171228,
+  "label": "Comfort Road, Nolan Park, South Battery, Manhattan, New York County, New York, 10004, United States"
+ },
+ "1 Bowling Green, New York, NY, 10004": {
+  "lat": 40.7040569,
+  "lng": -74.0137545,
+  "label": "Alexander Hamilton U.S. Custom House, 1, Bowling Green, Whitehall, Lower Manhattan, Manhattan, New York County, New York, 10275, United States"
+ },
+ "Colossal Media Paint Shop, Brooklyn, New York": null,
+ "Colossal Media, Brooklyn, New York": null,
+ "Con Edison East River Generating Station, Manhattan, New York": {
+  "lat": 40.7276856,
+  "lng": -73.9738692,
+  "label": "Con Edison East River Generating Station, 801, Manhattan Community Board 6, Manhattan, New York County, New York, 10009, United States"
+ },
+ "Cornell Tech: Tata Innovation Center, Manhattan, New York": null,
+ "Cornell Tech, Manhattan, New York": {
+  "lat": 40.7547748,
+  "lng": -73.9564291,
+  "label": "Cornell Tech, West Loop Road, Roosevelt Island, Manhattan Community Board 8, Manhattan, New York County, New York, 10044, United States"
+ },
+ "Custom Choking Signs as Folk Art, Science, and Visual Culture, Brooklyn, New York": null,
+ "Cultural Fingerprints, Brooklyn, New York": null,
+ "MTA 51st Street – Lexington Ave Station, New York, NY, 10022": null,
+ "Data Vandals Newsstand, Manhattan, New York": null,
+ "Data Vandals and Archtober, Manhattan, New York": null,
+ "5901 Palisade Avenue, Bronx, NY, 10471": {
+  "lat": 40.9101994,
+  "lng": -73.9087281,
+  "label": "5901, Palisade Avenue, The Bronx, Bronx County, New York, 10471, United States"
+ },
+ "DOT Maspeth Central Sign Shop, Queens, New York": null,
+ "NYC Department of Transportation, Queens, New York": null,
+ "DSNY Brooklyn District 3 Garage & Offices, Brooklyn, New York": null,
+ "NYC Department of Sanitation and Dattner Architects, Brooklyn, New York": null,
+ "DSNY Central Repair Shop, Queens, New York": null,
+ "NYC Department of Sanitation, Queens, New York": {
+  "lat": 40.6651248,
+  "lng": -73.8099292,
+  "label": "NYC Department of Sanitation Garage, 130-23, Queens, Queens County, New York, 11420, United States"
+ },
+ "DSNY Snow Operations Demo and Spring Street Salt Shed, Manhattan, New York": null,
+ "NYC Sanitation, Manhattan, New York": {
+  "lat": 40.8692267,
+  "lng": -73.913287,
+  "label": "NYC Department of Sanitation, Manhattan Community Board 12, Manhattan, New York County, New York, United States"
+ },
+ "DSNY Staten Island Compost Facility, Staten Island, New York": null,
+ "NYC Department of Sanitation, Staten Island, New York": null,
+ "4881 Broadway, New York, NY, 10034": {
+  "lat": 40.8673822,
+  "lng": -73.9228859,
+  "label": "Dyckman Farmhouse Museum, 4881, Broadway, Inwood, Manhattan Community Board 12, Manhattan, New York County, New York, 10034, United States"
+ },
+ "Bergen Avenue & Avenue T, Brooklyn, NY, 11234": {
+  "lat": 40.6219715,
+  "lng": -73.9090867,
+  "label": "P.S. 312 - The Bergen Beach School, 7103, Avenue T, Bergen Beach, Brooklyn, Kings County, New York, 11234, United States"
+ },
+ "Edge NYC, Manhattan, New York": {
+  "lat": 40.7540153,
+  "lng": -74.0005901,
+  "label": "Edge, 30, West 33rd Street, Chelsea District, Manhattan Community Board 4, Manhattan, New York County, New York, 10001, United States"
+ },
+ "323 West 39th Street, New York, NY, 10018": {
+  "lat": 40.7560689,
+  "lng": -73.9923357,
+  "label": "323, West 39th Street, Manhattan Community Board 4, Manhattan, New York County, New York, 10018, United States"
+ },
+ "1230 Fifth Avenue, New York, NY, 10029": {
+  "lat": 40.8021613,
+  "lng": -73.9453686,
+  "label": "5th Avenue, Manhattan Community Board 11, Manhattan, New York County, New York, 10026, United States"
+ },
+ "FABSCRAP Warehouse at Brooklyn Army Terminal, Brooklyn, New York": null,
+ "FABSCRAP, Brooklyn, New York": {
+  "lat": 40.6434271,
+  "lng": -74.0258923,
+  "label": "FABSCRAP, 140, 58th Street, Sunset Park, Brooklyn, Kings County, New York, 11220, United States"
+ },
+ "Factory Tours at Brooklyn Army Terminal, Brooklyn, New York": null,
+ "New York City Economic Development Corporation and Turnstile Tours, Brooklyn, New York": null,
+ "15 Pine Street, New York, NY, 10005": {
+  "lat": 40.7075171,
+  "lng": -74.0100604,
+  "label": "15, Pine Street, Financial District, Lower Manhattan, Manhattan, New York County, New York, 10005, United States"
+ },
+ "Fifth Avenue Committee: Gowanus Walking Tour, Brooklyn, New York": null,
+ "Fifth Avenue Committee, Brooklyn, New York": {
+  "lat": 40.6790617,
+  "lng": -73.982844,
+  "label": "Fifth Avenue Committee, Degraw Street, Gowanus, Brooklyn, Kings County, New York, 11217, United States"
+ },
+ "708 Fifth Avenue, New York, NY, 10019": {
+  "lat": 40.8021613,
+  "lng": -73.9453686,
+  "label": "5th Avenue, Manhattan Community Board 11, Manhattan, New York County, New York, 10026, United States"
+ },
+ "Fifth Avenue Presbyterian Church Organ Tour, Manhattan, New York": null,
+ "Fifth Avenue Presbyterian Church, Manhattan, New York": {
+  "lat": 40.7620299,
+  "lng": -73.9751889,
+  "label": "Fifth Avenue Presbyterian Church, 7, West 55th Street, Midtown East, Manhattan Community Board 5, Manhattan, New York County, New York, 10103, United States"
+ },
+ "Flatiron Building at Dusk, Manhattan, New York": null,
+ "Beyer Blinder Belle Architects & Planners and L'Observatoire International, Manhattan, New York": null,
+ "Floyd Bennett Field Bike Tour, Brooklyn, New York": null,
+ "Jamaica Bay-Rockaway Parks Conservancy and National Park Service, Brooklyn, New York": null,
+ "1 Floyd Bennett Field, Brooklyn, NY, 11234": null,
+ "Floyd Bennett Field Ryan Visitor Center & Hangar B, Brooklyn, New York": null,
+ "Ford Foundation Center for Social Justice, Manhattan, New York": {
+  "lat": 40.7498787,
+  "lng": -73.9711586,
+  "label": "Ford Foundation Center for Social Justice, 320, East 43rd Street, Tudor City, Manhattan Community Board 6, Manhattan, New York County, New York, 10017, United States"
+ },
+ "1-00 Totten Avenue, Bayside, NY, 11359": null,
+ "Fort Totten Historic Buildings Walking Tour, Queens, New York": null,
+ "NYC Department of Parks and Recreation Urban Park Rangers, Queens, New York": null,
+ "502 Ordinance Road, Bayside, NY, 11359": null,
+ "Fort Totten Water Battery, Queens, New York": null,
+ "120 New York Avenue, Staten Island, NY, 10305": {
+  "lat": 40.6062859,
+  "lng": -74.0605055,
+  "label": "120, New York Avenue, Fort Wadsworth, Staten Island, Richmond County, New York, 10305, United States"
+ },
+ "Freshkills Park, Staten Island, New York": null,
+ "Freshkills Park Alliance and New York City Department of Parks and Recreation, Staten Island, New York": null,
+ "1 East 70th Street, New York, NY, 10021": {
+  "lat": 40.7712589,
+  "lng": -73.9671675,
+  "label": "Frick Collection, 1, East 70th Street, Lenox Hill, Manhattan Community Board 8, Manhattan, New York County, New York, 10021, United States"
+ },
+ "From Roots to Arts at Astoria Houses, Queens, New York": null,
+ "Public Housing Community Fund, Queens, New York": null,
+ "From Roots to Arts at Bronx River Houses, Bronx, New York": null,
+ "Public Housing Community Fund, Bronx, New York": null,
+ "FUJIKINA NYC 2026: Scavenger Hunt Photowalks, Manhattan, New York": null,
+ "FUJIKINA NYC 2026, Manhattan, New York": null,
+ "Fujifilm, Manhattan, New York": null,
+ "Garry Grant Studio, Manhattan, New York": null,
+ "495 Riverside Drive, New York, NY, 10027": {
+  "lat": 40.8124025,
+  "lng": -73.9630785,
+  "label": "495, Riverside Drive, Morningside Heights, Manhattan Community Board 9, Manhattan, New York County, New York, 10027, United States"
+ },
+ "20 West 44th Street, New York, NY, 10036": {
+  "lat": 40.7551456,
+  "lng": -73.9813277,
+  "label": "20, West 44th Street, Midtown, Manhattan Community Board 5, Manhattan, New York County, New York, 10036, United States"
+ },
+ "gmp Architekten New York Studio, Manhattan, New York": null,
+ "gmp USA Inc., Manhattan, New York": null,
+ "2 19th Street, Brooklyn, NY, 11232": {
+  "lat": 40.667074,
+  "lng": -74.000044,
+  "label": "2, 19th Street, Sunset Park, Brooklyn, Kings County, New York, 11232, United States"
+ },
+ "Grand Central Terminal, Manhattan, New York": {
+  "lat": 40.7526944,
+  "lng": -73.977253,
+  "label": "Grand Central Terminal, 89, East 42nd Street, Midtown, Manhattan Community Board 5, Manhattan, New York County, New York, 10178, United States"
+ },
+ "Great Performances, Bronx, New York": null,
+ "750 Fifth Avenue, Brooklyn, NY, 11232": {
+  "lat": 40.651623,
+  "lng": -74.0017532,
+  "label": "Jackie Gleason Depot, Brooklyn, Kings County, New York, United States"
+ },
+ "61 Williamsburg Street West, Brooklyn, NY, 11249": {
+  "lat": 40.7005015,
+  "lng": -73.9619504,
+  "label": "61, Williamsburg Street West, Brooklyn, Kings County, New York, 11211, United States"
+ },
+ "Greenwich House Pottery, Manhattan, New York": null,
+ "Greenwich Village Row Houses Walking Tour, Manhattan, New York": null,
+ "Patrick Ciccone, Manhattan, New York": null,
+ "Hall of Records Tour, Manhattan, New York": null,
+ "NYC Department of Records & Information Services, Manhattan, New York": null,
+ "Hamilton Grange Candlelight Tour, Manhattan, New York": null,
+ "National Park Service, Manhattan, New York": null,
+ "525 West 55th Street, New York, NY, 10019": {
+  "lat": 40.7683695,
+  "lng": -73.990397,
+  "label": "525, West 55th Street, Columbus Circle, Manhattan Community Board 4, Manhattan, New York County, New York, 10019, United States"
+ },
+ "Harlem Grown, Manhattan, New York": {
+  "lat": 40.8094757,
+  "lng": -73.9460276,
+  "label": "Harlem Grown 127th Street Learning Annex, 130, Manhattan Community Board 10, Manhattan, New York County, New York, 10027, United States"
+ },
+ "301 West Tremont Avenue, Bronx, NY, 10453": {
+  "lat": 40.8538214,
+  "lng": -73.9211695,
+  "label": "301, West Tremont Avenue, Morris Heights, The Bronx, Bronx County, New York, 10453, United States"
+ },
+ "Harlem River Houses Public Art Tour, Manhattan, New York": null,
+ "ArtBridge, Manhattan, New York": null,
+ "The High Bridge, Bronx, NY, 10452": {
+  "lat": 40.839782,
+  "lng": -73.9259465,
+  "label": "P.S. 11X - The Highbridge School, 1257, Ogden Avenue, High Bridge, The Bronx, Bronx County, New York, 10452, United States"
+ },
+ "16-59 Stephen Street, Ridgewood, NY, 11385": {
+  "lat": 40.6981666,
+  "lng": -73.9013712,
+  "label": "Stephen Street, Ridgewood, Queens, Queens County, New York, 11385, United States"
+ },
+ "Highbridge Water Tower, Manhattan, New York": null,
+ "NYC Department of Parks and Recreation Urban Park Rangers, Manhattan, New York": null,
+ "1 Wall Street, New York, NY, 10005": {
+  "lat": 40.7071243,
+  "lng": -74.0118265,
+  "label": "Bank of New York Building, 1, Wall Street, Financial District, Lower Manhattan, Manhattan, New York County, New York, 10005, United States"
+ },
+ "32 Avenue of the Americas, New York, NY, 10013": {
+  "lat": 40.719989,
+  "lng": -74.0045771,
+  "label": "32 Avenue of the Americas, Church Street, Tribeca, Lower Manhattan, Manhattan, New York County, New York, 10013, United States"
+ },
+ "4557 Bowne Street, Flushing, NY, 11355": {
+  "lat": 40.7559977,
+  "lng": -73.8208416,
+  "label": "Bowne Street, Flushing, Queens, Queens County, New York, 11355, United States"
+ },
+ "Hispanic Society Museum and Library: Architecture Tours, Manhattan, New York": null,
+ "Hispanic Society Museum and Library, Manhattan, New York": null,
+ "Hispanic Society Museum & Library and Beyer Blinder Belle Architects & Planners, Manhattan, New York": null,
+ "3741 Broadway, New York, NY, 10032": {
+  "lat": 40.833071,
+  "lng": -73.9459335,
+  "label": "3741, Broadway, Washington Heights, Manhattan Community Board 12, Manhattan, New York County, New York, 10032, United States"
+ },
+ "741 Fort Washington Avenue, New York, NY, 10040": {
+  "lat": 40.8579605,
+  "lng": -73.9351132,
+  "label": "741, Fort Washington Avenue, Fort George, Manhattan Community Board 12, Manhattan, New York County, New York, 10040, United States"
+ },
+ "298 Satterlee Street, Staten Island, NY, NY": {
+  "lat": 40.5022615,
+  "lng": -74.2516809,
+  "label": "Visitor Center & Lenape Gallery, 298, Satterlee Street, Staten Island, Richmond County, New York, 10307, United States"
+ },
+ "158 Buffalo Avenue, Brooklyn, NY, 11213": {
+  "lat": 40.6742273,
+  "lng": -73.9252335,
+  "label": "Weeksville Heritage Center, 158, Buffalo Avenue, Brooklyn, Kings County, New York, 11233, United States"
+ },
+ "Historic Neir's Tavern, Queens, New York": null,
+ "Neir's Tavern, Queens, New York": {
+  "lat": 40.6898155,
+  "lng": -73.8637009,
+  "label": "Neir's Tavern, 87-48, 78th Street, Woodhaven, Queens, Queens County, New York, 11421, United States"
+ },
+ "441 Clarke Avenue, Staten Island, NY, 10306-1125": {
+  "lat": 40.5711826,
+  "lng": -74.145879,
+  "label": "441, Clarke Avenue, Staten Island, Richmond County, New York, 10306, United States"
+ },
+ "202 Clinton Wharf, Brooklyn, NY, 11231": {
+  "lat": 40.6802012,
+  "lng": -74.0128332,
+  "label": "202, Pioneer Street, Red Hook, Brooklyn, Kings County, New York, 11231, United States"
+ },
+ "353 West Street, New York, NY, 10014": {
+  "lat": 40.7289447,
+  "lng": -74.0104517,
+  "label": "353, West Street, Hudson Square, Manhattan, New York County, New York, 10014, United States"
+ },
+ "Illuminating Black History in Brooklyn Tour, Brooklyn, New York": null,
+ "GrowHouse Design and Development Group, Brooklyn, New York": null,
+ "In Plain Sight at Brooklyn Army Terminal, Brooklyn, New York": null,
+ "NYC Economic Development Corporation, Brooklyn, New York": null,
+ "Industrious at 190 Bowery, Manhattan, New York": null,
+ "Industrious, Manhattan, New York": null,
+ "710 Tiffany Street, Bronx, NY, 10474": {
+  "lat": 40.814063,
+  "lng": -73.891299,
+  "label": "710, Tiffany Street, The Bronx, Bronx County, New York, 10474, United States"
+ },
+ "Interborough Express (IBX) Walking Tour, Brooklyn, New York": null,
+ "Regional Plan Association and Municipal Art Society, Brooklyn, New York": null,
+ "Ismaili Jamatkhana, Manhattan, New York": null,
+ "Jack Shainman Gallery, Manhattan, New York": {
+  "lat": 40.7161164,
+  "lng": -74.0029281,
+  "label": "Jack Shainman Gallery, 46, Catherine Lane, Civic Center, Lower Manhattan, Manhattan, New York County, New York, 10013, United States"
+ },
+ "75 Varick Street, New York, NY, 10013": {
+  "lat": 40.7231769,
+  "lng": -74.0068809,
+  "label": "Jackie Robinson Museum, 75, Varick Street, Hudson Square, Manhattan, New York County, New York, 10013, United States"
+ },
+ "Jamaica Bay Wildlife Refuge West Pond, Queens, New York": {
+  "lat": 40.6154519,
+  "lng": -73.8318028,
+  "label": "Jamaica Bay Wildlife Refuge - West Pond, Queens, Queens County, New York, 11693, United States"
+ },
+ "365 Fifth Avenue, New York, NY, 10016": {
+  "lat": 40.9163902,
+  "lng": -73.807268,
+  "label": "365, 5th Avenue, North Pelham, Village of Pelham, Town of Pelham, Westchester County, New York, 10803, United States"
+ },
+ "Joseph Rodman Drake / African Burial Ground Walking Tour, Bronx, New York": null,
+ "Alethea Pace, Bronx, New York": null,
+ "Julian H. Robertson Jr. CitySquash Center, Bronx, New York": null,
+ "CitySquash and GLUCK+, Bronx, New York": null,
+ "Kelly Park Playground, Brooklyn, New York": {
+  "lat": 40.6041671,
+  "lng": -73.9576429,
+  "label": "Kelly Park Playground, Brooklyn, Kings County, New York, 11229, United States"
+ },
+ "299 Sands Street, Brooklyn, NY, 11205": {
+  "lat": 40.6994117,
+  "lng": -73.97856,
+  "label": "Building 213, 299, Sands Street, Brooklyn, Kings County, New York, 11205, United States"
+ },
+ "447 Kingsborough 4th Walk, Brooklyn, NY, 11233": {
+  "lat": 40.6751157,
+  "lng": -73.9246763,
+  "label": "447, Kingsborough 4th Walk, Kingsborough Houses, Brooklyn, Kings County, New York, 11233, United States"
+ },
+ "520 Kingsland Avenue, Floor 4, Brooklyn, NY, 11222": null,
+ "Kingsland Wildflowers Community Engagement Center, Brooklyn, New York": null,
+ "Newtown Creek Alliance, Brooklyn, New York": null,
+ "696 East 135th Street, Bronx, NY, 10451": {
+  "lat": 40.8038617,
+  "lng": -73.9160024,
+  "label": "696, East 135th Street, Mott Haven, The Bronx, Bronx County, New York, 10454, United States"
+ },
+ "213 East 7th Street, New York, NY, 1009": {
+  "lat": 40.7244131,
+  "lng": -73.9794209,
+  "label": "213, East 7th Street, Alphabet City, Manhattan Community Board 3, Manhattan, New York County, New York, 10009, United States"
+ },
+ "34-41 137th Street, Flushing, NY, 11354": {
+  "lat": 40.7661057,
+  "lng": -73.8293758,
+  "label": "Lewis Howard Latimer House Museum, 34-41, 137th Street, Flushing, Queens, Queens County, New York, 11354, United States"
+ },
+ "LIC Boathouse and East River CREW, Queens, New York": null,
+ "LIC Community Boathouse and East River CREW, Queens, New York": null,
+ "Little Island After Dark, Manhattan, New York": null,
+ "Fisher Marantz Stone and Little Island, Manhattan, New York": null,
+ "LiveOnNY Kidney Rescue Area & Sim Center, Queens, New York": null,
+ "LiveOnNY, Queens, New York": null,
+ "Look Up! A NYC Water Tower Tour, Manhattan, New York": null,
+ "NYC Water Tower Tours, Manhattan, New York": null,
+ "250 West 97th Street, New York, NY, 10025": {
+  "lat": 40.7954341,
+  "lng": -73.9721055,
+  "label": "250, West 97th Street, Manhattan Valley, Manhattan Community Board 7, Manhattan, New York County, New York, 10025, United States"
+ },
+ "70 East 4th Street, New York, NY, 10003": {
+  "lat": 40.7263347,
+  "lng": -73.990403,
+  "label": "70, East 4th Street, East Village, Manhattan Community Board 3, Manhattan, New York County, New York, 10003, United States"
+ },
+ "306 West 37th Street, 6th Floor, New York, NY, 10018": null,
+ "Lower East Side Printshop, Manhattan, New York": null,
+ "242 West 36th Street, 7th Floor, New York, NY, 10018": null,
+ "M&S Schmalberg Flowers, Manhattan, New York": null,
+ "140 58th Street, Building B, Unit 1C, Brooklyn, NY, 11220": null,
+ "MakerSpace NYC at Brooklyn Army Terminal, Brooklyn, New York": null,
+ "MakerSpace NYC, Brooklyn, New York": {
+  "lat": 40.6448601,
+  "lng": -74.0243978,
+  "label": "Futureworks Makerspace, 140, 58th Street, Sunset Park, Brooklyn, Kings County, New York, 11220, United States"
+ },
+ "Mama Joy's Abolitionist Walking Tour, Brooklyn, New York": null,
+ "Friends of Abolitionist Place, Brooklyn, New York": null,
+ "Meatpacking District Walking Tour, Manhattan, New York": null,
+ "Morris Adjmi Architects, Manhattan, New York": null,
+ "Midnight Leak Detection with NYC DEP, Manhattan, New York": null,
+ "NYC Department of Environmental Protection (DEP), Manhattan, New York": null,
+ "4 Cortlandt Alley, New York, NY, 10013": {
+  "lat": 40.7173912,
+  "lng": -74.0027913,
+  "label": "4, Cortlandt Alley, Civic Center, Lower Manhattan, Manhattan, New York County, New York, 10013, United States"
+ },
+ "251 Eagle Street, Brooklyn, NY, 11222": {
+  "lat": 40.7357224,
+  "lng": -73.9502288,
+  "label": "251, Eagle Street, Greenpoint, Brooklyn, Kings County, New York, 11222, United States"
+ },
+ "254 36th Street, Building 2, Floor 2, Suite C248, Brooklyn, NY, 11232": null,
+ "Morbid Anatomy Library, Brooklyn, New York": null,
+ "Morbid Anatomy, Brooklyn, New York": null,
+ "Marcus Garvey Park, New York, NY, 10027": {
+  "lat": 40.8046,
+  "lng": -73.943,
+  "label": "Marcus Garvey Park, East 122nd Street, Manhattan Community Board 11, Manhattan, New York County, New York, 10035, United States"
+ },
+ "150 First Avenue, New York, NY, 10009": {
+  "lat": 40.9148188,
+  "lng": -73.8115271,
+  "label": "150, 1st Avenue, North Pelham, Village of Pelham, Town of Pelham, Westchester County, New York, 10803, United States"
+ },
+ "MS053 School-Based Hydroponic Farm, Queens, New York": null,
+ "Teens for Food Justice and MS053, Queens, New York": null,
+ "MTA 207th Street Yard, Manhattan, New York": null,
+ "Metropolitan Transportation Authority, Manhattan, New York": null,
+ "MTA Accessibility Upgrades at 42 St-Bryant Park Station, Manhattan, New York": null,
+ "MTA Arts & Design: \"In Service\" by Christopher Payne, Manhattan, New York": null,
+ "MTA Arts & Design, Manhattan, New York": null,
+ "MTA Arts & Design: Art from Grand Central to Times Square, Manhattan, New York": null,
+ "MTA Coney Island Yard, Brooklyn, New York": null,
+ "Metropolitan Transportation Authority, Brooklyn, New York": null,
+ "MTA Jamaica Bus Depot, Queens, New York": null,
+ "Metropolitan Transportation Authority, Queens, New York": null,
+ "MTA Mother Clara Hale Bus Depot, Manhattan, New York": {
+  "lat": 40.8219496,
+  "lng": -73.9367683,
+  "label": "MTA Mother Clara Hale Bus Depot, 721, Malcolm X Boulevard, Manhattan Community Board 10, Manhattan, New York County, New York, 10039, United States"
+ },
+ "MTA NYCT Livonia Maintenance Shop, Brooklyn, New York": null,
+ "MTA Park Avenue Viaduct, Manhattan, New York": null,
+ "MTA Second Avenue Subway Phase 2, Manhattan, New York": null,
+ "Murry Bergtraum Educational Campus School-Based Hydroponic Farm, New York": null,
+ "Teens for Food Justice and Urban Assembly Maker Academy, New York": null,
+ "12 Eldridge Street, New York, NY, 10002": {
+  "lat": 40.7147291,
+  "lng": -73.993461,
+  "label": "Museum at Eldridge Street, 12, Eldridge Street, Two Bridges, Manhattan Community Board 3, Manhattan, New York County, New York, 10002, United States"
+ },
+ "519 West 26th Street, 2nd Floor, New York, NY, 10001": null,
+ "National Academy of Design, Manhattan, New York": {
+  "lat": 40.7834781,
+  "lng": -73.9582969,
+  "label": "National Academy of Design, 1083, 5th Avenue, Carnegie Hill, Manhattan Community Board 8, Manhattan, New York County, New York, 10128, United States"
+ },
+ "National Arts Club, Manhattan, New York": {
+  "lat": 40.7377541,
+  "lng": -73.9866814,
+  "label": "National Arts Club, 15, Gramercy Park South, Gramercy, Manhattan Community Board 6, Manhattan, New York County, New York, 10003, United States"
+ },
+ "Nevins Landing, Brooklyn, New York": null,
+ "Fogarty Finger, Brooklyn, New York": null,
+ "New York Academy of Medicine, Manhattan, New York": {
+  "lat": 40.7919444,
+  "lng": -73.9525,
+  "label": "New York Academy of Medicine, 5th Avenue, Manhattan Community Board 11, Manhattan, New York County, New York, 10129, United States"
+ },
+ "2900 Southern Boulevard, Bronx, NY, 10458": {
+  "lat": 40.8622431,
+  "lng": -73.8771541,
+  "label": "New York Botanical Garden, 2900, Southern Boulevard, The Bronx, Bronx County, New York, 10458, United States"
+ },
+ "New York Historical, Manhattan, New York": {
+  "lat": 40.7792489,
+  "lng": -73.9743038,
+  "label": "New-York Historical Society, 170, Central Park West, Upper West Side, Manhattan Community Board 7, Manhattan, New York County, New York, 10024, United States"
+ },
+ "43 Second Avenue, New York, NY, 10003": {
+  "lat": 40.9127881,
+  "lng": -73.812127,
+  "label": "43, 2nd Avenue, Village of Pelham, Town of Pelham, Westchester County, New York, 10803, United States"
+ },
+ "2465 Atlantic Avenue, Brooklyn, NY, 11207": {
+  "lat": 40.6761882,
+  "lng": -73.9032774,
+  "label": "2465, Atlantic Avenue, Broadway Junction, Brooklyn, Kings County, New York, 11207, United States"
+ },
+ "New York Society Library, Manhattan, New York": {
+  "lat": 40.7763303,
+  "lng": -73.9614771,
+  "label": "The New York Society Library, 53, East 79th Street, Upper East Side, Manhattan Community Board 8, Manhattan, New York County, New York, 10075, United States"
+ },
+ "Newtown Creek Canoeing with the North Brooklyn Community Boathouse, Brooklyn, New York": null,
+ "North Brooklyn Community Boathouse, Brooklyn, New York": null,
+ "8-03 43rd Avenue, Long Island City, NY, 11101": {
+  "lat": 40.7529324,
+  "lng": -73.949943,
+  "label": "8-03, 43rd Avenue, Court Square, Long Island City, Queens, Queens County, New York, 11101, United States"
+ },
+ "1000 Richmond Terrace, Building D, Staten Island, NY, 10301": null,
+ "Noble Maritime Collection, Staten Island, New York": {
+  "lat": 40.6443066,
+  "lng": -74.1017627,
+  "label": "Noble Maritime Collection, Shinbone Alley, Staten Island, Richmond County, New York, 10301, United States"
+ },
+ "Noo Arts at Kingsland Wildflowers, Brooklyn, New York": null,
+ "Noo Arts, Brooklyn, New York": null,
+ "80 58th Street, Suite 303, Brooklyn, NY, 11220": null,
+ "Norwegian Baked Bakery at Brooklyn Army Terminal, Brooklyn, New York": null,
+ "Norwegian Baked, Brooklyn, New York": null,
+ "Nuyorican Poets Café, Manhattan, New York": {
+  "lat": 40.7220439,
+  "lng": -73.9817859,
+  "label": "Nuyorican Poets Cafe, 236, East 3rd Street, Village View Houses, Manhattan Community Board 3, Manhattan, New York County, New York, 10009, United States"
+ },
+ "NYC DDC Brooklyn Bridge-Montgomery Coastal Resilience Hard Hat Tour, Manhattan, New York": null,
+ "NYC Department of Design and Construction, Manhattan, New York": null,
+ "NYC DDC East Side Coastal Resiliency Hard Hat Tour, Manhattan, New York": null,
+ "NYC DDC: The City Below Tour, Manhattan, New York": null,
+ "NYC DDC, Manhattan, New York": null,
+ "Department of Design and Construction, Manhattan, New York": null,
+ "31 Chambers Street, Room 109, New York, NY, 10007": null,
+ "NYC Department of Records & Information Services Gallery, Manhattan, New York": null,
+ "NYC Department of Records & Information Services (DORIS), Manhattan, New York": null,
+ "NYC Ferry Family Ridealong, Manhattan, New York": null,
+ "NYC Ferry, Manhattan, New York": null,
+ "NYC Ferry Homeport, Brooklyn, New York": null,
+ "NYC Ferry, Brooklyn, New York": {
+  "lat": 40.6399126,
+  "lng": -74.0381572,
+  "label": "NYC Ferry - Bay Ridge, Shore Road Greenway, Brooklyn, Kings County, New York, 11209, United States"
+ },
+ "NYC Health Academy: A Backstage Pass to Food Safety, Manhattan, New York": null,
+ "NYC Health Academy, Manhattan, New York": null,
+ "NYC Department of Health and Mental Hygiene, Manhattan, New York": null,
+ "NYC Health Food Cart & Truck Inspection Facility, Bronx, New York": null,
+ "NYC Department of Health and Mental Hygiene, Bronx, New York": null,
+ "NYC Health: Rat Academy and Rat Walk, Manhattan, New York": null,
+ "NYC Health, Manhattan, New York": {
+  "lat": 40.7389504,
+  "lng": -73.975196,
+  "label": "NYC Health + Hospitals/Bellevue, 462, 1st Avenue, Kips Bay, Manhattan Community Board 6, Manhattan, New York County, New York, 10010, United States"
+ },
+ "141 Division Street, New York, NY, 10002": {
+  "lat": 40.7143715,
+  "lng": -73.990882,
+  "label": "141, Division Street, Two Bridges, Manhattan Community Board 3, Manhattan, New York County, New York, 10002, United States"
+ },
+ "40 West 20th Street, New York, NY, 10011": {
+  "lat": 40.740475,
+  "lng": -73.9933465,
+  "label": "40, West 20th Street, Flatiron District, Manhattan Community Board 5, Manhattan, New York County, New York, 10011, United States"
+ },
+ "NYPL Inwood Library, Manhattan, New York": null,
+ "Andrew Berman Architect and New York Public Library, Manhattan, New York": null,
+ "NYPL Stavros Niarchos Foundation Library, Manhattan, New York": null,
+ "New York Public Library, Manhattan, New York": {
+  "lat": 40.7533445,
+  "lng": -73.9821524,
+  "label": "Stephen A. Schwarzman Building, 476, 5th Avenue, Midtown South, Manhattan Community Board 5, Manhattan, New York County, New York, 10018, United States"
+ },
+ "NYU Edward Hopper Studio, Manhattan, New York": null,
+ "New York University, Manhattan, New York": {
+  "lat": 40.8077507,
+  "lng": -73.9624901,
+  "label": "Columbia University, Amsterdam Avenue, Morningside Heights, Manhattan Community Board 9, Manhattan, New York County, New York, 10027, United States"
+ },
+ "NYU Grey Art Museum Sustainability Tour, Manhattan, New York": null,
+ "15 East 84th Street, New York, NY, 10028": {
+  "lat": 40.7799984,
+  "lng": -73.9605946,
+  "label": "15, East 84th Street, Upper East Side, Manhattan Community Board 8, Manhattan, New York County, New York, 10028, United States"
+ },
+ "Gravesend Cemetery, Brooklyn, NY, 11223": null,
+ "Old Gravesend Cemetery, Brooklyn, New York": {
+  "lat": 40.5947381,
+  "lng": -73.9743503,
+  "label": "Old Gravesend Cemetery, Brooklyn, Kings County, New York, United States"
+ },
+ "4515 Hylan Boulevard, Staten Island, NY, 10312": {
+  "lat": 40.5318837,
+  "lng": -74.1581082,
+  "label": "4515, Hylan Boulevard, Staten Island, Richmond County, New York, 10312, United States"
+ },
+ "One Domino Square, Brooklyn, New York": {
+  "lat": 40.7137288,
+  "lng": -73.9677807,
+  "label": "Domino Square, Brooklyn, Kings County, New York, 11249, United States"
+ },
+ "One Madison Avenue, Manhattan, New York": {
+  "lat": 40.7881135,
+  "lng": -73.9537052,
+  "label": "One Up Bidtro, 1404, Madison Avenue, Manhattan Community Board 11, Manhattan, New York County, New York, 10029, United States"
+ },
+ "One Times Square Skywalk, Manhattan, New York": null,
+ "One Times Square, Manhattan, New York": {
+  "lat": 40.7562129,
+  "lng": -73.9865339,
+  "label": "One Times Square, 1, Times Square, Manhattan Community Board 5, Manhattan, New York County, New York, 10036, United States"
+ },
+ "One Times Square: Guided Tours, Manhattan, New York": null,
+ "67 West Street, 527, Brooklyn, NY, 11222": null,
+ "OneButton HQ, Brooklyn, New York": null,
+ "OneButton and Elysium Systems INC, Brooklyn, New York": null,
+ "1 Centre Street, New York, NY, 10007": {
+  "lat": 40.7130272,
+  "lng": -74.0034742,
+  "label": "David N. Dinkins Manhattan Municipal Building, 1, Centre Street, Civic Center, Lower Manhattan, Manhattan, New York County, New York, 10007, United States"
+ },
+ "Cabrini Boulevard and W 178th, New York, NY, 10033": null,
+ "PANYNJ George Washington Bridge South and North Walk, Manhattan, New York": null,
+ "Port Authority of NY & NJ, Manhattan, New York": null,
+ "PANYNJ World Trade Center Campus Tour, Manhattan, New York": null,
+ "Port Authority of NY & NJ - World Trade Center, Manhattan, New York": null,
+ "2403 Grand Concourse, Bronx, NY, 10468": {
+  "lat": 40.8603139,
+  "lng": -73.8986681,
+  "label": "2403, Grand Concourse, Fordham, The Bronx, Bronx County, New York, 10468, United States"
+ },
+ "Park Haven Development, Bronx, New York": null,
+ "The Community Builders, Bronx, New York": null,
+ "PATH Old 19th Street Station & Abandoned Tunnel, Manhattan, New York": null,
+ "Port Authority of NY & NJ - Port Authority Trans-Hudson (PATH), Manhattan, New York": null,
+ "306 West 38th Street, 8th Floor, New York, NY, 10018": null,
+ "Pellettieri Stone Carvers' Academy Workspace, Manhattan, New York": null,
+ "Pellettieri Stone Carvers Academy, Manhattan, New York": null,
+ "Perelman Performing Arts Center, Manhattan, New York": {
+  "lat": 40.7126698,
+  "lng": -74.0122763,
+  "label": "Perelman Performing Arts Center, 251, Fulton Street, Battery Park City, Lower Manhattan, Manhattan, New York County, New York, 10007, United States"
+ },
+ "67 West Street, 510, Brooklyn, NY, 11249": null,
+ "Pissarro Allaux Studio, Brooklyn, New York": null,
+ "Lyora Pissarro, Brooklyn, New York": null,
+ "119 West 23rd Street, New York, NY, 10011": {
+  "lat": 40.7435881,
+  "lng": -73.9933365,
+  "label": "Poster House, 119, West 23rd Street, Chelsea District, Manhattan Community Board 4, Manhattan, New York County, New York, 10011, United States"
+ },
+ "322 3rd Avenue, Brooklyn, NY, 11215": {
+  "lat": 40.6763323,
+  "lng": -73.9882201,
+  "label": "322, 3rd Avenue, Gowanus, Brooklyn, Kings County, New York, 11215, United States"
+ },
+ "424 West 54th Street, New York, NY, 10019": {
+  "lat": 40.7663614,
+  "lng": -73.9883515,
+  "label": "Prime Produce, 424, West 54th Street, Hell's Kitchen, Manhattan Community Board 4, Manhattan, New York County, New York, 10019, United States"
+ },
+ "535 West 24th Street, New York, NY, 10011": {
+  "lat": 40.749162,
+  "lng": -74.0052774,
+  "label": "Print Center New York, 535, West 24th Street, Chelsea District, Manhattan Community Board 4, Manhattan, New York County, New York, 10011, United States"
+ },
+ "Fort Greene Park, Brooklyn, NY, 11205": {
+  "lat": 40.6905836,
+  "lng": -73.9741945,
+  "label": "Fort Greene Park, DeKalb Avenue, Fort Greene, Brooklyn, Kings County, New York, 11221, United States"
+ },
+ "Puttery, Manhattan, New York": {
+  "lat": 40.7416844,
+  "lng": -74.0075089,
+  "label": "Puttery, 446, West 14th Street, Manhattan Community Board 4, Manhattan, New York County, New York, 10014, United States"
+ },
+ "QueensLink, Queens, New York": null,
+ "QueensWay Walking Tour, Queens, New York": null,
+ "Friends of the QueensWay, Queens, New York": null,
+ "522 Bergen Street, Brooklyn, NY, 11217": {
+  "lat": 40.6802491,
+  "lng": -73.9731098,
+  "label": "Radix Media, 522, Bergen Street, Prospect Heights, Brooklyn, Kings County, New York, 11217, United States"
+ },
+ "Red Hook Treehouses, Brooklyn, New York": null,
+ "We Are 'Hier' and Gradient Architecture, Brooklyn, New York": null,
+ "526 LaGuardia Place, New York, NY, 10012": {
+  "lat": 40.7285055,
+  "lng": -73.9988973,
+  "label": "526, LaGuardia Place, University Village, Manhattan, New York County, New York, 10012, United States"
+ },
+ "Renee & Chaim Gross Foundation: Tactile Transmissions, Manhattan, New York": null,
+ "Renee & Chaim Gross Foundation, Manhattan, New York": {
+  "lat": 40.7284684,
+  "lng": -73.99882,
+  "label": "The Renee and Chaim Gross Foundation, 526, LaGuardia Place, University Village, Manhattan, New York County, New York, 10012, United States"
+ },
+ "Ridgewood-Glendale Soundwalk, Queens, New York": null,
+ "Concetta Abbate, Queens, New York": null,
+ "Roasting Room by Buunni Coffee, Bronx, New York": null,
+ "Buunni Coffee, Bronx, New York": null,
+ "Rockaway Village, Queens, New York": {
+  "lat": 40.5897875,
+  "lng": -73.7528184,
+  "label": "East Rockaway Inlet at Reynolds Channel, Queens, Queens County, New York, Town of Hempstead, Nassau County, New York, United States"
+ },
+ "58-03 Rockaway Beach Boulevard, New York, NY, 11692": {
+  "lat": 40.5918883,
+  "lng": -73.7882372,
+  "label": "Rockaway Institute for Sustainable Environment (RISE), 58-03, Rockaway Beach Boulevard, Arverne View, Arverne, Queens, Queens County, New York, 11692, United States"
+ },
+ "812 Edgewater Road, Bronx, NY, 10474": {
+  "lat": 40.8178907,
+  "lng": -73.8830388,
+  "label": "812, Edgewater Road, The Bronx, Bronx County, New York, 10474, United States"
+ },
+ "Roy Lichtenstein Studio, Manhattan, New York": null,
+ "Whitney Museum of American Art, Manhattan, New York": {
+  "lat": 40.7396451,
+  "lng": -74.008921,
+  "label": "Whitney Museum of American Art, 99, Gansevoort Street, Meatpacking District, Manhattan, New York County, New York, 10014, United States"
+ },
+ "Sail Central Park, New York, NY, 10474": null,
+ "Sail Central Park by Rocking the Boat, Manhattan, New York": null,
+ "Sail Central Park and Rocking the Boat, Manhattan, New York": null,
+ "Samaritan Daytop Village Highbridge Development, Bronx, New York": null,
+ "Samaritan Daytop Village, Bronx, New York": null,
+ "6 West 96th Street, New York, NY, 10025": {
+  "lat": 40.7916617,
+  "lng": -73.9652088,
+  "label": "Second Presbyterian Church, 6, West 96th Street, Upper West Side, Manhattan Community Board 7, Manhattan, New York County, New York, 10025, United States"
+ },
+ "122 Central Avenue, Brooklyn, NY, 11221": {
+  "lat": 40.6998193,
+  "lng": -73.9287306,
+  "label": "122, Central Avenue, Bushwick, Brooklyn, Kings County, New York, 11221, United States"
+ },
+ "3105 Farragut Place, Brooklyn, NY, 11210": {
+  "lat": 40.6375013,
+  "lng": -73.946958,
+  "label": "3105, Farragut Place, Brooklyn Community District 17, Brooklyn, Kings County, New York, 11210, United States"
+ },
+ "Shore Power at Brooklyn Cruise Terminal, Brooklyn, New York": null,
+ "NYC EDC, Brooklyn, New York": null,
+ "37-18 Northern Boulevard, Long Island City, NY, 11101": {
+  "lat": 40.7490382,
+  "lng": -73.937087,
+  "label": "Northern Boulevard, Court Square, Long Island City, Queens, Queens County, New York, 11101, United States"
+ },
+ "Skyspace at Friends Seminary, Manhattan, New York": null,
+ "Friends Seminary, Manhattan, New York": {
+  "lat": 40.7340176,
+  "lng": -73.9852723,
+  "label": "Friends Seminary, 222, East 16th Street, Gramercy, Manhattan Community Board 6, Manhattan, New York County, New York, 10003, United States"
+ },
+ "Sniffen Court & the Amateur Comedy Club, Manhattan, New York": null,
+ "The Amateur Comedy Club, Manhattan, New York": null,
+ "1000 Richmond Terrace, Staten Island, NY, 10301": {
+  "lat": 40.6418756,
+  "lng": -74.1019417,
+  "label": "Tuscan Villa, 1000, Richmond Terrace, New Brighton, Staten Island, Richmond County, New York, 10301, United States"
+ },
+ "Soldiers' and Sailors' Memorial Arch, Brooklyn, New York": null,
+ "Prospect Park Alliance and Urban Park Rangers, Brooklyn, New York": null,
+ "SOM New York Studio at 7 World Trade Center, Manhattan, New York": null,
+ "Skidmore, Manhattan, New York": null,
+ "Sotheby's After-Hours Tour, Manhattan, New York": null,
+ "Sotheby's, Manhattan, New York": {
+  "lat": 40.7663056,
+  "lng": -73.9535295,
+  "label": "Sotheby's, 1334, York Avenue, Lenox Hill, Manhattan Community Board 8, Manhattan, New York County, New York, 10021, United States"
+ },
+ "945 Madison Avenue, New York, NY, 10021": {
+  "lat": 40.773514,
+  "lng": -73.9639139,
+  "label": "The SisterYard, 945, Madison Avenue, Upper East Side, Manhattan Community Board 8, Manhattan, New York County, New York, 10021, United States"
+ },
+ "South Shore Historic Homes and Parks Bus Tour, Staten Island, New York": null,
+ "NYC Department of Parks and Recreation, Staten Island, New York": null,
+ "South Street Seaport Museum: Wavertree, Manhattan, New York": null,
+ "South Street Seaport Museum, Manhattan, New York": {
+  "lat": 40.706628,
+  "lng": -74.003676,
+  "label": "South Street Seaport Museum, 12, Fulton Street, Seaport, Lower Manhattan, Manhattan, New York County, New York, 10038, United States"
+ },
+ "159-161 Driggs Avenue, Brooklyn, NY, 11222": {
+  "lat": 40.7226433,
+  "lng": -73.9482818,
+  "label": "Driggs Avenue, Greenpoint, Williamsburg, Brooklyn, Kings County, New York, 11211, United States"
+ },
+ "130 Liberty Street, New York, NY, 10006": {
+  "lat": 40.7101452,
+  "lng": -74.01323,
+  "label": "St. Nicholas Greek Orthodox Church, 130, Liberty Street, Battery Park City, Lower Manhattan, Manhattan, New York County, New York, 10006, United States"
+ },
+ "325 Park Avenue, New York, NY, 10022": {
+  "lat": 40.7572577,
+  "lng": -73.9730373,
+  "label": "St. Bartholomew's, 325, Park Avenue, Midtown East, Manhattan Community Board 5, Manhattan, New York County, New York, 10022, United States"
+ },
+ "Stapleton/Shaolin Walking Tour, Staten Island, New York": null,
+ "SHINE NYC ART, Staten Island, New York": null,
+ "1629 Bushwick Avenue, Brooklyn, NY, 11207": {
+  "lat": 40.6810332,
+  "lng": -73.9030874,
+  "label": "1629, Bushwick Avenue, Broadway Junction, Brooklyn, Kings County, New York, 11207, United States"
+ },
+ "82-62 Broadway, Elmhurst, NY, 11373": {
+  "lat": 40.7416243,
+  "lng": -73.8812393,
+  "label": "82-62, Broadway, Elmhurst, Queens, Queens County, New York, 11373, United States"
+ },
+ "Starrett-Lehigh Building, Manhattan, New York": {
+  "lat": 40.7515971,
+  "lng": -74.0065933,
+  "label": "Starrett-Lehigh Building, 601, West 26th Street, Chelsea District, Manhattan Community Board 4, Manhattan, New York County, New York, 10001, United States"
+ },
+ "Stonewall National Monument located at 38-64 Christopher Street, Visitor Center located across the street at 51 Christopher Street, New York, NY, 10014-3530": null,
+ "Stonewall National Monument and Visitor Center, Manhattan, New York": null,
+ "Stonewall National Monument Visitor Center and National Park Service, Manhattan, New York": null,
+ "51 North 1st Street, Brooklyn, NY, 11249": {
+  "lat": 40.7169383,
+  "lng": -73.9646818,
+  "label": "51, North 1st Street, Williamsburg, Brooklyn, Kings County, New York, 11249, United States"
+ },
+ "472 2nd Avenue, Brooklyn, NY, 11232": {
+  "lat": 40.6623901,
+  "lng": -74.0097671,
+  "label": "Sims Municipal Recycling Sunset Park Material Recovery Facility, 472, 2nd Avenue, Sunset Park, Brooklyn, Kings County, New York, 11232, United States"
+ },
+ "201 46th Street, 4th Floor, Brooklyn, NY, 11220": null,
+ "Sunset Park Open Studios, Brooklyn, New York": null,
+ "Sunset Park Wide Open, Brooklyn, New York": null,
+ "Brooklyn Army Terminal Annex, Brooklyn, NY, 11232": {
+  "lat": 40.6461357,
+  "lng": -74.0245334,
+  "label": "Brooklyn Army Terminal Annex Building, 80, 58th Street, Sunset Park, Brooklyn, Kings County, New York, 11220, United States"
+ },
+ "219 McKibbin Street, Brooklyn, NY, 11206": {
+  "lat": 40.7058025,
+  "lng": -73.9389004,
+  "label": "Sure We Can, 219, McKibbin Street, Brooklyn, Kings County, New York, 11206, United States"
+ },
+ "31 Chambers Street, New York, NY, 10007": {
+  "lat": 40.7135665,
+  "lng": -74.0044829,
+  "label": "Surrogate's Courthouse, 31, Chambers Street, Civic Center, Lower Manhattan, Manhattan, New York County, New York, 10007, United States"
+ },
+ "West 79th Street, New York, NY, 10028": {
+  "lat": 40.7821016,
+  "lng": -73.9758336,
+  "label": "West 79th Street, Upper West Side, Manhattan Community Board 7, Manhattan, New York County, New York, 10024, United States"
+ },
+ "Temple Emanu-El and Bernard Museum of Judaica, Manhattan, New York": null,
+ "Temple Emanu-El, Manhattan, New York": {
+  "lat": 40.7681116,
+  "lng": -73.9700132,
+  "label": "Temple Emanu El, 5th Avenue, Manhattan Community Board 8, Manhattan, New York County, New York, 10153, United States"
+ },
+ "The MADE Show by Normal New York at MADE Bush Terminal, Brooklyn, New York": null,
+ "Normal New York and MADE Bush Terminal, Brooklyn, New York": null,
+ "The Peninsula, Bronx, New York": null,
+ "WXY Studio, Bronx, New York": null,
+ "The People’s Theatre: Centro Cultural Inmigrante, Manhattan, New York": null,
+ "The People’s Theatre, Manhattan, New York": null,
+ "WORKac and The People's Theatre, Manhattan, New York": null,
+ "The Riverie, Brooklyn, New York": null,
+ "Marvel, Brooklyn, New York": null,
+ "Theodore Roosevelt Birthplace National Historic Site, Manhattan, New York": {
+  "lat": 40.738617,
+  "lng": -73.9890615,
+  "label": "Theodore Roosevelt Birthplace National Historic Site, Manhattan Community Board 5, Manhattan, New York County, New York, 10010, United States"
+ },
+ "50 58th Street, Brooklyn Army Terminal, Dock 1, Brooklyn, NY, 11220": null,
+ "THWACK at the Brooklyn Army Terminal, Brooklyn, New York": null,
+ "Mmuseumm and NYC Economic Development Corporation, Brooklyn, New York": null,
+ "327 West 36th Street, 400, New York, NY, 10018": null,
+ "Tom's Sons International Pleating, Manhattan, New York": null,
+ "229 East 60th Street, New York, NY, 10022": {
+  "lat": 40.7617962,
+  "lng": -73.9647747,
+  "label": "229, East 60th Street, Manhattan Community Board 8, Manhattan, New York County, New York, 10065, United States"
+ },
+ "229 West Street, New York, NY, 10013": {
+  "lat": 40.7211927,
+  "lng": -74.0117188,
+  "label": "229, West Street, Lower Manhattan, Manhattan, New York County, New York, 10013, United States"
+ },
+ "647 Fulton Street, Brooklyn, NY, 11217": {
+  "lat": 40.6867981,
+  "lng": -73.9758629,
+  "label": "647, Fulton Street, Fort Greene, Brooklyn, Kings County, New York, 11217, United States"
+ },
+ "Vagelos Innovation Laboratories, Manhattan, New York": null,
+ "KPF and Columbia University, Manhattan, New York": null,
+ "440 West 21st Street, New York, NY, 10011": {
+  "lat": 40.7456338,
+  "lng": -74.0035037,
+  "label": "440, West 21st Street, Chelsea District, Manhattan Community Board 4, Manhattan, New York County, New York, 10011, United States"
+ },
+ "Vanderbilt University - New York City: Architecture Tour, Manhattan, New York": null,
+ "Vanderbilt University - New York City, Manhattan, New York": {
+  "lat": 40.7305404,
+  "lng": -73.9996276,
+  "label": "Vanderbilt Hall, 40, Washington Square South, Greenwich Village, Manhattan, New York County, New York, 10012, United States"
+ },
+ "149-19 38th Avenue, Flushing, NY, 11354": {
+  "lat": 40.7647355,
+  "lng": -73.8162041,
+  "label": "The Voelker Orth Museum, 149-19, 38th Avenue, Murray Hill, Flushing, Queens, Queens County, New York, 11354, United States"
+ },
+ "Wagner Park, Manhattan, New York": {
+  "lat": 40.7055247,
+  "lng": -74.0185969,
+  "label": "Robert F. Wagner Jr. Park, 20, Manhattan, New York County, New York, 10280, United States"
+ },
+ "Watson Library at The Met, Manhattan, New York": null,
+ "The Thomas J. Watson Library and The Metropolitan Museum of Art, Manhattan, New York": null,
+ "155 Bank Street, New York, NY, 10014": {
+  "lat": 40.7362948,
+  "lng": -74.009527,
+  "label": "School for Poetic Computation, 155, Bank Street, West Village, Manhattan, New York County, New York, 10014, United States"
+ },
+ "William Ulmer Brewery, Brooklyn, New York": null,
+ "DXA studio, Brooklyn, New York": null,
+ "20 South 4th Street, Brooklyn, NY, 11249": {
+  "lat": 40.7130684,
+  "lng": -73.9672649,
+  "label": "20, South 4th Street, Brooklyn, Kings County, New York, 11249, United States"
+ },
+ "WindScape Brooklyn Port Tour, Brooklyn, New York": null,
+ "WindScape Brooklyn and Empire Wind, Brooklyn, New York": null,
+ "Woodlawn Cemetery, Bronx, New York": {
+  "lat": 40.8881345,
+  "lng": -73.8728116,
+  "label": "Woodlawn Cemetery, The Bronx, Bronx County, New York, United States"
+ },
+ "Woolworth Lobby - Saturday, Manhattan, New York": null,
+ "Cammeby's and Witkoff Group, Manhattan, New York": null,
+ "Woolworth Lobby - Sunday, Manhattan, New York": null,
+ "5816 Clarendon Road, Brooklyn, NY, 11203": {
+  "lat": 40.6443616,
+  "lng": -73.9208761,
+  "label": "Wyckoff House Museum, 5816, Clarendon Road, Brooklyn Community District 17, Brooklyn, Kings County, New York, 11203, United States"
+ },
+ "Yankee Ferry - Saturday, Staten Island, New York": null,
+ "Yankee Ferry, Staten Island, New York": null,
+ "Yankee Ferry - Sunday, Staten Island, New York": null,
+ "610 Fifth Avenue, New York, NY, 10111": {
+  "lat": 40.9199483,
+  "lng": -73.8047184,
+  "label": "610, 5th Avenue, North Pelham, Village of Pelham, Town of Pelham, Westchester County, New York, 10803, United States"
+ },
+ "620 Fifth Avenue, New York, NY, 10111": {
+  "lat": 40.920072,
+  "lng": -73.8046297,
+  "label": "620, 5th Avenue, North Pelham, Village of Pelham, Town of Pelham, Westchester County, New York, 10803, United States"
+ },
+ "2 Hylan Boulevard, Staten Island, NY, 10305": {
+  "lat": 40.6151206,
+  "lng": -74.063036,
+  "label": "Alice Austen House, 2, Hylan Boulevard, Rosebank, Staten Island, Richmond County, New York, 10305, United States"
+ },
+ "80 58th Street, Brooklyn, NY, 11220": {
+  "lat": 40.6461357,
+  "lng": -74.0245334,
+  "label": "Brooklyn Army Terminal Annex Building, 80, 58th Street, Sunset Park, Brooklyn, Kings County, New York, 11220, United States"
+ },
+ "141 Flushing Avenue, Brooklyn, NY, 11205": {
+  "lat": 40.6985851,
+  "lng": -73.9711478,
+  "label": "Building 77, 141, Flushing Avenue, Brooklyn, Kings County, New York, 11205, United States"
+ },
+ "141 Flushing Ave, Brooklyn, NY, 11205": {
+  "lat": 40.6985851,
+  "lng": -73.9711478,
+  "label": "Building 77, 141, Flushing Avenue, Brooklyn, Kings County, New York, 11205, United States"
+ },
+ "200 6th Street, Brooklyn, NY, 11215": {
+  "lat": 40.6734055,
+  "lng": -73.9903277,
+  "label": "200, 6th Street, Park Slope, Brooklyn, Kings County, New York, 11215, United States"
+ },
+ "28 West 27th Street, New York, NY, 10001": {
+  "lat": 40.7447454,
+  "lng": -73.9899267,
+  "label": "28, West 27th Street, NoMad, Manhattan Community Board 5, Manhattan, New York County, New York, 10001, United States"
+ },
+ "4100 First Avenue, Brooklyn, NY, 11232": {
+  "lat": 40.6106587,
+  "lng": -74.0293868,
+  "label": "First Division Avenue, Brooklyn, Kings County, New York, 11252, United States"
+ },
+ "441 Clarke Avenue, Staten Island, NY, 10306": {
+  "lat": 40.5711826,
+  "lng": -74.145879,
+  "label": "441, Clarke Avenue, Staten Island, Richmond County, New York, 10306, United States"
+ },
+ "520 Kingsland Avenue, Brooklyn, NY, 11222": {
+  "lat": 40.7351314,
+  "lng": -73.9431597,
+  "label": "520, Kingsland Avenue, Greenpoint, Brooklyn, Kings County, New York, 11222, United States"
+ },
+ "306 West 37th Street, New York, NY, 10018": {
+  "lat": 40.7542605,
+  "lng": -73.9927234,
+  "label": "306, West 37th Street, Manhattan Community Board 4, Manhattan, New York County, New York, 10018, United States"
+ },
+ "242 West 36th Street, New York, NY, 10018": {
+  "lat": 40.7529884,
+  "lng": -73.9915914,
+  "label": "Unique Print NY, 242, West 36th Street, Garment District, Manhattan Community Board 5, Manhattan, New York County, New York, 10018, United States"
+ },
+ "254 36th Street, Brooklyn, NY, 11232": {
+  "lat": 40.6560123,
+  "lng": -74.0074139,
+  "label": "254, 36th Street, Sunset Park, Brooklyn, Kings County, New York, 11232, United States"
+ },
+ "519 West 26th Street, New York, NY, 10001": {
+  "lat": 40.7502469,
+  "lng": -74.0035315,
+  "label": "National Academy of Design, 519, West 26th Street, Chelsea District, Manhattan Community Board 4, Manhattan, New York County, New York, 10001, United States"
+ },
+ "67 West Street, Brooklyn, NY, 11222": {
+  "lat": 40.7285606,
+  "lng": -73.959184,
+  "label": "Adience, 67, West Street, Greenpoint, Brooklyn, Kings County, New York, 11222, United States"
+ },
+ "306 West 38th Street, New York, NY, 10018": {
+  "lat": 40.7547928,
+  "lng": -73.9923931,
+  "label": "306, West 38th Street, Manhattan Community Board 4, Manhattan, New York County, New York, 10018, United States"
+ },
+ "67 West Street, Brooklyn, NY, 11249": {
+  "lat": 40.7285606,
+  "lng": -73.959184,
+  "label": "Adience, 67, West Street, Greenpoint, Brooklyn, Kings County, New York, 11222, United States"
+ },
+ "Stonewall National Monument located at 38-64 Christopher Street, Visitor Center located across the street at 51 Christopher Street, New York, NY, 10014": null,
+ "201 46th Street, Brooklyn, NY, 11220": {
+  "lat": 40.6512815,
+  "lng": -74.0140187,
+  "label": "Major Building Supply, 201, 46th Street, Sunset Park, Brooklyn, Kings County, New York, 11220, United States"
+ },
+ "50 58th Street, Brooklyn Army Terminal, Brooklyn, NY, 11220": {
+  "lat": 40.6466776,
+  "lng": -74.0254668,
+  "label": "58th Street, Sunset Park, Brooklyn, Kings County, New York, 11220, United States"
+ },
+ "327 West 36th Street, New York, NY, 10018": {
+  "lat": 40.7542282,
+  "lng": -73.9937235,
+  "label": "327, West 36th Street, Hudson Yards, Manhattan Community Board 4, Manhattan, New York County, New York, 10018, United States"
+ },
+ "Central Park's Grand Army Plaza South, Manhattan, New York": null,
+ "Central Park Conservancy, Manhattan, New York": null,
+ "James Gallery at the CUNY Graduate Center, Manhattan, New York": null,
+ "The James Gallery, Manhattan, New York": null,
+ "Movement Research, Manhattan, New York": null,
+ "Movement Research and AYON Studio, Manhattan, New York": null,
+ "New York Marble Cemetery, Manhattan, New York": {
+  "lat": 40.7256175,
+  "lng": -73.9909554,
+  "label": "New York Marble Cemetery, 41 1/2, Manhattan Community Board 3, Manhattan, New York County, New York, 10003, United States"
+ }
+}
