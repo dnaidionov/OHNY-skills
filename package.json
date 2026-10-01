@@ -2,6 +2,7 @@
   "name": "ohny-skill",
   "version": "0.1.0",
   "private": true,
+  "license": "MIT",
   "type": "module",
   "description": "Unofficial OHNY Weekend assistant: data snapshot builder, stateless Cloudflare Worker, and the cross-platform skill.",
   "scripts": {

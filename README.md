@@ -2,6 +2,24 @@
 
 A pocket guide to Open House New York Weekend (Oct 16-18, 2026): check-in, "what's open near me", site and festival Q&A, day planning, directions. Built for phones and voice. **Not affiliated with OHNY.**
 
+## Install (about two minutes)
+
+You need an AI account that supports custom skills (see "Free accounts" below) and a phone or computer.
+
+**Claude**
+1. Get the skill folder: on this page choose **Code, Download ZIP** and unzip it, or run `npm install && npm run package` to build `dist/ohny-skill.zip`. The zip must contain the `ohny` folder (the one with `SKILL.md`) at its top level, i.e. zip `skills/ohny` itself.
+2. In Claude open **Customize, Skills** (the exact menu names change; look for where skills are added) and upload the zip. Make sure code execution is on.
+3. Open a new chat and say **"ohny, what's open near me?"**. You can also say "Open House New York" or tag **#ohny**.
+4. On the Claude phone app the skill is available once it's in your account; use voice the same way.
+
+**ChatGPT**: create a skill or custom GPT (what your plan allows): paste `skills/ohny/SKILL.md` as the instructions, add `skills/ohny/references/` and `skills/ohny/assets/` as files, and add an Action using `openapi.yaml`.
+
+**Gemini**: create a skill, paste `skills/ohny/SKILL.md`, and add the files if there's a place for them. Gemini may not be able to call the helper service, so expect a reduced experience.
+
+**Try it before the festival (Oct 16-18, 2026).** Outside those dates the skill will ask what day and time to pretend it is, for example "Saturday 2:30 PM"; you can change it any time ("make it Sunday morning").
+
+**Run your own copy of the backend** (optional; the skill points to a shared one): fork this repo, then see "Deploy" below and change `API_BASE` in `skills/ohny/SKILL.md` and `servers.url` in `openapi.yaml` to your Worker's URL.
+
 ## How it fits together
 
 ```
@@ -70,3 +88,7 @@ Then put that URL in `API_BASE` in `skills/ohny/SKILL.md` and in `servers.url` i
 - **Live ticket availability** isn't in OHNY's data, only the "Sold Out" status and the ticket links.
 - **Popularity** is inferred (see `references/planning.md`), not measured.
 - **Interests** are matched by keywords because the lineup has no category field.
+
+## License and disclaimer
+
+MIT licensed, see [LICENSE](LICENSE). This is an independent fan project. It is **not affiliated with, endorsed by or sponsored by Open House New York**. The festival lineup it shows belongs to OHNY and is read live from their public website; always check ohny.org for the final word.
