@@ -114,7 +114,7 @@ test('help page carries a correct one-tap Claude install link', async () => {
   assert.equal(u.origin + u.pathname, 'https://claude.ai/customize/connectors');
   assert.equal(u.searchParams.get('modal'), 'add-custom-connector');
   assert.equal(u.searchParams.get('connectorUrl'), r.install.mcp_url);
-  assert.equal(r.install.mcp_url, 'https://ohny-skills.dnaidionov.workers.dev/mcp');
+  assert.equal(r.install.mcp_url, 'https://naidionov.com/ohny/skills/mcp');
 });
 
 test('landing page for browsers, JSON for everyone else', async () => {
@@ -123,7 +123,7 @@ test('landing page for browsers, JSON for everyone else', async () => {
   assert.match(html.headers.get('content-type'), /text\/html/);
   const t = await html.text();
   for (const needle of ['Not affiliated with, endorsed by or sponsored by Open House New York', 'https://claude.ai/customize/connectors?modal=add-custom-connector',
-    'https://ohny-skills.dnaidionov.workers.dev/mcp', 'https://naidionov.com', 'releases/latest/download/ohny-skill.zip', 'width=device-width']) {
+    'https://naidionov.com/ohny/skills/mcp', 'https://naidionov.com', 'releases/latest/download/ohny-skill.zip', 'width=device-width']) {
     assert.ok(t.includes(needle), `landing page missing: ${needle}`);
   }
   assert.doesNotMatch(t, /<script[^>]+src=|<link[^>]+href="https?:\/\/(?!naidionov)/);       // no third-party loads
