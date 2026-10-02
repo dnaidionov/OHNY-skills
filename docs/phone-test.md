@@ -35,11 +35,12 @@ OHNY FALLBACK TEST. Pretend the main OHNY service is broken. Do NOT use any OHNY
 
 F0. One line each: can you open web pages? read a plain-text file from raw.githubusercontent.com? read a JSON page?
 F1. Backup address: open https://ohny-skills.dnaidionov.workers.dev/v1/nearby?lat=40.7308&lng=-73.9973&interests=history&max_walk_min=15&now=2026-10-17T14:30 and tell me the top 3 places.
-F2. Saved lists: open https://raw.githubusercontent.com/dnaidionov/OHNY-skills/main/skills/ohny/assets/lineup/index.md , choose the ONE area file that covers my position (and say which neighbour you'd also open), open only that file, and list up to 3 history places open right now, with open-until time and walking distance.
-F3. Check one of those places directly at OHNY: open https://ohny.org/data/<its id>.json (the id is in brackets on its line in the list) and tell me its status and today's hours.
+F1b. Now try the backup service for a different question WITHOUT me giving you the address: build the address yourself (same service, /v1/search?q=grolier) and open it. Tell me whether your app allowed that.
+F2. Saved lists: open https://raw.githubusercontent.com/dnaidionov/OHNY-skills/main/skills/ohny/assets/lineup/index.md , choose the ONE area file that covers my position (and say which neighbour you'd also open), open only that file using the exact address the index gives, and list up to 3 history places open right now, with open-until time and walking distance.
+F3. Check one of those places directly at OHNY: open the LIVE link at the end of its line in the list, and tell me its status and today's hours.
 F4. If none of F1 to F3 had worked, what exactly would you tell me? Two sentences, as if talking to me.
 
-Report as plain lines: F0 ... F4: PASS / PARTLY / FAIL / CAN'T, one-sentence evidence, HOW I GOT IT.
+Report as plain lines: F0 ... F4 (including F1b): PASS / PARTLY / FAIL / CAN'T, one-sentence evidence, HOW I GOT IT.
 ```
 
 ## Test 3: voice (say these, one at a time, in voice mode)
@@ -67,15 +68,16 @@ Score each line: understood you? short enough to listen to? did it stop and wait
 |---|---|
 | T0 / F0 | Honest yes/no. If it says it can't open web pages, paste-and-go can't work in that app. |
 | T1 | Three real sites with walking times and open-until times, tied to history. Typically the Renee & Chaim Gross Foundation (about 5 min, until 4 PM; bag limits, stairs), the Lower East Side Arts & Culture Open House (about 12 min, until 5 PM; photography rules) and Church of The Village (about 14 min, until 4 PM). Order and members can vary. |
-| T2 | Nothing worth the walk. It should **name Sotheby's Breuer** as left out: it closes at 5:00 PM and you'd arrive with about 1 minute left. |
+| T2 | Nothing worth the walk. It should **name Sotheby's Breuer** as left out (it closes at 5:00 PM and you'd arrive with about 1 minute left) and say roughly how many places are within 20 minutes at all, so the empty list isn't a mystery. |
 | T3 | Open Saturday 1:00 to 5:00 PM, drop-in. Entry rules: sign in at the front desk, plus bag, coat and photography limits. One sourced fact (not invented). |
 | T4 | **Canceled** (as of today). It should not say it's open. |
-| T5 | There is **no site by that name**. It must not invent tours. (A search may show unrelated sites with "tower" in them; it should say none is Zebra Tower.) |
+| T5 | A plain "no site by that name is in OHNY's lineup" (the search now says so explicitly after checking all sites). Not "I can't tell", and no invented tours. |
 | T6 | Asks you to confirm, reads the waiver (photos, risks, holding OHNY and the site's owner harmless), waits for a clear yes, gives the form link `https://ohny.fillout.com/26weekend` and says what to type, does **not** ask for a name and does **not** claim it submitted. |
-| T7 | A sensible route, for example the 6 train from Astor Place to 59th St / Lexington Ave, then about two blocks to 47 East 60th Street. |
+| T7 | A **tappable Google Maps link** as the main answer (with a one-sentence summary), not a route recalled from an old web page. If it adds a route from memory it should say it hasn't checked weekend service. |
 | F1 | The same kind of list as T1, from the backup address. |
-| F2 | It picks `manhattan-2.md` (latitude 40.725 to 40.754) and mentions `manhattan-1.md` as the neighbour, opens only that one file, and lists real open history places (for example New York Marble Cemetery, 10 AM to 6 PM). |
-| F3 | Shows a status (Drop-In, Ticketed, Sold Out or Canceled) and the hours for the chosen place. |
+| F1b | Either it works or the app refuses addresses it builds itself. **Both are useful findings**: Claude's reader refused (it only opens addresses written out in full), which is why the lists now spell every address out. |
+| F2 | It picks `manhattan-2.md` (latitude 40.725 to 40.754) and mentions `manhattan-1.md` as the neighbour, opens only that one file **using the full address written in the index**, and lists real open history places (for example New York Marble Cemetery, 10 AM to 6 PM). |
+| F3 | Opens the **LIVE link at the end of the place's line** and shows a status (Drop-In, Ticketed, Sold Out or Canceled) and the hours. |
 | F4 | "I can't see live information right now", pointing to ohny.org. No guessed hours. |
 
 ## What the results tell you
@@ -88,6 +90,7 @@ Score each line: understood you? short enough to listen to? did it stop and wait
 | T5 invents tours | Hallucination risk: a fail. |
 | T6 says "you're checked in" | A serious fail: it must not claim that. |
 | F2 opens many files or the 400 KB lineup file | It isn't following the fallback; tell me and I'll tighten the wording. |
+| An app says it can't open an address "not in the conversation" | That app only opens addresses written out in full. Note which step failed. |
 | Voice reads URLs or long lists aloud | Tell me the exact words it said so I can fix the style rules. |
 
 ## Send back
