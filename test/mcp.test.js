@@ -123,7 +123,7 @@ test('landing page for browsers, JSON for everyone else', async () => {
   assert.match(html.headers.get('content-type'), /text\/html/);
   const t = await html.text();
   for (const needle of ['Not affiliated with, endorsed by or sponsored by Open House New York', 'https://claude.ai/customize/connectors?modal=add-custom-connector',
-    'https://naidionov.com/ohny/skills/mcp', 'https://naidionov.com', 'releases/download/v0.2.0/ohny-skill.zip', 'width=device-width']) {
+    'https://naidionov.com/ohny/skills/mcp', 'https://naidionov.com', 'releases/latest/download/ohny-skill.zip', 'width=device-width']) {
     assert.ok(t.includes(needle), `landing page missing: ${needle}`);
   }
   assert.doesNotMatch(t, /<script[^>]+src=|<link[^>]+href="https?:\/\/(?!naidionov)/);       // no third-party loads

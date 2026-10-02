@@ -5,7 +5,7 @@ import { OHNY_LOGO_SVG, CLAUDE_ICON_SVG } from './brand.js';
 export const LINKS = {
   site: 'https://naidionov.com',
   github: 'https://github.com/dnaidionov/OHNY-skills',
-  zip: 'https://github.com/dnaidionov/OHNY-skills/releases/download/v0.2.0/ohny-skill.zip',
+  zip: 'https://github.com/dnaidionov/OHNY-skills/releases/latest/download/ohny-skill.zip',
   ohny: 'https://ohny.org',
   mcp: 'https://naidionov.com/ohny/skills/mcp',
   claude: 'https://claude.ai/customize/connectors?modal=add-custom-connector&connectorName=Ask%20OHNY&connectorUrl=https%3A%2F%2Fnaidionov.com%2Fohny%2Fskills%2Fmcp',
@@ -57,6 +57,12 @@ export function landingHtml() {
   .copybox{display:block;background:var(--soft);border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin:8px 0;word-break:break-word;color:var(--ink)}
   a{color:inherit}
   footer{margin-top:40px;padding-top:16px;border-top:1px solid var(--line);color:var(--muted);font-size:.9rem}
+  .tablist{display:flex;gap:6px;overflow-x:auto;margin:0 0 -1px;padding:0 2px}
+  .tab{font:inherit;font-weight:600;min-height:44px;padding:0 16px;border:1px solid var(--line);border-bottom:none;border-radius:12px 12px 0 0;background:var(--soft);color:var(--muted);cursor:pointer;white-space:nowrap}
+  .tab[aria-selected=true]{background:var(--card);color:var(--ink)}
+  .tab:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  .tabs .panel{margin-top:0;border-top-left-radius:0}
+  .panel[hidden]{display:none}
   .toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:var(--accent);color:var(--onaccent);padding:10px 16px;border-radius:10px;font-size:.9rem;opacity:0;pointer-events:none;transition:opacity .2s}
   .toast.on{opacity:1}
 </style>
@@ -80,32 +86,48 @@ export function landingHtml() {
   <p style="color:var(--muted);font-size:.95rem">It reads OHNY's public lineup live, so cancellations and last-minute changes show up. The guide service itself stores nothing about you; whatever your assistant remembers stays in your own AI account.</p>
 
   <h2>Get started</h2>
+  <div class="tabs" id="tabs">
+    <div class="tablist" role="tablist" aria-label="Choose your AI app">
+      <button class="tab" role="tab" id="tab-claude" aria-controls="panel-claude" aria-selected="true" type="button">Claude</button>
+      <button class="tab" role="tab" id="tab-chatgpt" aria-controls="panel-chatgpt" aria-selected="false" tabindex="-1" type="button">ChatGPT</button>
+      <button class="tab" role="tab" id="tab-gemini" aria-controls="panel-gemini" aria-selected="false" tabindex="-1" type="button">Gemini</button>
+      <button class="tab" role="tab" id="tab-others" aria-controls="panel-others" aria-selected="false" tabindex="-1" type="button">Others</button>
+    </div>
 
-  <div class="card">
-    <h3>Claude <span class="tag">works on free accounts</span></h3>
-    <p>One tap opens Claude's "Add custom connector" box with everything filled in. Check it and confirm. Easiest on a computer; once added it also works in the Claude phone app.</p>
-    <a class="btn" href="${esc(LINKS.claude)}" rel="noopener">${CLAUDE_ICON_SVG}Add to Claude</a>
-    <p>Then start a chat and say <em>"ohny, what's open near me?"</em></p>
-  </div>
+    <section class="card panel" role="tabpanel" id="panel-claude" aria-labelledby="tab-claude">
+      <h3>Claude <span class="tag">works on free accounts</span></h3>
+      <p>One tap opens Claude's "Add custom connector" box with everything filled in. Check it and confirm. Easiest on a computer; once added it also works in the Claude phone app.</p>
+      <a class="btn" href="${esc(LINKS.claude)}" rel="noopener">${CLAUDE_ICON_SVG}Add to Claude</a>
+      <p>Then start a chat and say <em>"ohny, what's open near me?"</em> The first time, Claude asks to approve each tool: choose <strong>Always allow</strong>, since none of them change anything.</p>
+      <p><strong>Prefer a skill?</strong> <span class="tag">paid plans</span> Download the zip (always the latest release) and add it in Claude under Customize, Skills.</p>
+      <a class="btn ghost" href="${esc(LINKS.zip)}" rel="noopener">Download ohny-skill.zip</a>
+    </section>
 
-  <div class="card">
-    <h3>Any chatbot that can browse the web</h3>
-    <p>Paste this into a new chat. It works for that chat only, with nothing to install.</p>
-    <code class="copybox" id="paste">${esc(PASTE_LINE)}</code>
-    <button class="btn ghost" type="button" data-copy="paste">Copy</button>
-  </div>
+    <section class="card panel" role="tabpanel" id="panel-chatgpt" aria-labelledby="tab-chatgpt" hidden>
+      <h3>ChatGPT <span class="tag">Plus or higher</span></h3>
+      <p>In Settings, Connectors, turn on Developer Mode, choose Create, paste this address and select "No authentication".</p>
+      <code class="copybox" id="mcp-chatgpt">${esc(LINKS.mcp)}</code>
+      <button class="btn ghost" type="button" data-copy="mcp-chatgpt">Copy address</button>
+      <p>Free ChatGPT accounts can't add connectors; use the paste method under <a href="#others" data-tab="others">Others</a> instead.</p>
+    </section>
 
-  <div class="card">
-    <h3>ChatGPT <span class="tag">Plus or higher</span></h3>
-    <p>In Settings, Connectors, turn on Developer Mode, choose Create, paste this address and select "No authentication".</p>
-    <code class="copybox" id="mcp">${esc(LINKS.mcp)}</code>
-    <button class="btn ghost" type="button" data-copy="mcp">Copy address</button>
-  </div>
+    <section class="card panel" role="tabpanel" id="panel-gemini" aria-labelledby="tab-gemini" hidden>
+      <h3>Gemini</h3>
+      <p>Gemini can't add connectors like this yet, so use the no-install route. Paste this into a new chat. It works for that chat only.</p>
+      <code class="copybox" id="paste-gemini">${esc(PASTE_LINE)}</code>
+      <button class="btn ghost" type="button" data-copy="paste-gemini">Copy</button>
+      <p>It needs Gemini's web browsing to be on, and live "what's open now" checks may be limited.</p>
+    </section>
 
-  <div class="card">
-    <h3>Claude skill <span class="tag">paid plans</span></h3>
-    <p>Prefer a skill? Download the zip and add it in Claude under Customize, Skills.</p>
-    <a class="btn ghost" href="${esc(LINKS.zip)}" rel="noopener">Download ohny-skill.zip</a>
+    <section class="card panel" role="tabpanel" id="panel-others" aria-labelledby="tab-others" hidden>
+      <h3>Any other chatbot</h3>
+      <p><strong>Can browse the web?</strong> Paste this into a new chat. It works for that chat only, with nothing to install.</p>
+      <code class="copybox" id="paste">${esc(PASTE_LINE)}</code>
+      <button class="btn ghost" type="button" data-copy="paste">Copy</button>
+      <p><strong>Supports MCP connectors?</strong> Add this server address (no sign-in needed):</p>
+      <code class="copybox" id="mcp">${esc(LINKS.mcp)}</code>
+      <button class="btn ghost" type="button" data-copy="mcp">Copy address</button>
+    </section>
   </div>
 
   <h2>Trying it before the festival</h2>
@@ -124,7 +146,27 @@ export function landingHtml() {
 (function () {
   var toast = document.getElementById('toast');
   function say(m) { toast.textContent = m; toast.className = 'toast on'; setTimeout(function () { toast.className = 'toast'; }, 2000); }
+  var tabs = Array.prototype.slice.call(document.querySelectorAll('.tab'));
+  function show(name, focus) {
+    tabs.forEach(function (t) {
+      var on = t.id === 'tab-' + name;
+      t.setAttribute('aria-selected', on ? 'true' : 'false'); t.tabIndex = on ? 0 : -1;
+      document.getElementById(t.getAttribute('aria-controls')).hidden = !on;
+      if (on && focus) t.focus();
+    });
+  }
+  tabs.forEach(function (t, i) {
+    t.addEventListener('click', function () { show(t.id.slice(4)); });
+    t.addEventListener('keydown', function (e) {
+      var j = e.key === 'ArrowRight' ? i + 1 : e.key === 'ArrowLeft' ? i - 1 : e.key === 'Home' ? 0 : e.key === 'End' ? tabs.length - 1 : -1;
+      if (j < 0) return; e.preventDefault(); show(tabs[(j + tabs.length) % tabs.length].id.slice(4), true);
+    });
+  });
+  var fromHash = location.hash.slice(1);
+  if (document.getElementById('tab-' + fromHash)) show(fromHash);
   document.addEventListener('click', function (e) {
+    var l = e.target.closest && e.target.closest('[data-tab]');
+    if (l) { e.preventDefault(); show(l.getAttribute('data-tab'), true); return; }
     var b = e.target.closest && e.target.closest('[data-copy]'); if (!b) return;
     var el = document.getElementById(b.getAttribute('data-copy'));
     var text = el.textContent;

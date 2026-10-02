@@ -17,7 +17,7 @@ The helper is also an MCP server, so it can be added as a **custom connector**. 
 - **Tap-to-install from a phone** needs the connector to be listed in a directory (Claude's connector directory, ChatGPT's app directory). That requires a submission and review by the platform, so it's not done yet.
 - Check it with the official inspector: `npx @modelcontextprotocol/inspector --cli https://naidionov.com/ohny/skills/mcp --transport http --method tools/list`
 
-The five tools are `ohny_nearby`, `ohny_search`, `ohny_site`, `ohny_changes` and `ohny_guide` (the detailed playbook, read on demand). They are read-only and take no personal information.
+The five tools are `ohny_nearby`, `ohny_search`, `ohny_site`, `ohny_changes` and `ohny_guide` (the detailed playbook, read on demand). They are read-only and take no personal information. On first use Claude asks you to approve each tool: choose **Always allow** (or set it under Settings, Connectors, Ask OHNY), since none of them change anything.
 
 ### 2. No install at all (any chatbot that can browse the web)
 
@@ -29,7 +29,7 @@ It works for that conversation only (paste it again next time), needs the chatbo
 
 ### 3. Claude skill (paid plans; add from a computer)
 
-1. Download **[ohny-skill.zip (v0.2.0)](https://github.com/dnaidionov/OHNY-skills/releases/download/v0.2.0/ohny-skill.zip)** from the [Releases page](https://github.com/dnaidionov/OHNY-skills/releases). It already has the `ohny` folder (the one with `SKILL.md`) at its top level, which is what Claude expects. Developers can instead build it with `npm install && npm run package`, which writes `dist/ohny-skill.zip`.
+1. Download **[ohny-skill.zip](https://github.com/dnaidionov/OHNY-skills/releases/latest/download/ohny-skill.zip)** (always the latest release) from the [Releases page](https://github.com/dnaidionov/OHNY-skills/releases). It already has the `ohny` folder (the one with `SKILL.md`) at its top level, which is what Claude expects. Developers can instead build it with `npm install && npm run package`, which writes `dist/ohny-skill.zip`.
 2. In claude.ai or the desktop app open **Customize, Skills** (menu names change) and upload the zip. Code execution must be on. The phone apps then use it too, but can't upload skills themselves.
 3. Say **"ohny, what's open near me?"**. You can also say "Open House New York" or tag **#ohny**.
 
