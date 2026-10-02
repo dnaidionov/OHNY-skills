@@ -8,6 +8,7 @@ import { enrichSites } from './core/enrich.js';
 import { policyFlags } from './core/policy.js';
 import { handleMcp } from './mcp.js';
 import { landingHtml } from './landing.js';
+import { ICON_SVG } from './icon.js';
 
 const LIVE_TTL_MS = 20_000;
 let liveCache = { at: 0, base: '', data: null, lineup: null };
@@ -90,14 +91,15 @@ export async function handle(request, deps) {
   const url = new URL(request.url);
   // Also served under a path prefix on a custom domain (e.g. naidionov.com/ohny/skills/mcp).
   const prefix = deps.basePath ?? '/ohny/skills';
-  if (url.pathname === prefix || url.pathname.startsWith(`${prefix}/`)) url.pathname = url.pathname.slice(prefix.length) || '/';
+  const mounted = url.pathname === prefix || url.pathname.startsWith(`${prefix}/`);
+  if (mounted) url.pathname = url.pathname.slice(prefix.length) || '/';
   const q = url.searchParams;
   if (url.pathname.replace(/\/+$/, '') === '/mcp') {
     // The connector: each tool call runs one of the /v1 routes below, in-process.
     return handleMcp(request, async (p) => {
       const res = await handle(new Request(new URL(p, url.origin), { method: 'GET' }), deps);
       return { ok: res.ok, text: await res.text() };
-    });
+    }, `${url.origin}${mounted ? prefix : ''}`);
   }
   if (request.method === 'OPTIONS') {
     return new Response(null, { status: 204, headers: { 'access-control-allow-origin': '*', 'access-control-allow-methods': 'GET' } });
@@ -108,6 +110,13 @@ export async function handle(request, deps) {
   try { now = resolveNow(q.get('now'), deps.realNow); } catch (e) { return fail(400, e.message); }
 
   const path = url.pathname.replace(/\/+$/, '') || '/';
+
+  // Connector icon and favicon (same artwork). Static, so cache hard.
+  if (['/icon.svg', '/favicon.svg'].includes(path)) {
+    return new Response(ICON_SVG, {
+      headers: { 'content-type': 'image/svg+xml', 'cache-control': 'public, max-age=86400', 'access-control-allow-origin': '*', 'x-content-type-options': 'nosniff' },
+    });
+  }
 
   // Browsers get the human page at the root; scripts and API clients (and ?format=json) get JSON.
   if (path === '/' && q.get('format') !== 'json' && (request.headers.get('accept') ?? '').includes('text/html')) {

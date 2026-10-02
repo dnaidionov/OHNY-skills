@@ -152,3 +152,21 @@ test('landing page shows the OHNY logo (dark-mode safe) and the Claude icon on t
   assert.match(t, /Claude is a trademark of Anthropic/);
   assert.doesNotMatch(t, /<img[^>]+src=/);                                         // all artwork is inline
 });
+
+test('serverInfo advertises an icon on the same origin and mount path as the request', async () => {
+  const init = { jsonrpc: '2.0', id: 1, method: 'initialize', params: { protocolVersion: '2025-11-25' } };
+  const mounted = await (await handle(new Request('https://naidionov.com/ohny/skills/mcp', { method: 'POST', body: JSON.stringify(init) }), deps)).json();
+  assert.equal(mounted.result.serverInfo.icons[0].src, 'https://naidionov.com/ohny/skills/icon.svg');
+  assert.equal(mounted.result.serverInfo.icons[0].mimeType, 'image/svg+xml');
+  const bare = await (await handle(new Request('https://x.workers.dev/mcp', { method: 'POST', body: JSON.stringify(init) }), deps)).json();
+  assert.equal(bare.result.serverInfo.icons[0].src, 'https://x.workers.dev/icon.svg');
+});
+
+test('icon and favicon routes serve SVG, also under the mount path', async () => {
+  for (const u of ['https://x.test/icon.svg', 'https://x.test/favicon.svg', 'https://naidionov.com/ohny/skills/icon.svg']) {
+    const res = await handle(new Request(u), deps);
+    assert.equal(res.status, 200);
+    assert.equal(res.headers.get('content-type'), 'image/svg+xml');
+    assert.match(await res.text(), /^<svg /);
+  }
+});

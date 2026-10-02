@@ -3,6 +3,9 @@
 import { GUIDE } from './guide-data.js';
 
 const SERVER = { name: 'ohny-skills', title: 'Ask OHNY (unofficial)', version: '0.2.0' };
+const serverInfo = (assetBase) => (assetBase
+  ? { ...SERVER, websiteUrl: 'https://naidionov.com/ohny/skills', icons: [{ src: `${assetBase}/icon.svg`, mimeType: 'image/svg+xml', sizes: ['any'] }] }
+  : SERVER);
 const KNOWN_VERSIONS = ['2025-11-25', '2025-06-18', '2025-03-26', '2024-11-05'];
 
 // Shown to the model when the connector is added, so it knows how to behave. The full guide is a tool.
@@ -115,7 +118,7 @@ async function callTool(name, args, call) {
   return { result: text(body.text, !body.ok) };
 }
 
-async function handleMessage(msg, call) {
+async function handleMessage(msg, call, assetBase) {
   if (!msg || msg.jsonrpc !== '2.0' || typeof msg.method !== 'string') return rpcError(msg?.id, -32600, 'Invalid request');
   const { id, method, params } = msg;
   const isNotification = id === undefined;
@@ -125,7 +128,7 @@ async function handleMessage(msg, call) {
       return rpcResult(id, {
         protocolVersion: KNOWN_VERSIONS.includes(asked) ? asked : KNOWN_VERSIONS[1],
         capabilities: { tools: { listChanged: false }, prompts: { listChanged: false } },
-        serverInfo: SERVER,
+        serverInfo: serverInfo(assetBase),
         instructions: INSTRUCTIONS,
       });
     }
@@ -157,7 +160,7 @@ const CORS = {
 };
 
 /** `call(path)` -> { ok, text }: runs one of the /v1 routes internally. */
-export async function handleMcp(request, call) {
+export async function handleMcp(request, call, assetBase) {
   if (request.method === 'OPTIONS') return new Response(null, { status: 204, headers: CORS });
   if (request.method === 'GET' || request.method === 'DELETE') {
     return new Response('This MCP server is stateless: use POST.', { status: 405, headers: { ...CORS, allow: 'POST, OPTIONS' } });
@@ -171,7 +174,7 @@ export async function handleMcp(request, call) {
   const batch = Array.isArray(payload);
   const replies = [];
   for (const msg of batch ? payload : [payload]) {
-    const r = await handleMessage(msg, call);
+    const r = await handleMessage(msg, call, assetBase);
     if (r) replies.push(r);
   }
   if (replies.length === 0) return new Response(null, { status: 202, headers: CORS });      // notifications only

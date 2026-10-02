@@ -26,6 +26,7 @@ export function landingHtml() {
 <meta name="description" content="Check in, find what's open near you right now, plan your day and get directions at Open House New York Weekend (Oct 16-18, 2026). Works in Claude and other AI chat apps, by voice on your phone. Unofficial.">
 <meta name="theme-color" content="#14141a">
 <link rel="canonical" href="https://naidionov.com/ohny/skills">
+<link rel="icon" type="image/svg+xml" href="https://naidionov.com/ohny/skills/favicon.svg">
 <meta property="og:title" content="Ask OHNY: an unofficial guide to Open House New York Weekend">
 <meta property="og:description" content="What's open near you right now, day planning, check-in and directions for OHNY Weekend, Oct 16-18, 2026. Works by voice in AI chat apps.">
 <meta property="og:type" content="website">
