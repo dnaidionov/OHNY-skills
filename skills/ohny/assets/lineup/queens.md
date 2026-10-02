@@ -1,6 +1,7 @@
-# OHNY Weekend 2026: Queens (27 sites)
+# OHNY Weekend 2026: Queens, area queens (27 sites)
 
-SAVED COPY from 2026-10-02 17:00 UTC. OHNY changes things up to the last minute: cancellations, sold-out tours and new times will NOT show here. Before sending anyone to a site, check its live record: https://ohny.org/data/<id>.json (the id is in brackets below; small file) or https://ohny.org/place/<slug>.
+Covers latitude 40.59189 to 40.76611, longitude -73.94994 to -73.78824. Mostly: Long Island City, Bayside, Flushing, Astoria.
+SAVED COPY from 2026-10-02 17:00 UTC. OHNY changes things up to the last minute: cancellations, sold-out tours and new times will NOT show here. Before sending anyone to a site, check its live record: https://ohny.org/data/<id>.json (the id is in brackets below; a small file) .
 Unofficial helper, not affiliated with Open House New York. Times are New York time.
 Line format: slug (id) | name | neighborhood | address | lat,lng (a trailing ~ means approximate position) | access | when | tags | short description
 "when": drop-in hours are open without a ticket; TOURS need a ticket for that time slot.

@@ -38,7 +38,7 @@ The service doesn't geocode. Use the phone's location if the platform shares it.
 
 ## If the service is down
 
-Follow "When the helper can't be reached" in the main guide: backup address first, then the offline tool or the saved lineup lists, then OHNY's own per-site files (`https://ohny.org/data/<id>.json`, small and always current; avoid the 400 KB `festival.json` unless you can process it with code), and finally say plainly that you can't see live information. Never guess hours, status or tickets.
+Follow "When the helper can't be reached" in the main guide: backup address first, then OHNY's own small per-site records (`https://ohny.org/data/<id>.json`, always current), then the saved lineup lists (small area files; open only the one or two near the visitor), and finally say plainly that you can't see live information. Never use the 400 KB `festival.json` to discover places: chat apps cut it off. Never guess hours, status or tickets.
 
 ## Never
 

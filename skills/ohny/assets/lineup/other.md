@@ -1,6 +1,7 @@
-# OHNY Weekend 2026: Other (1 sites)
+# OHNY Weekend 2026: Other, area other (1 sites)
 
-SAVED COPY from 2026-10-02 17:00 UTC. OHNY changes things up to the last minute: cancellations, sold-out tours and new times will NOT show here. Before sending anyone to a site, check its live record: https://ohny.org/data/<id>.json (the id is in brackets below; small file) or https://ohny.org/place/<slug>.
+Covers no map position. Mostly: Manhattan.
+SAVED COPY from 2026-10-02 17:00 UTC. OHNY changes things up to the last minute: cancellations, sold-out tours and new times will NOT show here. Before sending anyone to a site, check its live record: https://ohny.org/data/<id>.json (the id is in brackets below; a small file) .
 Unofficial helper, not affiliated with Open House New York. Times are New York time.
 Line format: slug (id) | name | neighborhood | address | lat,lng (a trailing ~ means approximate position) | access | when | tags | short description
 "when": drop-in hours are open without a ticket; TOURS need a ticket for that time slot.

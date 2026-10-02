@@ -1,11 +1,12 @@
 // Builds the offline fallback bundled inside the skill (no server needed):
 //   skills/ohny/assets/lineup.json             compact lineup for scripts/ohny_offline.py
 //   skills/ohny/assets/interest-aliases.json   interest words -> tags (shared with the offline tool)
-//   skills/ohny/assets/lineup/<borough>.md     compact lists the assistant can simply READ
-//   skills/ohny/assets/lineup/index.md         how to use them
+//   skills/ohny/assets/lineup/<area>.md        small geographic lists (<= ~45 sites, ~12 KB) the assistant can simply READ
+//   skills/ohny/assets/lineup/index.md         which list covers which coordinates, and how to use them
+//   skills/ohny/assets/lineup/neighborhoods.md neighborhood -> list(s), for when a visitor names a neighborhood
 // The same files are served from GitHub raw, an independent host, for chats without the skill installed.
 // Run: npm run build:fallback   (a test fails if the committed files are out of date)
-import { readFile, writeFile, mkdir } from 'node:fs/promises';
+import { readFile, writeFile, mkdir, readdir, rm } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { policyFlags } from '../src/core/policy.js';
@@ -25,6 +26,18 @@ const clip = (s, n) => (s && s.length > n ? `${s.slice(0, n - 1).trimEnd()}…` 
 const r5 = (x) => Math.round(x * 1e5) / 1e5;
 const slugify = (b) => String(b ?? 'other').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'other';
 const dayName = (date) => new Date(`${date}T12:00:00Z`).toLocaleDateString('en-US', { weekday: 'short', timeZone: 'UTC' });
+
+const MAX_PER_FILE = 45;
+function partition(list) {
+  if (list.length <= MAX_PER_FILE) return [list];
+  const lats = list.map((s) => s.geo.lat), lngs = list.map((s) => s.geo.lng);
+  const latSpan = Math.max(...lats) - Math.min(...lats);
+  const lngSpan = (Math.max(...lngs) - Math.min(...lngs)) * Math.cos((40.7 * Math.PI) / 180);   // degrees of longitude are shorter here
+  const key = latSpan >= lngSpan ? (s) => s.geo.lat : (s) => s.geo.lng;
+  const sorted = [...list].sort((a, b) => key(a) - key(b) || a.slug.localeCompare(b.slug));
+  const mid = Math.ceil(sorted.length / 2);
+  return [...partition(sorted.slice(0, mid)), ...partition(sorted.slice(mid))];
+}
 
 export function compactSite(s) {
   return {
@@ -61,34 +74,68 @@ export async function buildFallback() {
   files[PATHS.lineup] = `${JSON.stringify({ generated_at: snap.generated_at, festival: ['2026-10-16', '2026-10-17', '2026-10-18'], sites: sites.map(compactSite) })}\n`;
   files[PATHS.aliases] = `${JSON.stringify(INTEREST_ALIASES, null, 1)}\n`;
 
+  // Small geographic cells: split each borough at the median along its longer axis until <= MAX_PER_FILE sites.
   const byBorough = {};
-  for (const s of sites) (byBorough[s.borough ?? 'Other'] ??= []).push(s);
-  const index = [];
+  for (const s of sites) (byBorough[s.geo ? (s.borough ?? 'Other') : 'Other'] ??= []).push(s);
+  const cells = [];
   for (const [borough, list] of Object.entries(byBorough).sort()) {
-    list.sort((a, b) => (a.neighborhood ?? '').localeCompare(b.neighborhood ?? '') || a.name.localeCompare(b.name));
-    const file = `${slugify(borough)}.md`;
-    index.push({ borough, file, count: list.length });
-    files[join(PATHS.dir, file)] = `# OHNY Weekend 2026: ${borough} (${list.length} sites)
+    const parts = list.every((s) => s.geo) ? partition(list) : [list];
+    parts
+      .map((p) => ({ borough, list: p, center: p.every((s) => s.geo) ? p.reduce((a, s) => a + s.geo.lat, 0) / p.length : 0 }))
+      .sort((a, b) => a.center - b.center)
+      .forEach((c, i, arr) => cells.push({ ...c, file: `${slugify(borough)}${arr.length > 1 ? `-${i + 1}` : ''}.md` }));
+  }
+  const bbox = (list) => {
+    const g = list.filter((s) => s.geo);
+    if (!g.length) return null;
+    const f = (k, fn) => r5(fn(...g.map((s) => s.geo[k])));
+    return { lat: [f('lat', Math.min), f('lat', Math.max)], lng: [f('lng', Math.min), f('lng', Math.max)] };
+  };
+  const top = (list) => {
+    const c = {};
+    for (const s of list) if (s.neighborhood) c[s.neighborhood] = (c[s.neighborhood] ?? 0) + 1;
+    return Object.entries(c).sort((a, b) => b[1] - a[1]).slice(0, 4).map(([n]) => n).join(', ');
+  };
+  const index = [];
+  for (const c of cells) {
+    c.list.sort((a, b) => (a.neighborhood ?? '').localeCompare(b.neighborhood ?? '') || a.name.localeCompare(b.name));
+    const box = bbox(c.list);
+    const boxText = box ? `latitude ${box.lat[0]} to ${box.lat[1]}, longitude ${box.lng[0]} to ${box.lng[1]}` : 'no map position';
+    index.push({ ...c, box, boxText, hoods: top(c.list) });
+    files[join(PATHS.dir, c.file)] = `# OHNY Weekend 2026: ${c.borough}, area ${c.file.replace('.md', '')} (${c.list.length} sites)
 
-SAVED COPY from ${asOf} UTC. OHNY changes things up to the last minute: cancellations, sold-out tours and new times will NOT show here. Before sending anyone to a site, check its live record: https://ohny.org/data/<id>.json (the id is in brackets below; small file) or https://ohny.org/place/<slug>.
+Covers ${boxText}. Mostly: ${top(c.list)}.
+SAVED COPY from ${asOf} UTC. OHNY changes things up to the last minute: cancellations, sold-out tours and new times will NOT show here. Before sending anyone to a site, check its live record: https://ohny.org/data/<id>.json (the id is in brackets below; a small file) .
 Unofficial helper, not affiliated with Open House New York. Times are New York time.
 Line format: slug (id) | name | neighborhood | address | lat,lng (a trailing ~ means approximate position) | access | when | tags | short description
 "when": drop-in hours are open without a ticket; TOURS need a ticket for that time slot.
 
-${list.map(line).join('\n')}
+${c.list.map(line).join('\n')}
 `;
   }
+
+  const hoodFiles = {};
+  for (const c of index) for (const s of c.list) if (s.neighborhood) (hoodFiles[`${s.neighborhood} (${c.borough})`] ??= new Set()).add(c.file);
+  files[join(PATHS.dir, 'neighborhoods.md')] = `# OHNY Weekend 2026: neighborhood -> list file(s)
+
+Use this when the visitor names a neighborhood. Open the file(s) shown, from ${RAW_BASE}/ (or assets/lineup/ in the skill).
+
+${Object.entries(hoodFiles).sort().map(([h, f]) => `- ${h}: ${[...f].join(', ')}`).join('\n')}
+`;
+
   files[join(PATHS.dir, 'index.md')] = `# OHNY Weekend 2026: offline lineup lists
 
-Use these when the live helper is unreachable. They are a SAVED COPY from ${asOf} UTC (not live).
+Use these when the live helper is unreachable. They are a SAVED COPY from ${asOf} UTC (not live). Each list is small (about 3,000 tokens): open only the one or two that cover where the visitor is, never all of them.
 
-Files (read only the borough(s) you need):
-${index.map((i) => `- ${i.file}: ${i.borough}, ${i.count} sites. Raw link: ${RAW_BASE}/${i.file}`).join('\n')}
+Lists (pick by the visitor's coordinates; if they are near an edge, open the neighbouring area too). Raw link = ${RAW_BASE}/<file>:
+${index.map((i) => `- ${i.file} | ${i.borough} | ${i.list.length} sites | ${i.boxText} | mostly ${i.hoods}`).join('\n')}
+
+If the visitor names a neighborhood instead of coordinates, see neighborhoods.md.
 
 How to use:
-1. Pick candidates by neighborhood, interests (tags) and the times in the "when" column. "Open now" means the current New York time falls inside a listed drop-in window, or inside a tour slot (tours need a ticket).
-2. Use the lat,lng to judge walking distance (about 12 minutes per kilometre in a straight line plus a third for street grids; positions marked ~ are approximate).
-3. Check the chosen site live before sending anyone: https://ohny.org/data/<id>.json shows its current status (access_type: Drop-In, Ticketed, Sold Out, Canceled) and times.
+1. Pick candidates by distance, interests (tags) and the times in the "when" column. "Open now" means the current New York time falls inside a listed drop-in window, or inside a tour slot (tours need a ticket).
+2. Use the lat,lng to judge walking distance (about 12 minutes per kilometre in a straight line, plus a third for street grids; positions marked ~ are approximate).
+3. Check the chosen site live before sending anyone: https://ohny.org/data/<id>.json shows its current status (access_type: Drop-In, Ticketed, Sold Out, Canceled) and times. It is a small file, always current.
 4. Say plainly that you are working from a saved copy.
 `;
   return files;
@@ -97,6 +144,10 @@ How to use:
 if (import.meta.url === pathToFileURL(process.argv[1] ?? '').href) {
   const files = await buildFallback();
   await mkdir(PATHS.dir, { recursive: true });
+  for (const name of await readdir(PATHS.dir)) {                       // drop lists from older layouts
+    const full = join(PATHS.dir, name);
+    if (name.endsWith('.md') && !(full in files)) await rm(full);
+  }
   for (const [path, text] of Object.entries(files)) await writeFile(path, text);
   console.log(`Wrote ${Object.keys(files).length} fallback files under skills/ohny/assets (lineup.json ${(files[PATHS.lineup].length / 1024).toFixed(0)} KB)`);
 }

@@ -1,0 +1,114 @@
+# OHNY Weekend 2026: neighborhood -> list file(s)
+
+Use this when the visitor names a neighborhood. Open the file(s) shown, from https://raw.githubusercontent.com/dnaidionov/OHNY-skills/main/skills/ohny/assets/lineup/ (or assets/lineup/ in the skill).
+
+- Annadale (Staten Island): staten-island.md
+- Astoria (Queens): queens.md
+- Battery Park City (Manhattan): manhattan-1.md
+- Bayside (Queens): queens.md
+- Bedford Park (Bronx): bronx.md
+- Bedford-Stuyvesant (Brooklyn): brooklyn-1.md
+- Belmont (Bronx): bronx.md
+- Bensonhurst (Brooklyn): brooklyn-1.md
+- Bergen Beach / Georgetown (Brooklyn): brooklyn-1.md
+- Broad Channel (Queens): queens.md
+- Brooklyn Heights (Brooklyn): brooklyn-2.md
+- Bushwick (Brooklyn): brooklyn-2.md
+- Central Park (Manhattan): manhattan-3.md
+- Chelsea (Manhattan): manhattan-2.md
+- Civic Center (Manhattan): manhattan-1.md
+- Clinton Hill (Brooklyn): brooklyn-2.md
+- Coney Island (Brooklyn): brooklyn-1.md
+- Crown Heights (Brooklyn): brooklyn-1.md
+- Cypress Hills (Brooklyn): brooklyn-2.md
+- Downtown Brooklyn (Brooklyn): brooklyn-2.md
+- East Flatbush (Brooklyn): brooklyn-1.md
+- East Harlem (Manhattan): manhattan-4.md
+- East New York (Brooklyn): brooklyn-2.md
+- East Village (Manhattan): manhattan-1.md, manhattan-2.md
+- East Williamsburg (Brooklyn): brooklyn-2.md
+- Elmhurst (Queens): queens.md
+- Eltingville (Staten Island): staten-island.md
+- Far Rockaway (Queens): queens.md
+- Far Rockaway, Queens (Queens): queens.md
+- Financial District (Manhattan): manhattan-1.md
+- Financial District / Midtown (Manhattan): manhattan-2.md
+- Flatiron District (Manhattan): manhattan-2.md, manhattan-3.md, manhattan-4.md
+- Flushing (Queens): queens.md
+- Fordham (Bronx): bronx.md
+- Forest Hills (Queens): queens.md
+- Fort Greene (Brooklyn): brooklyn-2.md
+- Fort Wadsworth (Staten Island): staten-island.md
+- Garment District (Manhattan): manhattan-2.md, manhattan-3.md
+- Governors Island (Manhattan): manhattan-1.md
+- Gowanus (Brooklyn): brooklyn-1.md, brooklyn-2.md
+- Gramercy Park (Manhattan): manhattan-2.md
+- Gravesend (Brooklyn): brooklyn-1.md
+- Greenpoint (Brooklyn): brooklyn-2.md
+- Greenwich Village (Manhattan): manhattan-2.md
+- Hamilton Heights (Manhattan): manhattan-3.md
+- Harlem (Manhattan): manhattan-4.md
+- Hell's Kitchen (Manhattan): manhattan-3.md
+- Highbridge (Bronx): bronx.md
+- Homecrest (Brooklyn): brooklyn-1.md
+- Hudson Square (Manhattan): manhattan-1.md, manhattan-2.md
+- Hudson Yards (Manhattan): manhattan-3.md
+- Hunts Point (Bronx): bronx.md
+- Inwood (Manhattan): manhattan-4.md
+- Jamaica (Queens): queens.md
+- Lincoln Square (Manhattan): manhattan-3.md
+- Long Island City (Queens): queens.md
+- Lower East Side (Manhattan): manhattan-1.md, manhattan-2.md
+- Manhattan (Manhattan): manhattan-4.md
+- Manhattan (Other): other.md
+- Marine Park (Brooklyn): brooklyn-1.md
+- Mariners Harbor (Staten Island): staten-island.md
+- Maspeth (Queens): queens.md
+- Meatpacking District (Manhattan): manhattan-2.md
+- Melrose (Bronx): bronx.md
+- Midtown (Manhattan): manhattan-2.md, manhattan-3.md, manhattan-4.md
+- Midtown East (Manhattan): manhattan-3.md
+- Midtown Manhattan (Manhattan): manhattan-3.md
+- Morningside Heights (Manhattan): manhattan-4.md
+- Morris Heights (Bronx): bronx.md
+- Mott Haven (Bronx): bronx.md
+- Murray Hill (Manhattan): manhattan-2.md, manhattan-3.md
+- Navy Yard (Brooklyn): brooklyn-1.md, brooklyn-2.md
+- New Brighton (Staten Island): staten-island.md
+- NoHo (Manhattan): manhattan-4.md
+- NoMad (Manhattan): manhattan-2.md
+- Nolita/LES (Manhattan): manhattan-3.md
+- Nomad (Manhattan): manhattan-2.md
+- Ozone Park (Queens): queens.md
+- Park Slope (Brooklyn): brooklyn-1.md
+- Park Slope / Prospect Heights (Brooklyn): brooklyn-2.md
+- Prospect Heights (Brooklyn): brooklyn-2.md
+- Queens (Queens): queens.md
+- Randall Manor (Staten Island): staten-island.md
+- Red Hook (Brooklyn): brooklyn-1.md, brooklyn-2.md
+- Richmondtown (Staten Island): staten-island.md
+- Ridgewood (Queens): queens.md
+- Riverdale (Bronx): bronx.md
+- Roosevelt Island (Manhattan): manhattan-3.md
+- Rosebank (Staten Island): staten-island.md
+- Seaport (Manhattan): manhattan-1.md
+- Soundview (Bronx): bronx.md
+- Stapleton (Staten Island): staten-island.md
+- Sunset Park (Brooklyn): brooklyn-1.md
+- Times Square (Manhattan): manhattan-3.md
+- Tottenville (Staten Island): staten-island.md
+- Travis (Staten Island): staten-island.md
+- Tribeca (Manhattan): manhattan-1.md
+- Tudor City (Manhattan): manhattan-2.md
+- Two Bridges (Manhattan): manhattan-2.md
+- Upper East Side (Manhattan): manhattan-3.md, manhattan-4.md
+- Upper West Side (Manhattan): manhattan-4.md
+- Washington Heights (Manhattan): manhattan-4.md
+- West Chelsea (Manhattan): manhattan-2.md
+- West Harlem (Manhattan): manhattan-3.md
+- West Village (Manhattan): manhattan-2.md
+- Westchester Square (Bronx): bronx.md
+- Williamsburg (Brooklyn): brooklyn-2.md
+- Woodhaven (Queens): queens.md
+- Woodlawn (Bronx): bronx.md
+- World Trade Center (Manhattan): manhattan-1.md

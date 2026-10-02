@@ -105,14 +105,16 @@ Then put that URL in `API_BASE` in `skills/ohny/SKILL.md` and in `servers.url` i
 
 How the assistant degrades (each tier is tried in order; it never guesses hours or tickets):
 
-| Tier | What it uses | Works when |
+| Tier | What it uses | Needs |
 |---|---|---|
-| 1. Normal | The live service (`naidionov.com/ohny/skills`, or the connector) | Everything is up |
-| 2. Backup address | The same service at `ohny-skills.dnaidionov.workers.dev` | Your domain or its routing has a problem |
-| 3. Offline tool | `skills/ohny/scripts/ohny_offline.py` (Python, standard library only) on the lineup bundled in the skill; overlays live ohny.org status when it can reach it | The skill is installed and the chat can run code; no server needed |
-| 4. Bundled lists | `skills/ohny/assets/lineup/*.md`, compact per-borough lists the assistant just reads | The skill is installed but it can't run code |
-| 5. Published lists | The same lists on GitHub raw (independent of our server), then the chosen site's live record at `ohny.org/data/<id>.json` | It can browse the web (works for paste-and-go and the connector too) |
-| 6. Say so | "I can't see live information right now", with pointers to ohny.org | Nothing else works |
+| 1. Normal | The live service (`naidionov.com/ohny/skills`, or the connector) | Everything up |
+| 2. Backup address | The same service at `ohny-skills.dnaidionov.workers.dev` | Web access (a problem with your domain or its routing) |
+| 3. OHNY directly, per site | `ohny.org/data/<id>.json`: small, always current status and times for a site the assistant already knows | Web access |
+| 4. Saved lists | Small area lists (about 3,000 tokens each, with coordinates and parsed hours): bundled in the skill (`skills/ohny/assets/lineup/`, nothing to browse) or on GitHub raw (independent of our server). The assistant opens the one or two near the visitor, then verifies picks at tier 3 | Reading a file or one web page: no code |
+| 5. Offline tool (optional) | `skills/ohny/scripts/ohny_offline.py`: exact walking-time maths on the bundled lineup, overlaying live status when it can | Code execution (not guaranteed on phones or in voice mode) |
+| 6. Say so | "I can't see live information right now", with pointers to ohny.org | Nothing |
+
+Why the lists instead of going straight to OHNY for discovery: OHNY publishes one 400 KB lineup file (`festival.json`) with no coordinates, no addresses for ticketed sites and no way to ask for part of it. Chat apps cut a file that size off: in a test, a web reader lost about 60% of it (including a site that had just been canceled). Our lists are small, include coordinates and parsed hours, and a chat read the largest one completely. Per-site records are small, so those are read at OHNY directly.
 
 Things that never need the service keep working: check-in (OHNY's form link), general festival questions from ohny.org, and map links built from an address. The connector carries the same rules in its instructions, but if the server is down when the connector loads there is nothing to carry them; the paste-and-go line is the backup.
 

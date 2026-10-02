@@ -101,3 +101,25 @@ test('bundled assets work end to end with the real offline tool', opts, () => {
   const body = JSON.parse(r.stdout);
   assert.ok(body.results.length > 0 && body.results.every((c) => c.name && c.walk_min && c.status));
 });
+
+test('saved lists are phone-sized, complete, and cross-referenced (no stale files)', async () => {
+  const { readdirSync, statSync } = await import('node:fs');
+  const files = await buildFallback();
+  const expected = Object.keys(files).filter((p) => p.endsWith('.md')).map((p) => p.split('/').pop()).sort();
+  assert.deepEqual(readdirSync(PATHS.dir).sort(), expected, 'unexpected or stale file in assets/lineup');
+
+  const areas = expected.filter((f) => !['index.md', 'neighborhoods.md'].includes(f));
+  const index = readFileSync(join(PATHS.dir, 'index.md'), 'utf8');
+  const hoods = readFileSync(join(PATHS.dir, 'neighborhoods.md'), 'utf8');
+  const seen = [];
+  for (const f of areas) {
+    const full = join(PATHS.dir, f);
+    assert.ok(statSync(full).size < 20 * 1024, `${f} is too big to read comfortably on a phone`);
+    assert.ok(index.includes(`- ${f} |`), `${f} missing from index.md`);
+    seen.push(...[...readFileSync(full, 'utf8').matchAll(/^- (.+?) \(rec\w+\) \|/gm)].map((m) => m[1]));
+  }
+  assert.ok(statSync(join(PATHS.dir, 'index.md')).size < 6 * 1024, 'index must stay small');
+  const bundled = JSON.parse(readFileSync(PATHS.lineup, 'utf8')).sites.map((s) => s.slug).sort();
+  assert.deepEqual([...seen].sort(), bundled, 'every site must appear in exactly one area list');
+  for (const [, list] of hoods.matchAll(/^- .*?: (.+)$/gm)) for (const f of list.split(', ')) assert.ok(areas.includes(f), `neighborhoods.md points at missing ${f}`);
+});
