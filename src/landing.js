@@ -7,8 +7,8 @@ export const LINKS = {
   github: 'https://github.com/dnaidionov/OHNY-skills',
   zip: 'https://github.com/dnaidionov/OHNY-skills/releases/latest/download/ohny-skill.zip',
   ohny: 'https://ohny.org',
-  mcp: 'https://naidionov.com/ohny/skills/mcp',
-  claude: 'https://claude.ai/customize/connectors?modal=add-custom-connector&connectorName=Ask%20OHNY&connectorUrl=https%3A%2F%2Fnaidionov.com%2Fohny%2Fskills%2Fmcp',
+  mcp: 'https://ohny-skills.dnaidionov.workers.dev/mcp',
+  claude: 'https://claude.ai/customize/connectors?modal=add-custom-connector&connectorName=Ask%20OHNY&connectorUrl=https%3A%2F%2Fohny-skills.dnaidionov.workers.dev%2Fmcp',
   standalone: 'https://raw.githubusercontent.com/dnaidionov/OHNY-skills/main/standalone/OHNY.md',
 };
 

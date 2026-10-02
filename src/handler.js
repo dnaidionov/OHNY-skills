@@ -139,7 +139,7 @@ export async function handle(request, deps) {
       name: 'OHNY helper (unofficial)',
       by: 'Dmitry Naidionov, https://naidionov.com',
       source: 'https://github.com/dnaidionov/OHNY-skills',
-      install: { claude_one_tap: 'https://claude.ai/customize/connectors?modal=add-custom-connector&connectorName=Ask%20OHNY&connectorUrl=https%3A%2F%2Fnaidionov.com%2Fohny%2Fskills%2Fmcp', mcp_url: 'https://naidionov.com/ohny/skills/mcp' },
+      install: { claude_one_tap: 'https://claude.ai/customize/connectors?modal=add-custom-connector&connectorName=Ask%20OHNY&connectorUrl=https%3A%2F%2Fohny-skills.dnaidionov.workers.dev%2Fmcp', mcp_url: 'https://ohny-skills.dnaidionov.workers.dev/mcp' },
       festival: { dates: FESTIVAL.dates, timezone: FESTIVAL.tz },
       endpoints: {
         'GET /v1/meta': 'Freshness, counts, festival dates',
