@@ -9,7 +9,9 @@ test('standalone/OHNY.md is up to date (run: npm run build:standalone)', async (
 
 test('standalone file is self-contained: no dangling file references', async () => {
   const t = await buildStandalone();
-  assert.doesNotMatch(t, /references\/|assets\/|itinerary-template|SKILL\.md|\.md`/);
+  assert.doesNotMatch(t.replaceAll('skills/ohny/assets/lineup/', ''), /references\/|assets\/|itinerary-template|SKILL\.md|`(api|checkin|planning|about)\.md`/);
+  assert.doesNotMatch(t, /ohny_offline|skill-only|scripts\//);                 // skill-folder-only tiers are stripped
+  assert.match(t, /raw\.githubusercontent\.com\/dnaidionov\/OHNY-skills\/main\/skills\/ohny\/assets\/lineup\/index\.md/);  // published lists are named
   assert.match(t, /https:\/\/naidionov\.com\/ohny\/skills/);        // helper URL is absolute
   for (const h of ['Reference: the helper service', 'Reference: checking in', 'Reference: planning a day or the weekend', 'Reference: about this helper']) {
     assert.ok(t.includes(`## ${h}`), `missing section ${h}`);

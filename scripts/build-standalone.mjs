@@ -40,6 +40,9 @@ const demote = (md) => {                       // # -> ##, ## -> ###, ... outsid
   }).join('\n');
 };
 
+// Blocks wrapped in <!-- skill-only --> mention files that only exist in an installed skill folder.
+export const stripSkillOnly = (t) => t.replace(/<!-- skill-only -->[\s\S]*?<!-- \/skill-only -->\n?/g, '');
+
 export function rewriteRefs(text, mode = 'section') {
   let t = text;
   for (const [file, , title] of SECTIONS) {
@@ -67,7 +70,7 @@ export async function buildStandalone() {
     }
     parts.push(`\n---\n\n## ${title}\n\n${demote(rewriteRefs(md))}\n`);
   }
-  return `${parts.join('\n').replace(/\n{3,}/g, '\n\n').trim()}\n`;
+  return `${stripSkillOnly(parts.join('\n')).replace(/\n{3,}/g, '\n\n').trim()}\n`;
 }
 
 export const GUIDE_OUT = join(ROOT, 'src', 'guide-data.js');
@@ -75,7 +78,7 @@ export const GUIDE_OUT = join(ROOT, 'src', 'guide-data.js');
 /** Guide text for the MCP connector: one string per topic, served by the ohny_guide tool. */
 export async function buildGuideData() {
   const skill = await readFile(join(SKILL, 'SKILL.md'), 'utf8');
-  const overview = rewriteRefs(skill.replace(/^---\n[\s\S]*?\n---\n/, '')
+  const overview = rewriteRefs(stripSkillOnly(skill).replace(/^---\n[\s\S]*?\n---\n/, '')
     .replace(/## Settings \(edit at install time\)[\s\S]*?```\n[\s\S]*?```\n/, ''), 'mcp').trim();
   const topics = { overview };
   for (const [file] of SECTIONS) {

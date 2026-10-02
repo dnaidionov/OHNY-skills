@@ -146,5 +146,11 @@ const out = {
   geo_stats: stats,
   sites,
 };
-await writeFile(OUT, JSON.stringify(out));
-console.log(`Wrote ${OUT}  (${sites.length} sites)  geo: ${JSON.stringify(stats)}`);
+// Don't rewrite (and so don't churn commits) when nothing a visitor could see has changed.
+const previous = await readJson(OUT, null);
+if (previous && JSON.stringify(previous.sites) === JSON.stringify(sites)) {
+  console.log(`No changes in ${sites.length} sites; kept the existing ${OUT}`);
+} else {
+  await writeFile(OUT, JSON.stringify(out));
+  console.log(`Wrote ${OUT}  (${sites.length} sites)  geo: ${JSON.stringify(stats)}`);
+}

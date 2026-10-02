@@ -43,11 +43,17 @@ OHNY staff change things up to the last minute (cancellations, sold-out tours, n
 
 ## When the helper can't be reached
 
-If a call errors, times out, or returns something that isn't the expected JSON:
-1. **Retry once at the backup address** (`API_BASE_BACKUP`, https://ohny-skills.dnaidionov.workers.dev), same path and parameters.
-2. **Still failing and you can browse the web:** read OHNY's public files directly (see the fallback in `references/api.md`), say distances are rough, and say you're working from the raw list.
-3. **Can't do either:** say plainly, in one non-technical sentence, "I can't see live information right now". **Never guess** hours, status or tickets from memory. Send them to ohny.org/festival/lineup and the site's own page (ohny.org/place/<slug>), and offer to try again later.
-4. **Keep helping with what doesn't need it:** check-in (the form link works on its own: ask which site they're at), general festival questions from ohny.org, and directions using a maps link you build from the address.
+If a call errors, times out, or returns something that isn't the expected JSON, work down this list until something works. Tell the visitor in one plain, non-technical sentence what's going on, and **never guess** hours, status or tickets from memory.
+
+- **Backup address.** Retry once at `API_BASE_BACKUP` (https://ohny-skills.dnaidionov.workers.dev), same path and parameters.
+<!-- skill-only -->
+- **Offline tool (if you can run code).** From this skill's folder run `python3 scripts/ohny_offline.py nearby --lat <lat> --lng <lng> --max-walk-min 15 --interests "<interests>"`; there are also `search "<name>"` and `site <slug>` commands, and options for child age, wheelchair, "near a site" and a test time (`--help`). It does the same "open when you arrive" maths as the helper on the lineup bundled in this skill, and overlays OHNY's live status when it can reach ohny.org. Check `source.live` in its output: if false, say "this is a saved copy from <date>, so last-minute changes may be missing".
+- **Bundled lists (if you can read this skill's files but not run code).** Read `assets/lineup/index.md`, then the borough list you need (`assets/lineup/manhattan.md`, `brooklyn.md`, and so on). Pick candidates yourself from the times and positions listed.
+<!-- /skill-only -->
+- **Published lists (if you can browse).** The same lists are on GitHub, a different host from our server: https://raw.githubusercontent.com/dnaidionov/OHNY-skills/main/skills/ohny/assets/lineup/index.md (then `manhattan.md`, `brooklyn.md`, `queens.md`, `bronx.md`, `staten-island.md`). They are a saved copy, so before sending anyone to a site check its live record at `https://ohny.org/data/<id>.json` (a small file; the id is in brackets on each line) for `access_type` (Canceled or Sold Out) and its times.
+- **OHNY's own files.** A single site's record, `https://ohny.org/data/<id>.json`, is small and always current. The full lineup (`festival.json`) is about 400 KB: too big to read reliably in a chat, so avoid it unless you can process it with code.
+- **Nothing works.** Say plainly "I can't see live information right now", point to ohny.org/festival/lineup and the site's own page (ohny.org/place/<slug>), and offer to try again later.
+- **Keep helping with what doesn't need the helper:** check-in (the form link works on its own: ask which site they're at), general festival questions from ohny.org, and directions using a maps link you build from the address.
 
 ## What I remember about the visitor
 

@@ -1,0 +1,55 @@
+name: Refresh saved lineup
+
+# Keeps the offline fallback (skills/ohny/assets and data/lineup.json) close to ohny.org around the festival,
+# so the saved lists are only minutes old even if our server is down. Commits only when something changed.
+on:
+  schedule:
+    - cron: '*/30 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: refresh-lineup
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Only run around the festival (Oct 1-20, 2026), or when started by hand
+        id: window
+        run: |
+          today=$(date -u +%F)
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] || { [ "$today" \> "2026-09-30" ] && [ "$today" \< "2026-10-21" ]; }; then
+            echo "active=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "active=false" >> "$GITHUB_OUTPUT"
+          fi
+      - uses: actions/checkout@v4
+        if: steps.window.outputs.active == 'true'
+      - uses: actions/setup-node@v4
+        if: steps.window.outputs.active == 'true'
+        with:
+          node-version: 24
+      - name: Rebuild snapshot and offline files
+        if: steps.window.outputs.active == 'true'
+        env:
+          NOMINATIM_CONTACT: https://github.com/dnaidionov/OHNY-skills
+        run: |
+          node scripts/build-snapshot.mjs
+          node scripts/build-fallback.mjs
+          node scripts/build-standalone.mjs
+      - name: Commit if changed
+        if: steps.window.outputs.active == 'true'
+        run: |
+          if [ -n "$(git status --porcelain)" ]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add -A
+            git commit -m "Refresh saved lineup from ohny.org"
+            git push
+          else
+            echo "No changes."
+          fi

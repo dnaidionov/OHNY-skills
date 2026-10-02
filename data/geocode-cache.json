@@ -1327,5 +1327,11 @@
   "lat": 40.7256175,
   "lng": -73.9909554,
   "label": "New York Marble Cemetery, 41 1/2, Manhattan Community Board 3, Manhattan, New York County, New York, 10003, United States"
- }
+ },
+ "Equitable Building: 120 Broadway, Manhattan, New York": {
+  "lat": 40.7082035,
+  "lng": -74.0105065,
+  "label": "Equitable Building, 120, Broadway, Financial District, Lower Manhattan, Manhattan, New York County, New York, 10271, United States"
+ },
+ "Monumental Labs, Brooklyn, New York": null
 }

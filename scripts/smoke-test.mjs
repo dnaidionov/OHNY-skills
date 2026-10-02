@@ -149,6 +149,16 @@ export async function runSmoke(base, opts = {}) {
     });
   }
 
+  if (upstream) {
+    await check('published lists on GitHub (independent fallback)', async () => {
+      const res = await fetchImpl('https://raw.githubusercontent.com/dnaidionov/OHNY-skills/main/skills/ohny/assets/lineup/index.md', { signal: AbortSignal.timeout(timeoutMs) });
+      must(res.ok, `status ${res.status}`);
+      const t = await res.text();
+      must(t.includes('OHNY Weekend 2026'), 'unexpected content');
+      return `index.md ok, ${(t.match(/SAVED COPY from ([\d: -]+) UTC/) ?? [])[1] ?? 'date unknown'}`;
+    });
+  }
+
   return { base: root, ok: results.every((r) => r.ok), results };
 }
 

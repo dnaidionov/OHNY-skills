@@ -1,0 +1,134 @@
+{
+ "architecture": [
+  "architecture",
+  "buildings",
+  "skyscrapers",
+  "design"
+ ],
+ "history": [
+  "history",
+  "historic",
+  "historical"
+ ],
+ "art": [
+  "art",
+  "arts",
+  "galleries",
+  "museums",
+  "museum",
+  "artists"
+ ],
+ "design": [
+  "design",
+  "interiors",
+  "lighting"
+ ],
+ "nature": [
+  "nature",
+  "gardens",
+  "parks",
+  "green",
+  "outdoors",
+  "farms",
+  "plants"
+ ],
+ "waterfront": [
+  "water",
+  "waterfront",
+  "boats",
+  "harbor",
+  "ferries",
+  "river"
+ ],
+ "views": [
+  "views",
+  "rooftops",
+  "rooftop",
+  "skyline",
+  "terrace"
+ ],
+ "sacred": [
+  "churches",
+  "religious",
+  "sacred",
+  "synagogues",
+  "temples",
+  "spiritual"
+ ],
+ "industrial": [
+  "industrial",
+  "infrastructure",
+  "factories",
+  "engineering",
+  "power"
+ ],
+ "transit": [
+  "transit",
+  "subway",
+  "trains",
+  "transportation",
+  "bridges",
+  "railroad"
+ ],
+ "science": [
+  "science",
+  "technology",
+  "tech",
+  "research",
+  "innovation"
+ ],
+ "civic": [
+  "civic",
+  "government",
+  "courthouses",
+  "libraries",
+  "politics",
+  "law"
+ ],
+ "performance": [
+  "music",
+  "theater",
+  "theatre",
+  "performance",
+  "dance",
+  "film"
+ ],
+ "food": [
+  "food",
+  "restaurants",
+  "drink",
+  "brewery",
+  "coffee",
+  "baking"
+ ],
+ "kids": [
+  "kids",
+  "children",
+  "family",
+  "families",
+  "playgrounds"
+ ],
+ "sports": [
+  "sports",
+  "skating",
+  "rowing",
+  "fitness",
+  "active"
+ ],
+ "hidden": [
+  "hidden",
+  "secret",
+  "behind the scenes",
+  "exclusive",
+  "rare",
+  "unusual"
+ ],
+ "residential": [
+  "homes",
+  "houses",
+  "apartments",
+  "residential",
+  "housing",
+  "interiors"
+ ]
+}

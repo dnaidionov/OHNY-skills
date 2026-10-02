@@ -52,11 +52,13 @@ OHNY staff change things up to the last minute (cancellations, sold-out tours, n
 
 ## When the helper can't be reached
 
-If a call errors, times out, or returns something that isn't the expected JSON:
-1. **Retry once at the backup address** (`API_BASE_BACKUP`, https://ohny-skills.dnaidionov.workers.dev), same path and parameters.
-2. **Still failing and you can browse the web:** read OHNY's public files directly (see the fallback in the "Reference: the helper service" section), say distances are rough, and say you're working from the raw list.
-3. **Can't do either:** say plainly, in one non-technical sentence, "I can't see live information right now". **Never guess** hours, status or tickets from memory. Send them to ohny.org/festival/lineup and the site's own page (ohny.org/place/<slug>), and offer to try again later.
-4. **Keep helping with what doesn't need it:** check-in (the form link works on its own: ask which site they're at), general festival questions from ohny.org, and directions using a maps link you build from the address.
+If a call errors, times out, or returns something that isn't the expected JSON, work down this list until something works. Tell the visitor in one plain, non-technical sentence what's going on, and **never guess** hours, status or tickets from memory.
+
+- **Backup address.** Retry once at `API_BASE_BACKUP` (https://ohny-skills.dnaidionov.workers.dev), same path and parameters.
+- **Published lists (if you can browse).** The same lists are on GitHub, a different host from our server: https://raw.githubusercontent.com/dnaidionov/OHNY-skills/main/skills/ohny/assets/lineup/index.md (then `manhattan.md`, `brooklyn.md`, `queens.md`, `bronx.md`, `staten-island.md`). They are a saved copy, so before sending anyone to a site check its live record at `https://ohny.org/data/<id>.json` (a small file; the id is in brackets on each line) for `access_type` (Canceled or Sold Out) and its times.
+- **OHNY's own files.** A single site's record, `https://ohny.org/data/<id>.json`, is small and always current. The full lineup (`festival.json`) is about 400 KB: too big to read reliably in a chat, so avoid it unless you can process it with code.
+- **Nothing works.** Say plainly "I can't see live information right now", point to ohny.org/festival/lineup and the site's own page (ohny.org/place/<slug>), and offer to try again later.
+- **Keep helping with what doesn't need the helper:** check-in (the form link works on its own: ask which site they're at), general festival questions from ohny.org, and directions using a maps link you build from the address.
 
 ## What I remember about the visitor
 
@@ -153,14 +155,7 @@ The service doesn't geocode. Use the phone's location if the platform shares it.
 
 ### If the service is down
 
-1. Retry once at the backup address, `API_BASE_BACKUP` (https://ohny-skills.dnaidionov.workers.dev), with the same path.
-2. If that fails too, fall back to OHNY's public files (always current, no login):
-- `https://ohny.org/data/festival.json`: every site with times and status (`access_type` is `Drop-In`, `Ticketed`, `Sold Out`, or `Canceled`). Times are New York time.
-- `https://ohny.org/data/<record_id>.json`: one site's full details (description, access notes, websites, ticket links).
-- Official page for a site: `https://ohny.org/place/<slug>`.
-
-Do the open-now maths yourself from those, and say distances are estimates. Tell the visitor you're working from the raw list.
-3. If you can't browse at all, say you can't see live information and send the visitor to ohny.org/festival/lineup. Never guess hours, status or tickets.
+Follow "When the helper can't be reached" in the main guide: backup address first, then the offline tool or the saved lineup lists, then OHNY's own per-site files (`https://ohny.org/data/<id>.json`, small and always current; avoid the 400 KB `festival.json` unless you can process it with code), and finally say plainly that you can't see live information. Never guess hours, status or tickets.
 
 ### Never
 
