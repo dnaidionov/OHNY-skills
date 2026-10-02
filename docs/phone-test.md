@@ -36,13 +36,14 @@ Then: "Live data?" (did any result say it was live, and the as-of time), "Unsure
 OHNY FALLBACK TEST. Pretend the main OHNY service is broken. Do NOT use any OHNY connector or tools, and do not use naidionov.com. Be honest: if you can't do a step write CAN'T and say why, and say HOW you got each answer. It's Saturday October 17, 2026, 2:30 PM New York time; I'm at Washington Square Park (40.7308, -73.9973); I like history.
 
 F0. One line each: can you open web pages? read a plain-text file from raw.githubusercontent.com? read a JSON page?
+F0b. Open https://raw.githubusercontent.com/dnaidionov/OHNY-skills/main/skills/ohny/assets/lineup/index.md?v=3 and quote, word for word, the whole line for manhattan-2.md (including anything after its last | ).
 F1. Backup address: open https://ohny-skills.dnaidionov.workers.dev/v1/nearby?lat=40.7308&lng=-73.9973&interests=history&max_walk_min=15&now=2026-10-17T14:30 and tell me the top 3 places.
 F1b. Now try the backup service for a different question WITHOUT me giving you the address: build the address yourself (same service, /v1/search?q=grolier) and open it. Tell me whether your app allowed that.
-F2. Saved lists: open https://raw.githubusercontent.com/dnaidionov/OHNY-skills/main/skills/ohny/assets/lineup/index.md?v=3 , choose the ONE area file that covers my position (and say which neighbour you'd also open), open only that file using the exact address the index gives, and list up to 3 history places open right now, with open-until time and walking distance.
+F2. Saved lists: using that same index page, choose the ONE area file that covers my position (and say which neighbour you'd also open), open only that file using the exact address the index gives, and list up to 3 history places open right now, with open-until time and walking distance.
 F3. Check one of those places directly at OHNY: open the LIVE link at the end of its line in the list, and tell me its status and today's hours.
 F4. If none of F1 to F3 had worked, what exactly would you tell me? Two sentences, as if talking to me.
 
-Report as plain lines: F0 ... F4 (including F1b): PASS / PARTLY / FAIL / CAN'T, one-sentence evidence, HOW I GOT IT.
+Report as plain lines: F0, F0b ... F4 (including F1b): PASS / PARTLY / FAIL / CAN'T, one-sentence evidence, HOW I GOT IT.
 ```
 
 ## Test 3: voice (say these, one at a time, in voice mode)
@@ -76,6 +77,7 @@ Score each line: understood you? short enough to listen to? did it stop and wait
 | T5 | A plain "no site by that name is in OHNY's lineup" (the search now says so explicitly after checking all sites). Not "I can't tell", and no invented tours. |
 | T6 | Asks you to confirm, reads the waiver (photos, risks, holding OHNY and the site's owner harmless), waits for a clear yes, gives the form link `https://ohny.fillout.com/26weekend` and says what to type, does **not** ask for a name and does **not** claim it submitted. |
 | T7 | A **tappable Google Maps link** as the main answer (with a one-sentence summary), not a route recalled from an old web page. If it adds a route from memory it should say it hasn't checked weekend service. |
+| F0b | The quoted line **ends with the full address** `https://raw.githubusercontent.com/dnaidionov/OHNY-skills/main/skills/ohny/assets/lineup/manhattan-2.md`. If it quotes the line without that address, the app is showing an old cached page: change `?v=3` to `?v=4` and run again. |
 | F1 | The same kind of list as T1, from the backup address. |
 | F1b | Either it works or the app refuses addresses it builds itself. **Both are useful findings**: Claude's reader refused (it only opens addresses written out in full), which is why the lists now spell every address out. |
 | F2 | It picks `manhattan-2.md` (latitude 40.725 to 40.754) and mentions `manhattan-1.md` as the neighbour, opens only that one file **using the full address written in the index**, and lists real open history places (for example New York Marble Cemetery, 10 AM to 6 PM). |
