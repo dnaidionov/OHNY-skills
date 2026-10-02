@@ -81,7 +81,7 @@ Fork this repo and see "Deploy" below (the Worker also answers under a path pref
 ## Run and test
 
 ```bash
-npm test                    # 34 unit tests, no network
+npm test                    # 42 unit tests, no network
 npm run build:data          # refresh data/lineup.json (do this again right before the festival)
 npx wrangler dev            # local API at http://localhost:8787
 curl 'http://localhost:8787/v1/nearby?lat=40.7295&lng=-73.9965&interests=history&now=2026-10-17T14:30'
@@ -97,6 +97,22 @@ npx wrangler deploy         # prints https://ohny-skills.<you>.workers.dev
 ```
 
 Then put that URL in `API_BASE` in `skills/ohny/SKILL.md` and in `servers.url` in `openapi.yaml`. The Workers free plan allows roughly 100k requests a day; this uses no storage products. Refresh the snapshot and redeploy before the festival and whenever convenient after OHNY adds sites; the Worker already handles new ones live (see Freshness), the rebuild just makes their positions exact.
+
+## When something is down (and how to check)
+
+How the assistant degrades:
+
+- **ohny.org unreachable, our service fine:** answers come from the saved copy, flagged `live: false` with a warning; the assistant tells the visitor and points to the official page.
+- **Our service unreachable:** the skill and the paste-and-go file retry at a backup address (`https://ohny-skills.dnaidionov.workers.dev`), then fall back to OHNY's public data files if the chat app can browse, and otherwise say "I can't see live information right now", never guessing hours or tickets. Check-in (the form link), general ohny.org questions and map links keep working. The connector carries the same rules in its instructions, but if the server is down when the connector loads there is nothing to carry them: use the paste-and-go line as the backup.
+
+Health check (run it before every deploy, and on a schedule during the festival):
+
+```bash
+npm run smoke                                   # both public addresses
+npm run smoke -- --base https://your.domain/path --quiet
+```
+
+It checks the web page, live freshness from ohny.org, nearby, search, site details, changes, and the connector (initialize, tool list, tool calls, the playbook), and exits with code 1 if anything fails, so it can drive an alert. For a simple always-on monitor, point any uptime service at `https://naidionov.com/ohny/skills/v1/meta` and alert when the response does not contain `"live": true`.
 
 ## Installing the skill (check each platform's current rules; they change quickly and I could not confirm them against primary sources)
 

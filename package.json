@@ -12,7 +12,8 @@
     "dev": "wrangler dev",
     "deploy": "wrangler deploy",
     "package": "mkdir -p dist && cd skills && rm -f ../dist/ohny-skill.zip && zip -qr ../dist/ohny-skill.zip ohny",
-    "build:standalone": "node scripts/build-standalone.mjs"
+    "build:standalone": "node scripts/build-standalone.mjs",
+    "smoke": "node scripts/smoke-test.mjs"
   },
   "devDependencies": {
     "wrangler": "^4.0.0"

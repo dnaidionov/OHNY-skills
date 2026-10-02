@@ -7,6 +7,8 @@ info:
     what is near a point, and fresh details for one site. Holds no visitor data.
 servers:
   - url: https://naidionov.com/ohny/skills
+  - url: https://ohny-skills.dnaidionov.workers.dev
+    description: Same service at a backup address
 paths:
   /v1/nearby:
     get:

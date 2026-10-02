@@ -38,12 +38,14 @@ The service doesn't geocode. Use the phone's location if the platform shares it.
 
 ## If the service is down
 
-Fall back to OHNY's public files (always current, no login):
+1. Retry once at the backup address, `API_BASE_BACKUP` (https://ohny-skills.dnaidionov.workers.dev), with the same path.
+2. If that fails too, fall back to OHNY's public files (always current, no login):
 - `https://ohny.org/data/festival.json`: every site with times and status (`access_type` is `Drop-In`, `Ticketed`, `Sold Out`, or `Canceled`). Times are New York time.
 - `https://ohny.org/data/<record_id>.json`: one site's full details (description, access notes, websites, ticket links).
 - Official page for a site: `https://ohny.org/place/<slug>`.
 
 Do the open-now maths yourself from those, and say distances are estimates. Tell the visitor you're working from the raw list.
+3. If you can't browse at all, say you can't see live information and send the visitor to ohny.org/festival/lineup. Never guess hours, status or tickets.
 
 ## Never
 
