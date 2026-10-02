@@ -74,6 +74,8 @@ export async function runSmoke(base, opts = {}) {
     must(j.results.length > 0, 'no results on a busy Saturday afternoon');
     for (const c of j.results) must(c.name && c.walk_min != null && c.status && c.maps, `card incomplete: ${c.slug}`);
     must(typeof j.in_range_total === 'number', 'in_range_total missing');
+    must(Object.values(j.in_range_breakdown ?? {}).reduce((a, b) => a + b, 0) === j.in_range_total, 'in_range_breakdown does not add up');
+    must(j.results.every((c) => /^https:\/\/ohny\.org\/data\/rec\w+\.json$/.test(c.official_record)), 'results must carry official_record links');
     ctx.slug = j.results[0].slug;
     return `${j.total} found, first: ${j.results[0].name}`;
   });

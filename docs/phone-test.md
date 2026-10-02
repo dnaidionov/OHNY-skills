@@ -30,13 +30,15 @@ Then: "Live data?" (did any result say it was live, and the as-of time), "Unsure
 
 ## Test 2: does the fallback work? (paste this in the same chat, after Test 1)
 
+**Use this version, not an older copy.** The address ends in `?v=3` on purpose: some apps keep an old copy of a web page for a while, and a new `?v=` number forces a fresh read. If an app behaves as if it saw an old page, change 3 to 4 and try again.
+
 ```
 OHNY FALLBACK TEST. Pretend the main OHNY service is broken. Do NOT use any OHNY connector or tools, and do not use naidionov.com. Be honest: if you can't do a step write CAN'T and say why, and say HOW you got each answer. It's Saturday October 17, 2026, 2:30 PM New York time; I'm at Washington Square Park (40.7308, -73.9973); I like history.
 
 F0. One line each: can you open web pages? read a plain-text file from raw.githubusercontent.com? read a JSON page?
 F1. Backup address: open https://ohny-skills.dnaidionov.workers.dev/v1/nearby?lat=40.7308&lng=-73.9973&interests=history&max_walk_min=15&now=2026-10-17T14:30 and tell me the top 3 places.
 F1b. Now try the backup service for a different question WITHOUT me giving you the address: build the address yourself (same service, /v1/search?q=grolier) and open it. Tell me whether your app allowed that.
-F2. Saved lists: open https://raw.githubusercontent.com/dnaidionov/OHNY-skills/main/skills/ohny/assets/lineup/index.md , choose the ONE area file that covers my position (and say which neighbour you'd also open), open only that file using the exact address the index gives, and list up to 3 history places open right now, with open-until time and walking distance.
+F2. Saved lists: open https://raw.githubusercontent.com/dnaidionov/OHNY-skills/main/skills/ohny/assets/lineup/index.md?v=3 , choose the ONE area file that covers my position (and say which neighbour you'd also open), open only that file using the exact address the index gives, and list up to 3 history places open right now, with open-until time and walking distance.
 F3. Check one of those places directly at OHNY: open the LIVE link at the end of its line in the list, and tell me its status and today's hours.
 F4. If none of F1 to F3 had worked, what exactly would you tell me? Two sentences, as if talking to me.
 
@@ -68,7 +70,7 @@ Score each line: understood you? short enough to listen to? did it stop and wait
 |---|---|
 | T0 / F0 | Honest yes/no. If it says it can't open web pages, paste-and-go can't work in that app. |
 | T1 | Three real sites with walking times and open-until times, tied to history. Typically the Renee & Chaim Gross Foundation (about 5 min, until 4 PM; bag limits, stairs), the Lower East Side Arts & Culture Open House (about 12 min, until 5 PM; photography rules) and Church of The Village (about 14 min, until 4 PM). Order and members can vary. |
-| T2 | Nothing worth the walk. It should **name Sotheby's Breuer** as left out (it closes at 5:00 PM and you'd arrive with about 1 minute left) and say roughly how many places are within 20 minutes at all, so the empty list isn't a mystery. |
+| T2 | Nothing worth the walk. It should **name Sotheby's Breuer** as left out (it closes at 5:00 PM and you'd arrive with about 1 minute left) and account for the rest in one sentence: how many places are within 20 minutes and why they aren't open when you'd arrive (closed for the day, open another day, and so on). |
 | T3 | Open Saturday 1:00 to 5:00 PM, drop-in. Entry rules: sign in at the front desk, plus bag, coat and photography limits. One sourced fact (not invented). |
 | T4 | **Canceled** (as of today). It should not say it's open. |
 | T5 | A plain "no site by that name is in OHNY's lineup" (the search now says so explicitly after checking all sites). Not "I can't tell", and no invented tours. |
@@ -77,7 +79,7 @@ Score each line: understood you? short enough to listen to? did it stop and wait
 | F1 | The same kind of list as T1, from the backup address. |
 | F1b | Either it works or the app refuses addresses it builds itself. **Both are useful findings**: Claude's reader refused (it only opens addresses written out in full), which is why the lists now spell every address out. |
 | F2 | It picks `manhattan-2.md` (latitude 40.725 to 40.754) and mentions `manhattan-1.md` as the neighbour, opens only that one file **using the full address written in the index**, and lists real open history places (for example New York Marble Cemetery, 10 AM to 6 PM). |
-| F3 | Opens the **LIVE link at the end of the place's line** and shows a status (Drop-In, Ticketed, Sold Out or Canceled) and the hours. |
+| F3 | Opens the **LIVE link at the end of the place's line** (or the `official_record` link in F1's results) and shows a status (Drop-In, Ticketed, Sold Out or Canceled) and the hours. |
 | F4 | "I can't see live information right now", pointing to ohny.org. No guessed hours. |
 
 ## What the results tell you

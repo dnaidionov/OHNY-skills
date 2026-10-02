@@ -49,6 +49,8 @@ const summarize = (body) => ({
     fits: c.fits_interests ?? null, sug: c.ohny_suggests ?? null, kid: c.kid_friendly ?? null, left: c.time_left_on_arrival_min })),
   skipped: (body.skipped ?? []).map((s) => ({ slug: s.slug, reason: s.reason, why: s.why, walk: s.walk_min })),
   off: (body.ohny_suggests_but_not_your_interests ?? []).map((s) => s.slug),
+  range: body.in_range_total,
+  breakdown: body.in_range_breakdown,
 });
 
 const scenarios = [
@@ -153,4 +155,22 @@ test('nearby reports how many places were in range, in JS and in the offline too
   const py = runPy(['nearby', '--now', '2026-10-17T13:30', '--lat', '40.73', '--lng', '-73.995', '--limit', '10', '--max-walk-min', '20']);
   assert.ok(js.in_range_total >= js.total && js.in_range_total > 0);
   assert.equal(py.in_range_total, js.in_range_total);
+});
+
+test('in_range_breakdown accounts for every place in range (JS and offline tool)', opts, () => {
+  const now = '2026-10-17T16:48';
+  const [h, m] = [16, 48];
+  const js = nearby(sites, { lat: 40.73, lng: -73.995, nowAbs: wallMinutes('2026-10-17', h * 60 + m), limit: 10 });
+  const sum = Object.values(js.in_range_breakdown).reduce((a, b) => a + b, 0);
+  assert.equal(sum, js.in_range_total, JSON.stringify(js.in_range_breakdown));
+  assert.ok(js.in_range_breakdown.closes_before_you_arrive >= 1 || js.in_range_breakdown.no_more_times >= 1);
+  const py = runPy(['nearby', '--now', now, '--lat', '40.73', '--lng', '-73.995', '--limit', '10']);
+  assert.deepEqual(py.in_range_breakdown, js.in_range_breakdown);
+});
+
+test('results carry the exact OHNY record link for each site', opts, () => {
+  const js = nearby(sites, { lat: 40.73, lng: -73.995, nowAbs: wallMinutes('2026-10-17', 13 * 60 + 30), limit: 10 });
+  assert.ok(js.results.length > 0 && js.results.every((c) => /^https:\/\/ohny\.org\/data\/r\d+\.json$/.test(c.official_record)));
+  const py = runPy(['nearby', '--now', '2026-10-17T13:30', '--lat', '40.73', '--lng', '-73.995', '--limit', '10']);
+  assert.deepEqual(py.results.map((c) => c.official_record), js.results.map((c) => c.official_record));
 });

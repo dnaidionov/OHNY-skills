@@ -295,6 +295,7 @@ def card(site, st, **extra):
          "state": st["state"], "status": status_line(st),
          "closing_soon": True if st.get("closing_soon") else None,
          "closes_in_min": st["closes_in_min"] if st["state"] == "open_now" else None,
+         "official_record": ("https://ohny.org/data/%s.json" % site["id"]) if site.get("id") else None,
          "summary": clip(site.get("short"), 220), "tags": site.get("tags"),
          "heads_up": site.get("heads_up") or None}
     if st.get("next"):
@@ -333,6 +334,10 @@ def nearby(sites, a, aliases, now_abs):
     max_km = km_for_walk_minutes(a.max_walk_min) if a.max_walk_min else float("inf")
     ref_km = max_km if max_km != float("inf") else 2.0
     rows, skipped, off_interest, unlocated, in_range = [], [], [], 0, 0
+    tally = {}
+
+    def bump(k):
+        tally[k] = tally.get(k, 0) + 1
     for s in sites:
         if s["slug"] == a.near or is_canceled(s):
             continue
@@ -349,21 +354,33 @@ def nearby(sites, a, aliases, now_abs):
         score = interest_score(s, tags, words)
         off = has_interests and score == 0
         if off and s["slug"] not in suggested:
+            bump("not_your_interests")
             continue
         st_now = status_at(s, now_abs)
         st = status_at(s, now_abs + walk)
         if st["sold_out"]:
+            bump("sold_out")
             continue
         if st["ticket_required"] and a.no_ticketed:
+            bump("ticketed_tour_not_included")
             continue
         kind = "tour" if (st_now.get("current") or st.get("current") or {}).get("kind") == "session" else "site"
         if st["state"] != "open_now":
+            if st_now["state"] == "open_now":
+                bump("closes_before_you_arrive")
+            elif st["state"] in ("starts_soon", "later_today"):
+                bump("opens_later_today")
+            elif st["state"] == "later":
+                bump("opens_another_day")
+            else:
+                bump("no_more_times")
             if st_now["state"] == "open_now":
                 skipped.append((km, s, walk, "closes_before_arrival",
                                 "%s at %s, and it's a %d-minute walk, so it will be over by the time you get there." % (
                                     "The tour ends" if kind == "tour" else "It closes", st_now["current"]["to"], walk)))
             continue
         if st["closes_in_min"] < MIN_REMAINING_MIN:
+            bump("too_little_time_left")
             n = st["closes_in_min"]
             skipped.append((km, s, walk, "little_time_left",
                             "You'd get there with only %d minute%s left before %s at %s." % (
@@ -371,11 +388,14 @@ def nearby(sites, a, aliases, now_abs):
             continue
         ok, why, flags = suitability(s, a.child_age, a.wheelchair)
         if not ok:
+            bump("not_suitable_for_your_group")
             skipped.append((km, s, walk, "not_suitable", why))
             continue
         if off:
+            bump("not_your_interests")
             off_interest.append({"slug": s["slug"], "name": s["name"], "walk_min": walk})
             continue
+        bump("open_on_arrival")
         sug = s["slug"] in suggested
         match = min(score, 6) / 6.0
         prox = 1 - min(km / ref_km, 1)
@@ -397,6 +417,7 @@ def nearby(sites, a, aliases, now_abs):
             distance_approx=True if s["geo"].get("conf") != "address" else None, maps=maps_links(s)))
     return {"total": len(rows), "offset": a.offset, "has_more": a.offset + a.limit < len(rows), "unlocated": unlocated,
             "in_range_total": in_range,
+            "in_range_breakdown": tally,
             "skipped_total": len(skipped) or None,
             "skipped": [{"slug": s["slug"], "name": s["name"], "walk_min": w, "reason": reason, "why": why}
                         for _, s, w, reason, why in skipped[:8]] or None,

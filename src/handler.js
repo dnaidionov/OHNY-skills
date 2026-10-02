@@ -233,6 +233,7 @@ export async function handle(request, deps) {
         heads_up: policyFlags(site, 8),
         related_sites: nearbyRelated,
         checkin: { record_id: site.id, slug: site.slug, name: site.name },
+        official_record: site.id ? `${deps.base}/data/${site.id}.json` : undefined,
         official_page: `${deps.base}/place/${site.slug}`,
       },
     }));

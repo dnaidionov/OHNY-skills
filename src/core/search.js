@@ -22,6 +22,7 @@ export function card(site, st, extra = {}) {
     closing_soon: st.closing_soon || undefined,
     closes_in_min: st.state === 'open_now' ? st.closes_in_min : undefined,
     next: st.next && { date: st.next.date, from: st.next.from, to: st.next.to, kind: st.next.kind, ticket_url: st.next.url },
+    official_record: site.id ? `https://ohny.org/data/${site.id}.json` : undefined,
     summary: clip(site.short ?? site.description, 220),
     heads_up: policyFlags(site).length ? policyFlags(site) : undefined,
     has_access_notes: site.access_notes ? true : undefined,
@@ -91,6 +92,8 @@ export function nearby(sites, o) {
 
   let unlocated = 0;
   let inRange = 0;
+  const tally = {};
+  const bump = (k) => { tally[k] = (tally[k] ?? 0) + 1; };
   const rows = [];
   const skipped = [];
   const suggestedButOffInterest = [];
@@ -104,14 +107,17 @@ export function nearby(sites, o) {
     const walk = walkMinutes(km);
     const score = interestScore(site, interest);
     const offInterest = hasInterests && score === 0;
-    if (offInterest && interestsMode === 'require' && !suggestedSet.has(site.slug)) continue;
+    if (offInterest && interestsMode === 'require' && !suggestedSet.has(site.slug)) { bump('not_your_interests'); continue; }
 
     const stNow = statusAt(site, nowAbs, stOpts);
     const st = arrivalAware ? statusAt(site, nowAbs + walk, stOpts) : stNow;
-    if (st.sold_out && !includeSoldOut) continue;
-    if (st.ticket_required && !includeTicketed) continue;
+    if (st.sold_out && !includeSoldOut) { bump('sold_out'); continue; }
+    if (st.ticket_required && !includeTicketed) { bump('ticketed_tour_not_included'); continue; }
     const kind = (stNow.current ?? st.current)?.kind === 'session' ? 'tour' : 'site';
     if (st.state !== 'open_now') {
+      bump(stNow.state === 'open_now' ? 'closes_before_you_arrive'
+        : st.state === 'starts_soon' || st.state === 'later_today' ? 'opens_later_today'
+        : st.state === 'later' ? 'opens_another_day' : 'no_more_times');
       if (stNow.state === 'open_now') {
         skipped.push({ site, km, walk, reason: 'closes_before_arrival', why:
           `${kind === 'tour' ? 'The tour ends' : 'It closes'} at ${stNow.current.to}, and it's a ${walk}-minute walk, so it will be over by the time you get there.` });
@@ -119,18 +125,21 @@ export function nearby(sites, o) {
       continue;
     }
     if (st.closes_in_min < minRemainingMin) {
+      bump('too_little_time_left');
       skipped.push({ site, km, walk, reason: 'little_time_left', why:
         `You'd get there with only ${st.closes_in_min} minute${st.closes_in_min === 1 ? '' : 's'} left before ${kind === 'tour' ? 'the tour ends' : 'it closes'} at ${st.current.to}.` });
       continue;
     }
     const fit = suitability(site, { childAge, wheelchair });
-    if (!fit.ok) { skipped.push({ site, km, walk, reason: 'not_suitable', why: fit.why }); continue; }
+    if (!fit.ok) { bump('not_suitable_for_your_group'); skipped.push({ site, km, walk, reason: 'not_suitable', why: fit.why }); continue; }
 
     if (offInterest && interestsMode === 'require') {       // OHNY suggests it, but it isn't what they like
+      bump('not_your_interests');
       suggestedButOffInterest.push({ slug: site.slug, name: site.name, walk_min: walk });
       continue;
     }
 
+    bump('open_on_arrival');
     const sug = suggestedSet.has(site.slug);
     const match = Math.min(score, 6) / 6;
     const prox = 1 - Math.min(km / refKm, 1);
@@ -156,6 +165,7 @@ export function nearby(sites, o) {
   return {
     total: rows.length, offset, has_more: offset + limit < rows.length, unlocated,
     in_range_total: inRange,
+    in_range_breakdown: tally,
     search: {
       max_walk_min: maxWalkMin, arrival_aware: arrivalAware, min_time_left_min: minRemainingMin,
       interests: hasInterests ? { tags: interest.tags, mode: interestsMode } : undefined,
