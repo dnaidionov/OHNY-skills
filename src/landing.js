@@ -74,7 +74,7 @@ export function landingHtml() {
     <div><h1>Ask OHNY</h1><p class="sub">Unofficial guide</p></div>
   </div>
   <p class="lead">An unofficial pocket guide to <strong>Open House New York Weekend</strong>, October 16&ndash;18, 2026. Ask it in your AI chat app, by voice on your phone.</p>
-  <p class="notice"><strong>Independent project.</strong> Not affiliated with, endorsed by or sponsored by Open House New York. For anything official, see <a href="${esc(LINKS.ohny)}">ohny.org</a>.</p>
+  <p class="notice"><strong>Independent project.</strong> Not affiliated with, endorsed by or sponsored by Open House New York. For anything official, see <a href="${esc(LINKS.ohny)}" target="_blank" rel="noopener noreferrer">ohny.org</a>.</p>
 
   <h2>What it does</h2>
   <ul class="what">
@@ -97,7 +97,7 @@ export function landingHtml() {
     <section class="card panel" role="tabpanel" id="panel-claude" aria-labelledby="tab-claude">
       <h3>Claude <span class="tag">works on free accounts</span></h3>
       <p>One tap opens Claude's "Add custom connector" box with everything filled in. Check it and confirm. Easiest on a computer; once added it also works in the Claude phone app.</p>
-      <a class="btn" href="${esc(LINKS.claude)}" rel="noopener">${CLAUDE_ICON_SVG}Add to Claude</a>
+      <a class="btn" href="${esc(LINKS.claude)}" target="_blank" rel="noopener noreferrer">${CLAUDE_ICON_SVG}Add to Claude</a>
       <p>Then start a chat and say <em>"ohny, what's open near me?"</em> The first time, Claude asks to approve each tool: choose <strong>Always allow</strong>, since none of them change anything.</p>
       <p><strong>Prefer a skill?</strong> <span class="tag">paid plans</span> Download the zip (always the latest release) and add it in Claude under Customize, Skills.</p>
       <a class="btn ghost" href="${esc(LINKS.zip)}" rel="noopener">Download ohny-skill.zip</a>
@@ -134,8 +134,8 @@ export function landingHtml() {
   <p>Before October 16 the assistant will ask what day and time to pretend it is, for example "Saturday 2:30 PM", and you can change it any time.</p>
 
   <footer>
-    Made by <a href="${esc(LINKS.site)}">Dmitry Naidionov</a> &middot;
-    <a href="${esc(LINKS.github)}">Source on GitHub</a> (MIT) &middot;
+    Made by <a href="${esc(LINKS.site)}" target="_blank" rel="noopener noreferrer">Dmitry Naidionov</a> &middot;
+    <a href="${esc(LINKS.github)}" target="_blank" rel="noopener noreferrer">Source on GitHub</a> (MIT) &middot;
     <a href="?format=json">For developers</a>
     <br>The Open House New York name and logo belong to OHNY and are shown for identification only; this project is not affiliated with OHNY. Claude is a trademark of Anthropic.
     <br>This page is part of naidionov.com and is covered by that site's usual analytics.
