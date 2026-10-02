@@ -7,7 +7,7 @@ import { join } from 'node:path';
 import { normalizeRecord } from '../src/core/normalize.js';
 import { nearby } from '../src/core/search.js';
 import { wallMinutes } from '../src/core/time.js';
-import { compactSite, buildFallback, PATHS } from '../scripts/build-fallback.mjs';
+import { compactSite, buildFallback, PATHS, RAW_BASE } from '../scripts/build-fallback.mjs';
 
 const PY = 'python3';
 const SCRIPT = new URL('../skills/ohny/scripts/ohny_offline.py', import.meta.url).pathname;
@@ -116,10 +116,41 @@ test('saved lists are phone-sized, complete, and cross-referenced (no stale file
     const full = join(PATHS.dir, f);
     assert.ok(statSync(full).size < 20 * 1024, `${f} is too big to read comfortably on a phone`);
     assert.ok(index.includes(`- ${f} |`), `${f} missing from index.md`);
-    seen.push(...[...readFileSync(full, 'utf8').matchAll(/^- (.+?) \(rec\w+\) \|/gm)].map((m) => m[1]));
+    assert.ok(index.includes(`${RAW_BASE}/${f}`), `${f}: index.md must give the full literal address`);
+    assert.ok(hoods.includes(`- ${f}: ${RAW_BASE}/${f}`), `${f}: neighborhoods.md legend must give the full literal address`);
+    const text = readFileSync(full, 'utf8');
+    const lines = text.split('\n').filter((l) => l.startsWith('- '));
+    for (const l of lines) assert.match(l, /\| LIVE: https:\/\/ohny\.org\/data\/rec\w+\.json$/, `${f}: line without a literal LIVE link`);
+    seen.push(...lines.map((l) => l.slice(2).split(' | ')[0]));
   }
   assert.ok(statSync(join(PATHS.dir, 'index.md')).size < 6 * 1024, 'index must stay small');
+  assert.ok(statSync(join(PATHS.dir, 'neighborhoods.md')).size < 8 * 1024, 'neighborhood map must stay small');
   const bundled = JSON.parse(readFileSync(PATHS.lineup, 'utf8')).sites.map((s) => s.slug).sort();
   assert.deepEqual([...seen].sort(), bundled, 'every site must appear in exactly one area list');
-  for (const [, list] of hoods.matchAll(/^- .*?: (.+)$/gm)) for (const f of list.split(', ')) assert.ok(areas.includes(f), `neighborhoods.md points at missing ${f}`);
+  for (const [, list] of hoods.split('Neighborhoods:')[1].matchAll(/^- .*?: (.+)$/gm)) for (const f of list.split(', ')) assert.ok(areas.includes(f), `neighborhoods.md points at missing ${f}`);
+});
+
+test('search: a name that is not in the lineup is an explicit no_match, in JS and in the offline tool', opts, async () => {
+  const { search } = await import('../src/core/search.js');
+  const nowAbs = wallMinutes('2026-10-17', 14 * 60 + 30);
+  const js = search(sites, { q: 'zebra tower', nowAbs });
+  assert.equal(js.no_match, true);
+  assert.equal(js.results.length, 0);
+  assert.equal(js.searched_sites, sites.length);
+  assert.ok(js.partial_matches.some((c) => c.slug === 'tour'));                  // "Tower Tour" is only a partial match
+  assert.match(js.message, /no site by that name/);
+  const py = runPy(['search', 'zebra tower', '--now', '2026-10-17T14:30']);
+  assert.equal(py.no_match, true);
+  assert.deepEqual(py.partial_matches.map((c) => c.slug), js.partial_matches.map((c) => c.slug));
+  // a real name still works, and filler words don't break it
+  assert.equal(search(sites, { q: 'the Roof Garden', nowAbs }).results[0].slug, 'roof');
+  assert.equal(runPy(['search', 'the Roof Garden', '--now', '2026-10-17T14:30']).results[0].slug, 'roof');
+});
+
+test('nearby reports how many places were in range, in JS and in the offline tool', opts, () => {
+  const [d, t] = ['2026-10-17', '13:30'];
+  const js = nearby(sites, { lat: 40.73, lng: -73.995, nowAbs: wallMinutes(d, 13 * 60 + 30), limit: 10, maxWalkMin: 20 });
+  const py = runPy(['nearby', '--now', '2026-10-17T13:30', '--lat', '40.73', '--lng', '-73.995', '--limit', '10', '--max-walk-min', '20']);
+  assert.ok(js.in_range_total >= js.total && js.in_range_total > 0);
+  assert.equal(py.in_range_total, js.in_range_total);
 });

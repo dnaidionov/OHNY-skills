@@ -62,7 +62,7 @@ function line(s) {
   const access = (s.access ?? []).join('/') || '?';
   const where = s.geo ? `${r5(s.geo.lat)},${r5(s.geo.lng)}${s.geo.conf === 'address' ? '' : '~'}` : 'no-location';
   const addr = s.address?.line1 ? [s.address.line1, s.address.zip].filter(Boolean).join(' ') : 'address given with ticket';
-  return `- ${s.slug} (${s.id}) | ${s.name} | ${s.neighborhood ?? ''} | ${addr} | ${where} | ${access} | ${whenText(s)} | tags: ${(s.tags ?? []).join(',')}${s.age && !/all ages/i.test(s.age) ? ` | ${s.age}` : ''} | ${clip(s.short ?? s.description ?? '', 110)}`;
+  return `- ${s.slug} | ${s.name} | ${s.neighborhood ?? ''} | ${addr} | ${where} | ${access} | ${whenText(s)} | tags: ${(s.tags ?? []).join(',')}${s.age && !/all ages/i.test(s.age) ? ` | ${s.age}` : ''} | ${clip(s.short ?? s.description ?? '', 90)} | LIVE: https://ohny.org/data/${s.id}.json`;
 }
 
 export async function buildFallback() {
@@ -105,9 +105,9 @@ export async function buildFallback() {
     files[join(PATHS.dir, c.file)] = `# OHNY Weekend 2026: ${c.borough}, area ${c.file.replace('.md', '')} (${c.list.length} sites)
 
 Covers ${boxText}. Mostly: ${top(c.list)}.
-SAVED COPY from ${asOf} UTC. OHNY changes things up to the last minute: cancellations, sold-out tours and new times will NOT show here. Before sending anyone to a site, check its live record: https://ohny.org/data/<id>.json (the id is in brackets below; a small file) .
+SAVED COPY from ${asOf} UTC. OHNY changes things up to the last minute: cancellations, sold-out tours and new times will NOT show here. Before sending anyone to a site, open the LIVE link at the end of its line (a small file at ohny.org, always current).
 Unofficial helper, not affiliated with Open House New York. Times are New York time.
-Line format: slug (id) | name | neighborhood | address | lat,lng (a trailing ~ means approximate position) | access | when | tags | short description
+Line format: slug | name | neighborhood | address | lat,lng (a trailing ~ means approximate position) | access | when | tags | short description | LIVE link
 "when": drop-in hours are open without a ticket; TOURS need a ticket for that time slot.
 
 ${c.list.map(line).join('\n')}
@@ -118,8 +118,10 @@ ${c.list.map(line).join('\n')}
   for (const c of index) for (const s of c.list) if (s.neighborhood) (hoodFiles[`${s.neighborhood} (${c.borough})`] ??= new Set()).add(c.file);
   files[join(PATHS.dir, 'neighborhoods.md')] = `# OHNY Weekend 2026: neighborhood -> list file(s)
 
-Use this when the visitor names a neighborhood. Open the file(s) shown, from ${RAW_BASE}/ (or assets/lineup/ in the skill).
+Use this when the visitor names a neighborhood. Find the neighborhood below, then open the matching exact address from this legend (some chat apps only open web addresses written out in full; in an installed skill use the same file name under assets/lineup/):
+${index.map((i) => `- ${i.file}: ${RAW_BASE}/${i.file}`).join('\n')}
 
+Neighborhoods:
 ${Object.entries(hoodFiles).sort().map(([h, f]) => `- ${h}: ${[...f].join(', ')}`).join('\n')}
 `;
 
@@ -127,15 +129,15 @@ ${Object.entries(hoodFiles).sort().map(([h, f]) => `- ${h}: ${[...f].join(', ')}
 
 Use these when the live helper is unreachable. They are a SAVED COPY from ${asOf} UTC (not live). Each list is small (about 3,000 tokens): open only the one or two that cover where the visitor is, never all of them.
 
-Lists (pick by the visitor's coordinates; if they are near an edge, open the neighbouring area too). Raw link = ${RAW_BASE}/<file>:
-${index.map((i) => `- ${i.file} | ${i.borough} | ${i.list.length} sites | ${i.boxText} | mostly ${i.hoods}`).join('\n')}
+Lists (pick by the visitor's coordinates; if they are near an edge, open the neighbouring area too). Open the exact addresses below: some chat apps only open web addresses that are written out in full, so do not build them yourself.
+${index.map((i) => `- ${i.file} | ${i.borough} | ${i.list.length} sites | ${i.boxText} | mostly ${i.hoods} | ${RAW_BASE}/${i.file}`).join('\n')}
 
-If the visitor names a neighborhood instead of coordinates, see neighborhoods.md.
+If the visitor names a neighborhood instead of coordinates, open ${RAW_BASE}/neighborhoods.md
 
 How to use:
 1. Pick candidates by distance, interests (tags) and the times in the "when" column. "Open now" means the current New York time falls inside a listed drop-in window, or inside a tour slot (tours need a ticket).
 2. Use the lat,lng to judge walking distance (about 12 minutes per kilometre in a straight line, plus a third for street grids; positions marked ~ are approximate).
-3. Check the chosen site live before sending anyone: https://ohny.org/data/<id>.json shows its current status (access_type: Drop-In, Ticketed, Sold Out, Canceled) and times. It is a small file, always current.
+3. Check the chosen site live before sending anyone: open the LIVE link at the end of its line. It shows the site's current status (access_type: Drop-In, Ticketed, Sold Out, Canceled) and times, and is a small file, always current.
 4. Say plainly that you are working from a saved copy.
 `;
   return files;

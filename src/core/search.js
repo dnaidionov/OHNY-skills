@@ -90,6 +90,7 @@ export function nearby(sites, o) {
   const suggestedSet = new Set(suggested);
 
   let unlocated = 0;
+  let inRange = 0;
   const rows = [];
   const skipped = [];
   const suggestedButOffInterest = [];
@@ -99,6 +100,7 @@ export function nearby(sites, o) {
     if (!site.geo) { unlocated++; continue; }
     const km = haversineKm(here, site.geo);
     if (km > maxKm) continue;
+    inRange++;
     const walk = walkMinutes(km);
     const score = interestScore(site, interest);
     const offInterest = hasInterests && score === 0;
@@ -153,6 +155,7 @@ export function nearby(sites, o) {
   }));
   return {
     total: rows.length, offset, has_more: offset + limit < rows.length, unlocated,
+    in_range_total: inRange,
     search: {
       max_walk_min: maxWalkMin, arrival_aware: arrivalAware, min_time_left_min: minRemainingMin,
       interests: hasInterests ? { tags: interest.tags, mode: interestsMode } : undefined,
@@ -165,25 +168,47 @@ export function nearby(sites, o) {
   };
 }
 
-/** Free-text lookup by name / partner / neighborhood / topic. */
+const STOPWORDS = new Set(['the', 'of', 'at', 'and', 'in', 'on', 'an', 'to', 'for', 'with']);
+
+/**
+ * Free-text lookup by name / partner / neighborhood / topic. Every word must match somewhere, so a name
+ * that isn't in the lineup comes back as an explicit no_match (with weaker partial matches kept separate)
+ * instead of a pile of loosely related sites.
+ */
 export function search(sites, { q, nowAbs, limit = 5 }) {
-  const terms = String(q ?? '').toLowerCase().split(/\s+/).filter((t) => t.length > 1);
+  const terms = String(q ?? '').toLowerCase().split(/[^a-z0-9&'-]+/).filter((t) => t.length > 1 && !STOPWORDS.has(t));
   if (!terms.length) return { total: 0, results: [] };
-  const scored = [];
+  const all = [];
+  const some = [];
   for (const site of sites) {
     const name = (site.name ?? '').toLowerCase();
     const hay = `${site.partner ?? ''} ${site.neighborhood ?? ''} ${site.borough ?? ''} ${(site.series ?? []).join(' ')} ${site.short ?? ''} ${site.description ?? ''}`.toLowerCase();
     let score = 0;
+    let matched = 0;
     for (const t of terms) {
-      if (name.includes(t)) score += 5;
-      if (hay.includes(t)) score += 1;
+      const inName = name.includes(t);
+      const inHay = hay.includes(t);
+      if (inName) score += 5;
+      if (inHay) score += 1;
+      if (inName || inHay) matched++;
     }
     if (name === terms.join(' ')) score += 10;
-    if (score) scored.push({ site, score });
+    if (matched === terms.length) all.push({ site, score });
+    else if (matched > 0) some.push({ site, score: score + matched });
   }
-  scored.sort((a, b) => b.score - a.score);
+  const byScore = (a, b) => b.score - a.score;
+  all.sort(byScore);
+  const view = ({ site }) => card(site, statusAt(site, nowAbs), { maps: mapsLinks(site) });
+  if (all.length) return { total: all.length, searched_sites: sites.length, results: all.slice(0, limit).map(view) };
+  some.sort(byScore);
   return {
-    total: scored.length,
-    results: scored.slice(0, limit).map(({ site }) => card(site, statusAt(site, nowAbs), { maps: mapsLinks(site) })),
+    total: 0,
+    searched_sites: sites.length,
+    no_match: true,
+    message: `No site in OHNY's lineup (all ${sites.length} sites checked) matches all of: ${terms.join(', ')}. `
+      + 'Tell the visitor plainly that no site by that name is listed; the name may differ, so offer to search by neighborhood or topic. '
+      + 'Do not present the weaker partial matches as the answer.',
+    results: [],
+    partial_matches: some.slice(0, limit).map(view),
   };
 }

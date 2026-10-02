@@ -1,7 +1,18 @@
 # OHNY Weekend 2026: neighborhood -> list file(s)
 
-Use this when the visitor names a neighborhood. Open the file(s) shown, from https://raw.githubusercontent.com/dnaidionov/OHNY-skills/main/skills/ohny/assets/lineup/ (or assets/lineup/ in the skill).
+Use this when the visitor names a neighborhood. Find the neighborhood below, then open the matching exact address from this legend (some chat apps only open web addresses written out in full; in an installed skill use the same file name under assets/lineup/):
+- bronx.md: https://raw.githubusercontent.com/dnaidionov/OHNY-skills/main/skills/ohny/assets/lineup/bronx.md
+- brooklyn-1.md: https://raw.githubusercontent.com/dnaidionov/OHNY-skills/main/skills/ohny/assets/lineup/brooklyn-1.md
+- brooklyn-2.md: https://raw.githubusercontent.com/dnaidionov/OHNY-skills/main/skills/ohny/assets/lineup/brooklyn-2.md
+- manhattan-1.md: https://raw.githubusercontent.com/dnaidionov/OHNY-skills/main/skills/ohny/assets/lineup/manhattan-1.md
+- manhattan-2.md: https://raw.githubusercontent.com/dnaidionov/OHNY-skills/main/skills/ohny/assets/lineup/manhattan-2.md
+- manhattan-3.md: https://raw.githubusercontent.com/dnaidionov/OHNY-skills/main/skills/ohny/assets/lineup/manhattan-3.md
+- manhattan-4.md: https://raw.githubusercontent.com/dnaidionov/OHNY-skills/main/skills/ohny/assets/lineup/manhattan-4.md
+- other.md: https://raw.githubusercontent.com/dnaidionov/OHNY-skills/main/skills/ohny/assets/lineup/other.md
+- queens.md: https://raw.githubusercontent.com/dnaidionov/OHNY-skills/main/skills/ohny/assets/lineup/queens.md
+- staten-island.md: https://raw.githubusercontent.com/dnaidionov/OHNY-skills/main/skills/ohny/assets/lineup/staten-island.md
 
+Neighborhoods:
 - Annadale (Staten Island): staten-island.md
 - Astoria (Queens): queens.md
 - Battery Park City (Manhattan): manhattan-1.md

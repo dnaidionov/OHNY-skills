@@ -332,7 +332,7 @@ def nearby(sites, a, aliases, now_abs):
                  "look up its coordinates, then run again.")
     max_km = km_for_walk_minutes(a.max_walk_min) if a.max_walk_min else float("inf")
     ref_km = max_km if max_km != float("inf") else 2.0
-    rows, skipped, off_interest, unlocated = [], [], [], 0
+    rows, skipped, off_interest, unlocated, in_range = [], [], [], 0, 0
     for s in sites:
         if s["slug"] == a.near or is_canceled(s):
             continue
@@ -344,6 +344,7 @@ def nearby(sites, a, aliases, now_abs):
         km = haversine_km(here, s["geo"])
         if km > max_km:
             continue
+        in_range += 1
         walk = walk_minutes(km)
         score = interest_score(s, tags, words)
         off = has_interests and score == 0
@@ -395,6 +396,7 @@ def nearby(sites, a, aliases, now_abs):
             time_left_on_arrival_min=r["st"]["closes_in_min"],
             distance_approx=True if s["geo"].get("conf") != "address" else None, maps=maps_links(s)))
     return {"total": len(rows), "offset": a.offset, "has_more": a.offset + a.limit < len(rows), "unlocated": unlocated,
+            "in_range_total": in_range,
             "skipped_total": len(skipped) or None,
             "skipped": [{"slug": s["slug"], "name": s["name"], "walk_min": w, "reason": reason, "why": why}
                         for _, s, w, reason, why in skipped[:8]] or None,
@@ -409,20 +411,37 @@ def floor_half(x):
     return int(math.floor(x + 0.5))
 
 
+STOPWORDS = {"the", "of", "at", "and", "in", "on", "an", "to", "for", "with"}
+
+
 def search(sites, q, now_abs, limit=5):
-    terms = [t for t in str(q).lower().split() if len(t) > 1]
-    scored = []
+    terms = [t for t in re.split(r"[^a-z0-9&'-]+", str(q).lower()) if len(t) > 1 and t not in STOPWORDS]
+    if not terms:
+        return {"total": 0, "results": []}
+    allm, some = [], []
     for s in sites:
         name = (s.get("name") or "").lower()
         hay = " ".join(str(x or "") for x in [s.get("partner"), s.get("neighborhood"), s.get("borough"), s.get("short")]).lower()
-        score = sum((5 if t in name else 0) + (1 if t in hay else 0) for t in terms)
+        score = matched = 0
+        for t in terms:
+            in_name, in_hay = t in name, t in hay
+            score += (5 if in_name else 0) + (1 if in_hay else 0)
+            matched += 1 if (in_name or in_hay) else 0
         if name == " ".join(terms):
             score += 10
-        if score:
-            scored.append((score, s))
-    scored.sort(key=lambda x: -x[0])
-    return {"total": len(scored),
-            "results": [card(s, clean(status_at(s, now_abs)), maps=maps_links(s)) for _, s in scored[:limit]]}
+        if matched == len(terms):
+            allm.append((score, s))
+        elif matched:
+            some.append((score + matched, s))
+    view = lambda s: card(s, clean(status_at(s, now_abs)), maps=maps_links(s))  # noqa: E731
+    allm.sort(key=lambda x: -x[0])
+    if allm:
+        return {"total": len(allm), "searched_sites": len(sites), "results": [view(s) for _, s in allm[:limit]]}
+    some.sort(key=lambda x: -x[0])
+    return {"total": 0, "searched_sites": len(sites), "no_match": True,
+            "message": "No site in OHNY's lineup (all %d sites checked) matches all of: %s. Tell the visitor plainly that no site "
+                       "by that name is listed; do not present the weaker partial matches as the answer." % (len(sites), ", ".join(terms)),
+            "results": [], "partial_matches": [view(s) for _, s in some[:limit]]}
 
 
 def site_detail(sites, slug, now_abs, live):
