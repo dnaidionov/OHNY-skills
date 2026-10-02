@@ -9,6 +9,15 @@ import { policyFlags } from './core/policy.js';
 import { handleMcp } from './mcp.js';
 import { landingHtml } from './landing.js';
 import { ICON_SVG } from './icon.js';
+import { ICON_PNG_512, ICON_PNG_48, FAVICON_ICO } from './icon-data.js';
+
+const b64bytes = (b64) => Uint8Array.from(atob(b64), (c) => c.charCodeAt(0));
+
+const ICONS = {
+  '/icon.svg': ['image/svg+xml', ICON_SVG], '/favicon.svg': ['image/svg+xml', ICON_SVG],
+  '/icon.png': ['image/png', b64bytes(ICON_PNG_512)], '/favicon.png': ['image/png', b64bytes(ICON_PNG_48)],
+  '/favicon.ico': ['image/x-icon', b64bytes(FAVICON_ICO)],
+};
 
 const LIVE_TTL_MS = 20_000;
 let liveCache = { at: 0, base: '', data: null, lineup: null };
@@ -111,10 +120,10 @@ export async function handle(request, deps) {
 
   const path = url.pathname.replace(/\/+$/, '') || '/';
 
-  // Connector icon and favicon (same artwork). Static, so cache hard.
-  if (['/icon.svg', '/favicon.svg'].includes(path)) {
-    return new Response(ICON_SVG, {
-      headers: { 'content-type': 'image/svg+xml', 'cache-control': 'public, max-age=86400', 'access-control-allow-origin': '*', 'x-content-type-options': 'nosniff' },
+  // Connector icon and favicons (same artwork). Static, so cache hard.
+  if (ICONS[path]) {
+    return new Response(ICONS[path][1], {
+      headers: { 'content-type': ICONS[path][0], 'cache-control': 'public, max-age=86400', 'access-control-allow-origin': '*', 'x-content-type-options': 'nosniff' },
     });
   }
 

@@ -156,10 +156,10 @@ test('landing page shows the OHNY logo (dark-mode safe) and the Claude icon on t
 test('serverInfo advertises an icon on the same origin and mount path as the request', async () => {
   const init = { jsonrpc: '2.0', id: 1, method: 'initialize', params: { protocolVersion: '2025-11-25' } };
   const mounted = await (await handle(new Request('https://naidionov.com/ohny/skills/mcp', { method: 'POST', body: JSON.stringify(init) }), deps)).json();
-  assert.equal(mounted.result.serverInfo.icons[0].src, 'https://naidionov.com/ohny/skills/icon.svg');
-  assert.equal(mounted.result.serverInfo.icons[0].mimeType, 'image/svg+xml');
+  assert.equal(mounted.result.serverInfo.icons[0].src, 'https://naidionov.com/ohny/skills/icon.png');
+  assert.equal(mounted.result.serverInfo.icons[0].mimeType, 'image/png');
   const bare = await (await handle(new Request('https://x.workers.dev/mcp', { method: 'POST', body: JSON.stringify(init) }), deps)).json();
-  assert.equal(bare.result.serverInfo.icons[0].src, 'https://x.workers.dev/icon.svg');
+  assert.equal(bare.result.serverInfo.icons[0].src, 'https://x.workers.dev/icon.png');
 });
 
 test('icon and favicon routes serve SVG, also under the mount path', async () => {
@@ -168,5 +168,15 @@ test('icon and favicon routes serve SVG, also under the mount path', async () =>
     assert.equal(res.status, 200);
     assert.equal(res.headers.get('content-type'), 'image/svg+xml');
     assert.match(await res.text(), /^<svg /);
+  }
+});
+
+test('PNG and ICO icon routes serve real image bytes', async () => {
+  const magic = { '/icon.png': [0x89, 0x50, 0x4e, 0x47], '/favicon.png': [0x89, 0x50, 0x4e, 0x47], '/favicon.ico': [0, 0, 1, 0] };
+  for (const [path, bytes] of Object.entries(magic)) {
+    const res = await handle(new Request(`https://x.test${path}`), deps);
+    assert.equal(res.status, 200);
+    assert.match(res.headers.get('content-type'), /^image\/(png|x-icon)$/);
+    assert.deepEqual([...new Uint8Array(await res.arrayBuffer()).slice(0, 4)], bytes);
   }
 });

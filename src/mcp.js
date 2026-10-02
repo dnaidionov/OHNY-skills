@@ -4,7 +4,10 @@ import { GUIDE } from './guide-data.js';
 
 const SERVER = { name: 'ohny-skills', title: 'Ask OHNY (unofficial)', version: '0.2.0' };
 const serverInfo = (assetBase) => (assetBase
-  ? { ...SERVER, websiteUrl: 'https://naidionov.com/ohny/skills', icons: [{ src: `${assetBase}/icon.svg`, mimeType: 'image/svg+xml', sizes: ['any'] }] }
+  ? { ...SERVER, websiteUrl: 'https://naidionov.com/ohny/skills', icons: [
+      { src: `${assetBase}/icon.png`, mimeType: 'image/png', sizes: ['512x512'] },
+      { src: `${assetBase}/icon.svg`, mimeType: 'image/svg+xml', sizes: ['any'] },
+    ] }
   : SERVER);
 const KNOWN_VERSIONS = ['2025-11-25', '2025-06-18', '2025-03-26', '2024-11-05'];
 
