@@ -1,6 +1,6 @@
 # OHNY Weekend 2026: offline lineup lists
 
-Use these when the live helper is unreachable. They are a SAVED COPY from 2026-10-02 17:00 UTC (not live). Each list is small (about 3,000 tokens): open only the one or two that cover where the visitor is, never all of them.
+Use these when the live helper is unreachable. They are a SAVED COPY from 2026-10-02 19:12 UTC (not live). Each list is small (about 3,000 tokens): open only the one or two that cover where the visitor is, never all of them.
 
 Lists (pick by the visitor's coordinates; if they are near an edge, open the neighbouring area too). Raw link = https://raw.githubusercontent.com/dnaidionov/OHNY-skills/main/skills/ohny/assets/lineup/<file>:
 - bronx.md | Bronx | 21 sites | latitude 40.80386 to 40.9102, longitude -73.92595 to -73.87281 | mostly Hunts Point, Mott Haven, Highbridge, Bedford Park
