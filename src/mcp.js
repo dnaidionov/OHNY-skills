@@ -34,11 +34,19 @@ export const FORM_URL = 'https://ohny.fillout.com/26weekend';
 export const RULES_CORE = `Rules that matter most in OHNY conversations: (1) hours, status and tickets change up to the last minute: use the ohny_* tools, never memory. (2) Check-in: you cannot check anyone in; say so in one sentence and give the tappable link ${FORM_URL}, asking nothing first (no email, zip or group size), and never say they're checked in.`;
 export const REMINDER = `Check-in is link-only (${FORM_URL}), ask nothing first and never say they're checked in. Live data only from these tools. At most three options, voice-friendly. Name what you left out. Held tickets are hard constraints. Unofficial, not affiliated with OHNY.`;
 
+// After the festival only the questions-and-answers tools remain; "what's open now", plan checks and
+// "what changed" make no sense any more. Later still, the connector lists no tools at all.
+const AFTER_TOOLS = new Set(['ohny_search', 'ohny_site', 'ohny_guide']);
+export const toolsForPhase = (phase) => (phase === 'ended' ? [] : phase === 'after' ? TOOLS_ALL.filter((t) => AFTER_TOOLS.has(t.name)) : TOOLS_ALL);
+export const AFTER_INSTRUCTIONS = `Open House New York (OHNY) Weekend took place Oct 16-18, 2026 and is over. This helper is unofficial and NOT affiliated with OHNY. Use ohny_search and ohny_site to answer questions about the festival and the sites that took part (past tense: descriptions, history, entry rules, what was there); ohny_guide has the details. Nothing is "open now" and there is nothing to check in to. For anything current, point to ohny.org. Never invent facts: say when something isn't in the tools' results.`;
+export const ENDED_INSTRUCTIONS = `The Ask OHNY helper's season has ended (Open House New York Weekend was Oct 16-18, 2026). It is unofficial and not affiliated with OHNY. For anything about OHNY, point the visitor to https://ohny.org.`;
+const AFTER_NOTE = 'NOTE: the festival ended on Oct 18, 2026. Answer questions about the festival and its sites in the past tense; nothing is open now, and check-in and itinerary planning no longer apply.\n\n';
+
 const str = (d) => ({ type: 'string', description: d });
 const int = (d) => ({ type: 'integer', description: d });
 const NOW = str('Test mode only: pretend it is this New York time, e.g. 2026-10-17T14:30. Omit normally.');
 
-export const TOOLS = [
+const TOOLS_ALL = [
   {
     name: 'ohny_nearby',
     title: 'Find OHNY sites near a place',
@@ -118,6 +126,8 @@ export const TOOLS = [
   },
 ].map((t) => ({ ...t, annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: true } }));
 
+export const TOOLS = TOOLS_ALL;
+
 const publicTool = ({ path, local, ...t }) => t;
 
 const rpcResult = (id, result) => ({ jsonrpc: '2.0', id, result });
@@ -146,13 +156,16 @@ function withReminder(bodyText) {
   return bodyText;
 }
 
-async function callTool(name, args, call) {
-  const tool = TOOLS.find((t) => t.name === name);
+async function callTool(name, args, call, phase = 'festival') {
+  const tool = TOOLS_ALL.find((t) => t.name === name);
   if (!tool) return { error: rpcError(null, -32602, `Unknown tool: ${name}`) };
+  if (!toolsForPhase(phase).includes(tool)) {
+    return { result: text('This tool is no longer available: the Open House New York festival is over. For anything about OHNY, see https://ohny.org.', true) };
+  }
   if (tool.local) {
     const topic = args?.topic ?? 'overview';
     if (!(topic in GUIDE)) return { result: text(`Unknown topic "${topic}". Use one of: ${Object.keys(GUIDE).join(', ')}.`, true) };
-    return { result: text(GUIDE[topic]) };
+    return { result: text(phase === 'festival' ? GUIDE[topic] : AFTER_NOTE + GUIDE[topic]) };
   }
   if (tool.name === 'ohny_site' && !args?.slug) return { result: text('slug is required (get one from ohny_search or ohny_nearby).', true) };
   if (tool.name === 'ohny_search' && !args?.q) return { result: text('q is required.', true) };
@@ -161,7 +174,7 @@ async function callTool(name, args, call) {
   return { result: text(body.ok ? withReminder(body.text) : body.text, !body.ok) };
 }
 
-async function handleMessage(msg, call, assetBase) {
+async function handleMessage(msg, call, assetBase, phase = 'festival') {
   if (!msg || msg.jsonrpc !== '2.0' || typeof msg.method !== 'string') return rpcError(msg?.id, -32600, 'Invalid request');
   const { id, method, params } = msg;
   const isNotification = id === undefined;
@@ -172,13 +185,13 @@ async function handleMessage(msg, call, assetBase) {
         protocolVersion: KNOWN_VERSIONS.includes(asked) ? asked : KNOWN_VERSIONS[1],
         capabilities: { tools: { listChanged: false }, prompts: { listChanged: false } },
         serverInfo: serverInfo(assetBase),
-        instructions: INSTRUCTIONS,
+        instructions: phase === 'festival' ? INSTRUCTIONS : phase === 'after' ? AFTER_INSTRUCTIONS : ENDED_INSTRUCTIONS,
       });
     }
     case 'ping': return rpcResult(id, {});
-    case 'tools/list': return rpcResult(id, { tools: TOOLS.map(publicTool) });
+    case 'tools/list': return rpcResult(id, { tools: toolsForPhase(phase).map(publicTool) });
     case 'tools/call': {
-      const out = await callTool(params?.name, params?.arguments ?? {}, call);
+      const out = await callTool(params?.name, params?.arguments ?? {}, call, phase);
       return out.error ? { ...out.error, id } : rpcResult(id, out.result);
     }
     case 'prompts/list':
@@ -203,7 +216,7 @@ const CORS = {
 };
 
 /** `call(path)` -> { ok, text }: runs one of the /v1 routes internally. */
-export async function handleMcp(request, call, assetBase) {
+export async function handleMcp(request, call, assetBase, phase = 'festival') {
   if (request.method === 'OPTIONS') return new Response(null, { status: 204, headers: CORS });
   if (request.method === 'GET' || request.method === 'DELETE') {
     return new Response('This MCP server is stateless: use POST.', { status: 405, headers: { ...CORS, allow: 'POST, OPTIONS' } });
@@ -217,7 +230,7 @@ export async function handleMcp(request, call, assetBase) {
   const batch = Array.isArray(payload);
   const replies = [];
   for (const msg of batch ? payload : [payload]) {
-    const r = await handleMessage(msg, call, assetBase);
+    const r = await handleMessage(msg, call, assetBase, phase);
     if (r) replies.push(r);
   }
   if (replies.length === 0) return new Response(null, { status: 202, headers: CORS });      // notifications only

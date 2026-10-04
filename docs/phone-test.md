@@ -103,6 +103,32 @@ K4. How do I get to the tour from where I'll be after the first stop?
 Report as plain lines: K1 ... K4: PASS / PARTLY / FAIL / CAN'T, one-sentence evidence, HOW I GOT IT.
 ```
 
+## Test 5: does it use my phone's location? (Claude mobile app, not claude.ai or desktop)
+
+Needs a personal plan (the location tool isn't on Team or Enterprise). Stand somewhere in New York if you can; if not, the location it finds will be wherever you are, and the result is still useful. Run each in a **brand-new chat** with the connector switched on. Don't give it coordinates or a place name.
+
+Before 5a, reset the permission: Android Settings, Apps, Claude, Permissions, Location, **Don't allow**; iPhone Settings, Claude, Location, **Ask next time** (or Never).
+
+**5a. First ask, permission not granted yet:**
+
+```
+ohny, what's open near me? Pretend it's Saturday October 17, 2026, 2:30 PM. I like history.
+```
+
+- **Pass:** the app shows a location permission prompt (Android: Allow once / Always allow / Don't allow; iPhone: Allow While Using / Allow Once / Don't Allow). Choose **Allow once** (Android) or **Allow Once** (iPhone). Claude then lists places near where you actually are, without asking where you are.
+- **Partly:** no prompt, but it asks for a cross street, or it says it has no location tool. Note which. (The README and landing page promise a prompt, so this would mean they need softening.)
+- **Fail:** it guesses a place, or lists places far from you with no explanation.
+
+**5b. Permission denied:** repeat in a new chat after choosing **Don't allow**.
+
+- **Pass:** it doesn't nag; it says it can't see your location and asks for a cross street or landmark. Answer "Washington Square Park" and check that the list follows.
+
+**5c. Permission set to always allow:** change the setting, start a new chat, send the same message.
+
+- **Pass:** no prompt, list near you straight away.
+
+**Also note:** whether the tool shown in the chat is the app's location tool plus `ohny_nearby`, and whether the first answer included the "unofficial helper" line.
+
 ## Answer key (live data as of Oct 2, 2026; sites and hours can change)
 
 | Step | What a good answer looks like |

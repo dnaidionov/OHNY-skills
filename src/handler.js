@@ -1,6 +1,6 @@
 import { normalizeRecord } from './core/normalize.js';
 import { mergeLive } from './core/lineup.js';
-import { resolveNow, FESTIVAL, isFestivalDay, fromWallMinutes } from './core/time.js';
+import { resolveNow, FESTIVAL, isFestivalDay, fromWallMinutes, phaseAt } from './core/time.js';
 import { statusAt, statusLine } from './core/status.js';
 import { nearby, search, card } from './core/search.js';
 import { mapsLinks, haversineKm, walkMinutes } from './core/geo.js';
@@ -109,7 +109,7 @@ export async function handle(request, deps) {
     return handleMcp(request, async (p) => {
       const res = await handle(new Request(new URL(p, url.origin), { method: 'GET' }), deps);
       return { ok: res.ok, text: await res.text() };
-    }, `${url.origin}${mounted ? prefix : ''}`);
+    }, `${url.origin}${mounted ? prefix : ''}`, phaseAt(deps.realNow));
   }
   if (request.method === 'OPTIONS') {
     return new Response(null, { status: 204, headers: { 'access-control-allow-origin': '*', 'access-control-allow-methods': 'GET' } });
@@ -142,6 +142,7 @@ export async function handle(request, deps) {
       source: 'https://github.com/dnaidionov/OHNY-skills',
       install: { claude_one_tap: 'https://claude.ai/customize/connectors?modal=add-custom-connector&connectorName=Ask%20OHNY&connectorUrl=https%3A%2F%2Fnaidionov.com%2Fohny%2Fskills%2Fmcp', mcp_url: 'https://naidionov.com/ohny/skills/mcp' },
       checkin_form: 'https://ohny.fillout.com/26weekend',
+      connector_phase: phaseAt(deps.realNow),
       festival: { dates: FESTIVAL.dates, timezone: FESTIVAL.tz },
       endpoints: {
         'GET /v1/meta': 'Freshness, counts, festival dates',
@@ -160,6 +161,7 @@ export async function handle(request, deps) {
   if (path === '/v1/meta') {
     const lineup = await getLineup(deps);
     return json(envelope(lineup, now, {
+      phase: phaseAt(deps.realNow),
       snapshot_generated_at: deps.snapshot.generated_at,
       total_sites: lineup.sites.filter((s) => !s.removed).length,
       changes_since_snapshot: {

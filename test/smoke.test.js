@@ -21,7 +21,7 @@ const upstream = async (url) => url.endsWith('/festival.json') ? Response.json({
 
 const net = (broken) => (url, init) => {
   if (broken) return Promise.resolve(new Response('Bad gateway', { status: 502 }));
-  return handle(new Request(url, init), { snapshot, fetchImpl: upstream, realNow: new Date() });
+  return handle(new Request(url, init), { snapshot, fetchImpl: upstream, realNow: new Date('2026-10-17T18:30:00Z') });
 };
 
 beforeEach(() => { _resetCacheForTests(); _resetEnrichMemoForTests(); });
@@ -42,7 +42,7 @@ test('smoke test fails loudly, with a readable report, when the service is down'
 });
 
 test('smoke test catches stale data and a lost live connection to ohny.org', async () => {
-  const down = async (url, init) => handle(new Request(url, init), { snapshot, fetchImpl: async () => new Response('', { status: 503 }), realNow: new Date() });
+  const down = async (url, init) => handle(new Request(url, init), { snapshot, fetchImpl: async () => new Response('', { status: 503 }), realNow: new Date('2026-10-17T18:30:00Z') });
   const report = await runSmoke('https://smoke.test/ohny/skills', { fetchImpl: down, minSites: 2 });
   const fresh = report.results.find((r) => r.name.startsWith('freshness'));
   assert.equal(fresh.ok, false);

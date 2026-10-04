@@ -64,6 +64,7 @@ export async function runSmoke(base, opts = {}) {
     const ageMin = (Date.now() - new Date(j.as_of).getTime()) / 60000;
     must(ageMin < maxAgeMin, `data is ${ageMin.toFixed(1)} min old`);
     ctx.sites = j.total_sites;
+    ctx.phase = j.phase ?? 'festival';           // festival | after | ended: the connector's tool list shrinks with the season
     return `${j.total_sites} sites, ${ageMin.toFixed(1)} min old, changes vs snapshot ${JSON.stringify(j.changes_since_snapshot)}`;
   });
 
@@ -139,8 +140,11 @@ export async function runSmoke(base, opts = {}) {
   await check('connector: initialize + instructions', async () => {
     const r = await rpc('initialize', { protocolVersion: '2025-06-18', capabilities: {}, clientInfo: { name: 'smoke-test', version: '1' } });
     must(r.result?.serverInfo?.name === 'ohny-skills', 'bad serverInfo');
-    must((r.result.instructions ?? '').length > 500, 'instructions missing');
-    must(/can't see live information|cannot see live information/i.test(r.result.instructions), 'fallback guidance missing from instructions');
+    const ins = r.result.instructions ?? '';
+    if (ctx.phase === 'after') { must(/is over/.test(ins) && /NOT affiliated/.test(ins), 'after-festival instructions wrong'); return 'season: after the festival'; }
+    if (ctx.phase === 'ended') { must(/ohny\.org/.test(ins), 'ended-season instructions wrong'); return 'season: ended'; }
+    must(ins.length > 500, 'instructions missing');
+    must(/can't see live information|cannot see live information/i.test(ins), 'fallback guidance missing from instructions');
   });
 
   await check('connector: notification -> 202', async () => {
@@ -153,10 +157,14 @@ export async function runSmoke(base, opts = {}) {
     must(r.res.status === 405, `status ${r.res.status}`);
   });
 
-  await check('connector: tools/list (6 read-only tools)', async () => {
+  await check('connector: tools/list (by season)', async () => {
     const tools = (await rpc('tools/list')).result.tools;
-    must(tools.length === 6, `${tools.length} tools`);
-    must(tools.some((t) => t.name === 'ohny_check_plan'), 'plan checker missing');
+    if (ctx.phase === 'ended') { must(tools.length === 0, `${tools.length} tools after the season`); return 'no tools (season ended)'; }
+    if (ctx.phase === 'after') must(tools.map((t) => t.name).join() === 'ohny_search,ohny_site,ohny_guide', `after-festival tools: ${tools.map((t) => t.name)}`);
+    else {
+      must(tools.length === 6, `${tools.length} tools`);
+      must(tools.some((t) => t.name === 'ohny_check_plan'), 'plan checker missing');
+    }
     must(tools.every((t) => /Only for (the )?Open House New York \(OHNY\)/.test(t.description.slice(0, 140))), 'a tool description is not scoped to OHNY (it could capture unrelated questions)');
     const guide = tools.find((t) => t.name === 'ohny_guide');
     must(guide?.description.includes('ohny.fillout.com/26weekend') && /you cannot check anyone in/i.test(guide.description), 'the check-in rule is missing from the tool descriptions (clients that ignore server instructions would never see it)');
@@ -165,6 +173,7 @@ export async function runSmoke(base, opts = {}) {
   });
 
   await check('connector: ohny_nearby call', async () => {
+    if (ctx.phase === 'after' || ctx.phase === 'ended') return 'skipped: not offered after the festival';
     const r = await toolText('ohny_nearby', { lat: 40.7308, lng: -73.9973, max_walk_min: 20, now: TEST_NOW });
     must(!r.isError, `tool error: ${r.text.slice(0, 120)}`);
     must(JSON.parse(r.text).results.length > 0, 'no results');
@@ -172,11 +181,13 @@ export async function runSmoke(base, opts = {}) {
   });
 
   await check('connector: ohny_search no_match', async () => {
+    if (ctx.phase === 'ended') return 'skipped: season ended';
     const r = await toolText('ohny_search', { q: 'zebra tower' });
     must(!r.isError && JSON.parse(r.text).no_match === true, 'unknown name must be no_match');
   });
 
   await check('connector: ohny_guide playbook', async () => {
+    if (ctx.phase === 'ended') return 'skipped: season ended';
     const r = await toolText('ohny_guide', { topic: 'overview' });
     must(!r.isError && r.text.length > 1000, 'playbook missing');
     must(/can't be reached/.test(r.text), 'fallback section missing from playbook');

@@ -97,3 +97,15 @@ export function resolveNow(overrideInput, realDate = new Date()) {
   const wall = nyWallClock(realDate);
   return { wall, abs: wallToAbs(wall), source: 'real' };
 }
+
+// The connector's season. During the festival everything is on; for about a month afterwards only the
+// Q&A tools stay (people still ask about the festival and the sites they visited); then it goes quiet.
+export const PHASE_STARTS = { after: '2026-10-19T00:00', ended: '2026-11-19T00:00' };   // New York time
+
+/** 'festival' | 'after' | 'ended' */
+export function phaseAt(date = new Date()) {
+  const abs = wallToAbs(nyWallClock(date));
+  if (abs >= wallToAbs(PHASE_STARTS.ended)) return 'ended';
+  if (abs >= wallToAbs(PHASE_STARTS.after)) return 'after';
+  return 'festival';
+}

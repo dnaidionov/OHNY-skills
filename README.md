@@ -139,6 +139,18 @@ It checks the web page, live freshness from ohny.org, nearby, search, site detai
 | **ChatGPT** | **Unclear.** Reports say Skills are in beta on Free/Go/Plus/Pro, but creating *personal* skills or custom GPTs may be limited to Business/Enterprise/Edu. Free users could previously *use* GPTs made by others. | Check what your plan allows you to publish before relying on this. Either a skill (paste/upload `skills/ohny`) or a GPT (paste `SKILL.md` as instructions, upload `references/` and `assets/`, add an Action from `openapi.yaml`). |
 | **Gemini** | **Probably yes** for plain instruction skills (announced for all Google AI tiers, 18+). Unknown whether a skill can call the helper service or be shared with others. | Paste `SKILL.md` (shortened if there's a length limit) and rely on Gemini's own web access to read `https://ohny.org/data/festival.json`. Expect a reduced experience (no helper service, no itinerary page). |
 
+## The connector's season
+
+The connector retires itself on a schedule (New York time), so a forgotten connector doesn't clutter unrelated chats:
+
+| Dates | What the connector offers |
+|---|---|
+| Until the end of Oct 18, 2026 | Everything: nearby, search, site details, plan checker, changes, guide |
+| Oct 19 to Nov 18 | Questions and answers only (`ohny_search`, `ohny_site`, `ohny_guide`), in the past tense, with instructions saying the festival is over |
+| From Nov 19 | No tools at all, and instructions pointing to ohny.org |
+
+The plain web API (`/v1/...`), the landing page and the paste-and-go file keep working throughout. The dates are in `src/core/time.js` (`PHASE_STARTS`). `GET /v1/meta` shows the current season, and `npm run smoke` expects the tool list that matches it.
+
 ## Known gaps
 
 - **Check-in is disabled for now.** The assistant can't check anyone in. When asked, it says so in one sentence and gives OHNY's check-in form link (https://ohny.fillout.com/26weekend) to tap, without asking anything first or reading a waiver; the visitor completes the form themselves. Direct check-in would need OHNY's approval and a supported way to submit (see `skills/ohny/references/checkin.md`).

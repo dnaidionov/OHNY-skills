@@ -102,7 +102,7 @@ test('a site added after the snapshot is found, described and placed (no rebuild
   assert.ok(n, 'new site should appear in nearby');
   assert.equal(n.summary, 'Opened to visitors at the last minute.');
   assert.equal(n.distance_approx, undefined);              // exact: looked up live
-  const ch = await (await handle(new Request('https://x.test/v1/changes'), { snapshot, fetchImpl, realNow: new Date() })).json();
+  const ch = await (await handle(new Request('https://x.test/v1/changes'), { snapshot, fetchImpl, realNow: new Date('2026-10-17T18:30:00Z') })).json();
   assert.equal(ch.changes.added[0].slug, 'new-26');
 });
 
