@@ -1,6 +1,6 @@
 # OHNY skill (unofficial)
 
-A pocket guide to Open House New York Weekend (Oct 16-18, 2026): check-in, "what's open near me", site and festival Q&A, day planning, directions. Built for phones and voice. **Not affiliated with OHNY.** Made by [Dmitry Naidionov](https://naidionov.com).
+A pocket guide to Open House New York Weekend (Oct 16-18, 2026): the check-in link, "what's open near me", site and festival Q&A, day planning, directions. Built for phones and voice. **Not affiliated with OHNY.** Made by [Dmitry Naidionov](https://naidionov.com).
 
 ## Install
 
@@ -140,7 +140,7 @@ It checks the web page, live freshness from ohny.org, nearby, search, site detai
 
 ## Known gaps
 
-- **Direct check-in is not built.** The Fillout form doesn't accept prefilled values from a link, so today the skill reads the form out and the visitor types it (`CHECKIN_MODE = link`). A direct submission needs OHNY's blessing (ideally their API key or a supported endpoint); see `skills/ohny/references/checkin.md`.
+- **Check-in is disabled for now.** The assistant can't check anyone in. When asked, it says so in one sentence and gives OHNY's check-in form link (https://ohny.fillout.com/26weekend) to tap, without asking anything first or reading a waiver; the visitor completes the form themselves. Direct check-in would need OHNY's approval and a supported way to submit (see `skills/ohny/references/checkin.md`).
 - **Ticketed sites publish no street address** (it comes with the ticket). Their map positions come from name lookups or neighborhood centres and are flagged approximate.
 - **Live ticket availability** isn't in OHNY's data, only the "Sold Out" status and the ticket links.
 - **Popularity** is inferred (see `references/planning.md`), not measured.

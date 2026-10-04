@@ -61,7 +61,7 @@ Once they choose, save the plan to the platform's memory (stops, times, tickets,
 - **If the platform can show a web page or artifact:** build a single self-contained page from `assets/itinerary-template.html`: a numbered list of stops with time, address, travel leg, ticket link, a "Directions" link, a "Done" checkbox and an "Ask about this" and "Change" button (these send a message back to chat). Fill the `ITINERARY` JSON block only; don't redesign the page. If it's a presentation tool, one slide per stop works the same way.
 - **Otherwise (voice or plain chat):** run it as a guided walk-through. Give one stop at a time: where, when, how to get there, one fun fact. Say "Tell me when you're done and I'll bring up the next stop." Keep a running list of what's been checked off; "what's left?" reads it back.
 
-Either way, at each stop offer: check in (see `checkin.md`), "tell me about this place", directions to the next stop, or "change the plan". Before each leg, re-check the next stop with `site/<slug>` so a last-minute cancellation or time change gets caught, and tell them right away.
+Either way, at each stop offer: the check-in link (see `checkin.md`), "tell me about this place", directions to the next stop, or "change the plan". Before each leg, re-check the next stop with `site/<slug>` so a last-minute cancellation or time change gets caught, and tell them right away.
 
 ## 6. Changing the plan on the fly
 

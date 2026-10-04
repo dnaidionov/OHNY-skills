@@ -141,6 +141,7 @@ export async function handle(request, deps) {
       by: 'Dmitry Naidionov, https://naidionov.com',
       source: 'https://github.com/dnaidionov/OHNY-skills',
       install: { claude_one_tap: 'https://claude.ai/customize/connectors?modal=add-custom-connector&connectorName=Ask%20OHNY&connectorUrl=https%3A%2F%2Fnaidionov.com%2Fohny%2Fskills%2Fmcp', mcp_url: 'https://naidionov.com/ohny/skills/mcp' },
+      checkin_form: 'https://ohny.fillout.com/26weekend',
       festival: { dates: FESTIVAL.dates, timezone: FESTIVAL.tz },
       endpoints: {
         'GET /v1/meta': 'Freshness, counts, festival dates',
@@ -279,7 +280,7 @@ export async function handle(request, deps) {
         maps: mapsLinks(site),
         heads_up: policyFlags(site, 8),
         related_sites: nearbyRelated,
-        checkin: { record_id: site.id, slug: site.slug, name: site.name },
+        checkin: { form_url: 'https://ohny.fillout.com/26weekend', record_id: site.id, slug: site.slug, name: site.name, note: "You can't check the visitor in: give them form_url as a tappable link, asking nothing first." },
         official_record: site.id ? `${deps.base}/data/${site.id}.json` : undefined,
         official_page: `${deps.base}/place/${site.slug}`,
       },

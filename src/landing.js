@@ -23,14 +23,14 @@ export function landingHtml() {
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Ask OHNY: an unofficial guide to Open House New York Weekend</title>
-<meta name="description" content="Check in, find what's open near you right now, plan your day and get directions at Open House New York Weekend (Oct 16-18, 2026). Works in Claude and other AI chat apps, by voice on your phone. Unofficial.">
+<meta name="description" content="Find what's open near you right now, plan your day, get directions and the check-in link for Open House New York Weekend (Oct 16-18, 2026). Works in Claude and other AI chat apps, by voice on your phone. Unofficial.">
 <meta name="theme-color" content="#14141a">
 <link rel="canonical" href="https://naidionov.com/ohny/skills">
 <link rel="icon" type="image/svg+xml" href="https://naidionov.com/ohny/skills/favicon.svg">
 <link rel="icon" type="image/png" href="https://naidionov.com/ohny/skills/favicon.png">
 <link rel="apple-touch-icon" href="https://naidionov.com/ohny/skills/icon.png">
 <meta property="og:title" content="Ask OHNY: an unofficial guide to Open House New York Weekend">
-<meta property="og:description" content="What's open near you right now, day planning, check-in and directions for OHNY Weekend, Oct 16-18, 2026. Works by voice in AI chat apps.">
+<meta property="og:description" content="What's open near you right now, day planning, directions and the check-in link for OHNY Weekend, Oct 16-18, 2026. Works by voice in AI chat apps.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://naidionov.com/ohny/skills">
 <style>
@@ -92,7 +92,7 @@ export function landingHtml() {
   <h2>What it does</h2>
   <ul class="what">
     <li><strong>What's open near me?</strong> Checks hours at the moment you'd arrive, so it won't send you somewhere that closes first.</li>
-    <li><strong>Check you in</strong> at a site, reading you the form's notice first.</li>
+    <li><strong>Get you to the check-in form</strong> for any site: it can't check you in itself, so it gives you OHNY's link to tap.</li>
     <li><strong>Plan your day</strong> around your interests, kids, accessibility, tickets and how you get around.</li>
     <li><strong>Tell you about a place</strong>, with entry rules and a fun fact or two, and help with directions.</li>
   </ul>
@@ -241,20 +241,18 @@ export function landingHtml() {
 
   <div class="card" id="m-checkin">
     <h3>5. Check in at a site</h3>
-    <p>OHNY asks every visitor to check in at each site before going in. This gets you through OHNY's own short form quickly.</p>
+    <p>OHNY asks every visitor to check in at each site before going in. Your assistant can't do the check-in for you, but it puts OHNY's own form link right in the chat so it's one tap.</p>
     <p class="says">Try saying</p>
     <ul class="eg">
       <li>"Check me in."</li>
-      <li>"Check us in at the Morgan Library. There are three of us."</li>
+      <li>"Check us in at the Morgan Library."</li>
     </ul>
-    <p class="says">What it takes into account</p>
+    <p class="says">What happens</p>
     <ul class="uses">
-      <li><strong>The first time,</strong> it asks whether you want to leave an email or stay anonymous (both are fine), plus your zip or postal code and group size. It never asks for your name; the form has no name field.</li>
-      <li><strong>Which site.</strong> You name it, or it works it out from where you are, and confirms with you.</li>
-      <li><strong>The form's notice.</strong> It reads you the photo and risk waiver in plain words and waits for a clear "yes" before going further.</li>
-      <li><strong>The newsletter box</strong> is left alone unless you ask to join OHNY's mailing list.</li>
-      <li>It gives you the link to OHNY's official form and tells you what to enter, so the check-in is still yours to submit.</li>
-      <li>At the next site it reuses what you said you'd like remembered and only confirms the group size ("still three of you?").</li>
+      <li><strong>No questions first.</strong> It doesn't ask for your email, zip code or group size, and doesn't read you a waiver. It just tells you it can't check you in itself and gives you the link.</li>
+      <li><strong>You complete the form.</strong> In OHNY's form you pick the site, enter your zip code and how many people, and can add an email if you like. The form shows OHNY's photo and risk notice, which you accept by submitting. There is no name field.</li>
+      <li><strong>Your details go straight to OHNY.</strong> The assistant never sees or keeps them.</li>
+      <li>It will never say you're checked in, because only you can submit the form.</li>
     </ul>
   </div>
 

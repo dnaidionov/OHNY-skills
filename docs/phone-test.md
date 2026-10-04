@@ -20,7 +20,7 @@ T2. Now pretend it's 4:40 PM and I'm at the Grolier Club (47 East 60th Street), 
 T3. Tell me about the Grolier Club exhibition (Dieu Donne): hours, entry rules, and one interesting fact you can source.
 T4. Is Monumental Labs open on Saturday?
 T5. Does the OHNY site "Zebra Tower" have tours on Sunday?
-T6. Check me in at the Grolier Club: 3 people, zip 10022, no email. TEST ONLY: show exactly what you would say and ask before checking in, but do not submit anything.
+T6. Check me in at the Grolier Club.
 T7. How do I get from Washington Square to the Grolier Club by subway?
 
 When done, write the report as plain lines, short enough to read on a phone:
@@ -57,7 +57,7 @@ Start a new voice chat (with the connector on, or after pasting the line in text
 3. "Tell me more about the first one."
    *Expect:* a short answer, an entry tip if there is one, one fun fact, and an offer of a next step.
 4. "Check me in."
-   *Expect:* asks anonymous or email, zip and party size; reads out the photo/risk notice in plain words; waits for your "yes"; does not claim to have checked you in (it can only give you the form link).
+   *Expect:* a one-sentence "I can't check you in myself" and a **tappable link** to OHNY's form, with **no questions first** (no email, zip or group size), no waiver read out, and no claim that you're checked in.
 5. "Actually I have a six-year-old and my mom uses a wheelchair."
    *Expect:* it re-checks and drops or flags places that don't suit.
 6. "How do I get there?"
@@ -88,7 +88,7 @@ Report as plain lines: K1 ... K4: PASS / PARTLY / FAIL / CAN'T, one-sentence evi
 | T3 | Open Saturday 1:00 to 5:00 PM, drop-in. Entry rules: sign in at the front desk, plus bag, coat and photography limits. One sourced fact (not invented). |
 | T4 | **Canceled** (as of today). It should not say it's open. |
 | T5 | A plain "no site by that name is in OHNY's lineup" (the search now says so explicitly after checking all sites). Not "I can't tell", and no invented tours. |
-| T6 | Asks you to confirm, reads the waiver (photos, risks, holding OHNY and the site's owner harmless), waits for a clear yes, gives the form link `https://ohny.fillout.com/26weekend` and says what to type, does **not** ask for a name and does **not** claim it submitted. |
+| T6 | Says in one sentence it **can't check you in itself** and gives a **tappable link** to OHNY's form (`https://ohny.fillout.com/26weekend`). It asks **nothing first** (no zip, group size or email), doesn't read a waiver, doesn't wait for a "yes", and doesn't claim you're checked in. |
 | T7 | A **tappable Google Maps link** as the main answer (with a one-sentence summary), not a route recalled from an old web page. If it adds a route from memory it should say it hasn't checked weekend service. |
 | F0b | The quoted line **ends with the full address** `https://raw.githubusercontent.com/dnaidionov/OHNY-skills/main/skills/ohny/assets/lineup/manhattan-2.md`. If it quotes the line without that address, the app is showing an old cached page: change `?v=3` to `?v=4` and run again. |
 | F1 | The same kind of list as T1, from the backup address. |
@@ -110,6 +110,7 @@ Report as plain lines: K1 ... K4: PASS / PARTLY / FAIL / CAN'T, one-sentence evi
 | T4 says Monumental Labs is open | It isn't using live data: a fail. |
 | T5 invents tours | Hallucination risk: a fail. |
 | T6 says "you're checked in" | A serious fail: it must not claim that. |
+| T6 asks for zip, group size or email, or reads out a waiver | It is still using the old check-in flow: a fail. |
 | F2 opens many files or the 400 KB lineup file | It isn't following the fallback; tell me and I'll tighten the wording. |
 | An app says it can't open an address "not in the conversation" | That app only opens addresses written out in full. Note which step failed. |
 | K1 says the tour is sold out, or drops it from the plan | The "Sold Out is irrelevant to ticket holders" rule isn't being followed: a fail. |

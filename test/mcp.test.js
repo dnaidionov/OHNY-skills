@@ -82,7 +82,7 @@ test('tool errors come back as isError results, not protocol errors', async () =
 test('ohny_guide serves each playbook topic; prompts and unknown methods behave', async () => {
   const guide = async (topic) => (await rpcJson({ jsonrpc: '2.0', id: 6, method: 'tools/call', params: { name: 'ohny_guide', arguments: { topic } } })).result;
   assert.match((await guide('overview')).content[0].text, /Starting a conversation/);
-  assert.match((await guide('checkin')).content[0].text, /Waiver/);
+  assert.match((await guide('checkin')).content[0].text, /cannot check visitors in/i);
   assert.match((await guide('planning')).content[0].text, /Interview/);
   assert.match((await guide('api')).content[0].text, /ohny_nearby/);
   assert.equal((await guide('bogus')).isError, true);
@@ -179,4 +179,37 @@ test('PNG and ICO icon routes serve real image bytes', async () => {
     assert.match(res.headers.get('content-type'), /^image\/(png|x-icon)$/);
     assert.deepEqual([...new Uint8Array(await res.arrayBuffer()).slice(0, 4)], bytes);
   }
+});
+
+test('check-in is disabled: the assistant gives the form link and asks nothing first', async () => {
+  const FORM = 'https://ohny.fillout.com/26weekend';
+  // connector instructions
+  assert.ok(INSTRUCTIONS.includes(FORM));
+  assert.match(INSTRUCTIONS, /you cannot check anyone in/i);
+  assert.match(INSTRUCTIONS, /Ask nothing first/);
+  assert.doesNotMatch(INSTRUCTIONS, /read(ing)? back|getting a clear yes|never check anyone in without/i);
+  // the playbook topic served by the connector
+  const guide = async (topic) => (await rpcJson({ jsonrpc: '2.0', id: 6, method: 'tools/call', params: { name: 'ohny_guide', arguments: { topic } } })).result.content[0].text;
+  const checkin = await guide('checkin');
+  assert.ok(checkin.includes(FORM));
+  assert.match(checkin, /Ask nothing first/);
+  assert.match(checkin, /Never say or imply they are checked in/);
+  assert.ok(checkin.length < 3000, 'the check-in playbook should stay short');
+  // the old flow's questions must be gone from the instructions everywhere
+  for (const topic of ['overview', 'planning', 'about']) {
+    const t = await guide(topic);
+    assert.doesNotMatch(t, /check-in profile|anonymous or email|leave an email or stay anonymous|read(s)? (you )?(back|out) the (photo|waiver)|CHECKIN_MODE/i, `${topic} still describes the old check-in flow`);
+  }
+  // the site record carries the link too, so it can't be misremembered
+  const site = (await (await handle(new Request('https://x.test/v1/site/a-26'), deps)).json()).site;
+  assert.equal(site.checkin.form_url, FORM);
+  const help = await (await handle(new Request('https://x.test/?format=json'), deps)).json();
+  assert.equal(help.checkin_form, FORM);
+});
+
+test('landing page describes the link-only check-in honestly', async () => {
+  const t = await (await handle(new Request('https://naidionov.com/ohny/skills', { headers: { accept: 'text/html' } }), deps)).text();
+  assert.match(t, /can't do the check-in for you/);
+  assert.match(t, /No questions first/);
+  assert.doesNotMatch(t, /reads you the photo and risk waiver|asks whether you want to leave an email/i);
 });
