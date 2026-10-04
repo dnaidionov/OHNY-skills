@@ -2,7 +2,7 @@
 // connector in Claude, ChatGPT and other MCP clients. No sessions, no storage, no visitor data.
 import { GUIDE } from './guide-data.js';
 
-const SERVER = { name: 'ohny-skills', title: 'Ask OHNY (unofficial)', version: '0.3.0' };
+const SERVER = { name: 'ohny-skills', title: 'Ask OHNY (unofficial)', version: '0.3.1' };
 const serverInfo = (assetBase) => (assetBase
   ? { ...SERVER, websiteUrl: 'https://naidionov.com/ohny/skills', icons: [
       { src: `${assetBase}/icon.png`, mimeType: 'image/png', sizes: ['512x512'] },
