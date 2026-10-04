@@ -7,20 +7,28 @@ Before you start, note: phone model, app name and version, free or paid plan, an
 - **Claude with the connector added:** just paste Test 1. The prompt only opens the web file if the OHNY tools aren't already there.
 - **ChatGPT and Gemini:** paste Test 1 as is. It loads the instructions from the web file itself.
 
-## Test 0: do the connector's rules reach the assistant? (Claude with the connector)
+## Test 0: does the connector work the way a first-time visitor would use it? (Claude with the connector)
 
-Run this **first**, in a brand-new chat with the OHNY connector switched on. It takes one minute.
+Run each in a **brand-new chat** with the OHNY connector switched on. About three minutes in all.
+
+**Why the first check changed:** Claude shows only a one-line summary of a connector until it needs it, then loads the tools on demand ("I'd confirm that by loading the tool details"). So a question that forbids tools can't test the rules: the earlier version of this test failed for that reason, not because anything was wrong. Test the real flow instead.
+
+**0a. Check-in as the very first message** (paste exactly):
 
 ```
-Without using any tools and without searching the web: what is the exact web address for checking in at an OHNY site, and what would you do if I asked you to check me in?
+ohny, check me in
 ```
 
-The assistant can only answer exactly if the connector's rules reached it.
+- **Pass:** a short reply saying it can't check you in itself, with a **tappable link** to `https://ohny.fillout.com/26weekend`, and **no questions first** (no email, zip or group size, no waiver).
+- **Fail:** it asks questions before giving a link, makes up or can't find a link, or claims you're checked in. (If it first says it will look at its tools and then gives the right link, that's a pass.)
 
-- **Pass:** it gives exactly `https://ohny.fillout.com/26weekend`, says it can't check you in itself, and says it would give you that link without asking anything first.
-- **Fail:** it doesn't know the address, gives some other address, or says it would ask for your zip code and group size.
+**0b. A normal first question:**
 
-Then, in a second new chat, paste: *"ohny, I'm at Washington Square Park (40.7308, -73.9973). Pretend it's Saturday October 17, 2026, 2:30 PM. I like history. What's open within 15 minutes' walk?"* and look at the tool-use lines in the reply. Ideally `ohny_guide` appears first, then `ohny_nearby`.
+```
+ohny, I'm at Washington Square Park (40.7308, -73.9973). Pretend it's Saturday October 17, 2026, 2:30 PM. I like history. What's open within 15 minutes' walk?
+```
+
+Pass: three places with walking times and closing times, a note about anything left out, and the "unofficial, not affiliated with OHNY" line. If your app shows tool use, `ohny_guide` and/or `ohny_nearby` will appear.
 
 **Control test (non-OHNY chat).** With the connector still switched on, start another new chat and ask something unrelated, for example: *"What's a good cheap lunch near Union Square that's open now?"* Pass: it answers as usual, doesn't call any OHNY tool and doesn't mention Open House New York. Fail: any OHNY tool appears or the answer talks about the festival.
 
