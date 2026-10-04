@@ -132,6 +132,7 @@ export function landingHtml() {
       <p>One tap opens Claude's "Add custom connector" box with everything filled in. Check it and confirm. Easiest on a computer; once added it also works in the Claude phone app.</p>
       <a class="btn" href="${esc(LINKS.claude)}" target="_blank" rel="noopener noreferrer">${CLAUDE_ICON_SVG}Add to Claude</a>
       <p>Then start a chat and say <em>"ohny, what's open near me?"</em> The first time, Claude asks to approve each tool: choose <strong>Always allow</strong>, since none of them change anything.</p>
+      <p><strong>Location (phone, optional):</strong> the first time you ask what's open near you, Claude may ask to use your location. Allow it and it won't need to ask where you are. Change it later in Android Settings, Apps, Claude, Permissions, or iPhone Settings, Claude, Location. Not available on Team or Enterprise plans, or on claude.ai and the desktop app: there, name a cross street or landmark.</p>
       <p><strong>Prefer a skill?</strong> <span class="tag">paid plans</span> Download the zip (always the latest release) and add it in Claude under Customize, Skills.</p>
       <a class="btn ghost" href="${esc(LINKS.zip)}" rel="noopener">Download ohny-skill.zip</a>
     </section>
@@ -363,7 +364,7 @@ export function landingHtml() {
   </details>
   <details>
     <summary>It doesn't know where I am</summary>
-    <p>Allow location sharing in your app, or just say a cross street, a landmark or the place you've just been, for example "I'm outside Washington Square Park".</p>
+    <p>On the phone, allow location for the Claude app (Android: Settings, Apps, Claude, Permissions; iPhone: Settings, Claude, Location). Claude's location sharing isn't available on Team or Enterprise plans, or on claude.ai and the desktop app. Or just say a cross street, a landmark or the place you've just been, for example "I'm outside Washington Square Park".</p>
   </details>
   <details>
     <summary>A place was closed, full or different from what it told you</summary>
