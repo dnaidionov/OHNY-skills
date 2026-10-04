@@ -7,6 +7,21 @@ Before you start, note: phone model, app name and version, free or paid plan, an
 - **Claude with the connector added:** just paste Test 1. The prompt only opens the web file if the OHNY tools aren't already there.
 - **ChatGPT and Gemini:** paste Test 1 as is. It loads the instructions from the web file itself.
 
+## Test 0: do the connector's rules reach the assistant? (Claude with the connector)
+
+Run this **first**, in a brand-new chat with the OHNY connector switched on. It takes one minute.
+
+```
+Without using any tools and without searching the web: what is the exact web address for checking in at an OHNY site, and what would you do if I asked you to check me in?
+```
+
+The assistant can only answer exactly if the connector's rules reached it.
+
+- **Pass:** it gives exactly `https://ohny.fillout.com/26weekend`, says it can't check you in itself, and says it would give you that link without asking anything first.
+- **Fail:** it doesn't know the address, gives some other address, or says it would ask for your zip code and group size.
+
+Then, in a second new chat, paste: *"ohny, I'm at Washington Square Park (40.7308, -73.9973). Pretend it's Saturday October 17, 2026, 2:30 PM. I like history. What's open within 15 minutes' walk?"* and look at the tool-use lines in the reply. Ideally `ohny_guide` appears first, then `ohny_nearby`.
+
 ## Test 1: does it work? (paste this)
 
 ```

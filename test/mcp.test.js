@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { handle, _resetCacheForTests } from '../src/handler.js';
 import { _resetEnrichMemoForTests } from '../src/core/enrich.js';
 import { normalizeRecord } from '../src/core/normalize.js';
-import { TOOLS, INSTRUCTIONS } from '../src/mcp.js';
+import { TOOLS, INSTRUCTIONS, RULES, FORM_URL, REMINDER } from '../src/mcp.js';
 
 const rec = (o) => ({ access_type: ['Drop-In'], borough: 'Manhattan', neighborhood: 'SoHo', city: 'New York', state: 'NY',
   saturday_open_access_date: 'Sat, Oct 17', sat_opening_time: '10:00 AM', sat_closing_time: '5:00 PM', ...o });
@@ -212,4 +212,30 @@ test('landing page describes the link-only check-in honestly', async () => {
   assert.match(t, /can't do the check-in for you/);
   assert.match(t, /No questions first/);
   assert.doesNotMatch(t, /reads you the photo and risk waiver|asks whether you want to leave an email/i);
+});
+
+test('the rules reach the model even if the client ignores the connector instructions (descriptions and results carry them)', async () => {
+  // Claude was observed NOT to use the server instructions: tool descriptions are what always arrive.
+  const tools = (await rpcJson({ jsonrpc: '2.0', id: 20, method: 'tools/list' })).result.tools;
+  const guide = tools.find((t) => t.name === 'ohny_guide');
+  assert.match(guide.description, /^READ FIRST\. OHNY RULES/);
+  assert.ok(guide.description.includes(FORM_URL));
+  assert.match(guide.description, /you cannot check anyone in/i);
+  assert.match(guide.description, /ask nothing first/i);
+  for (const t of tools) assert.match(t.description, /OHNY RULES/, `${t.name} should point at the rules`);
+  assert.ok(tools.reduce((n, t) => n + t.description.length, 0) < 5000, 'descriptions are sent every turn: keep them small');
+  assert.ok(RULES.length < 1200 && REMINDER.length < 400);
+
+  // every successful data result starts with the short reminder
+  const call = async (name, args) => (await rpcJson({ jsonrpc: '2.0', id: 21, method: 'tools/call', params: { name, arguments: args } })).result;
+  for (const [name, args] of [['ohny_nearby', { lat: 40.7308, lng: -73.9973 }], ['ohny_search', { q: 'alpha' }], ['ohny_site', { slug: 'a-26' }], ['ohny_changes', {}]]) {
+    const r = await call(name, args);
+    assert.equal(r.isError, undefined, name);
+    const o = JSON.parse(r.content[0].text);
+    assert.equal(Object.keys(o)[0], 'ohny_reminder', `${name}: the reminder must come first`);
+    assert.ok(o.ohny_reminder.includes(FORM_URL));
+  }
+  // errors stay clean, and the playbook text is returned as is
+  assert.equal(JSON.parse((await call('ohny_nearby', {})).content[0].text).ohny_reminder, undefined);
+  assert.doesNotMatch((await call('ohny_guide', { topic: 'checkin' })).content[0].text, /ohny_reminder/);
 });

@@ -157,6 +157,8 @@ export async function runSmoke(base, opts = {}) {
     const tools = (await rpc('tools/list')).result.tools;
     must(tools.length === 6, `${tools.length} tools`);
     must(tools.some((t) => t.name === 'ohny_check_plan'), 'plan checker missing');
+    const guide = tools.find((t) => t.name === 'ohny_guide');
+    must(guide?.description.includes('ohny.fillout.com/26weekend') && /you cannot check anyone in/i.test(guide.description), 'the check-in rule is missing from the tool descriptions (clients that ignore server instructions would never see it)');
     must(tools.every((t) => t.annotations?.readOnlyHint === true), 'a tool is not marked read-only');
     return tools.map((t) => t.name).join(', ');
   });
@@ -165,6 +167,7 @@ export async function runSmoke(base, opts = {}) {
     const r = await toolText('ohny_nearby', { lat: 40.7308, lng: -73.9973, max_walk_min: 20, now: TEST_NOW });
     must(!r.isError, `tool error: ${r.text.slice(0, 120)}`);
     must(JSON.parse(r.text).results.length > 0, 'no results');
+    must(JSON.parse(r.text).ohny_reminder, 'the reminder block is missing from tool results');
   });
 
   await check('connector: ohny_search no_match', async () => {
