@@ -127,6 +127,8 @@ ohny, what's open near me? Pretend it's Saturday October 17, 2026, 2:30 PM. I li
 
 - **Pass:** no prompt, list near you straight away.
 
+**Result (Oct 4, 2026, Claude mobile app):** 5a passed (it asked to enable location, then used it) and 5c passed (no prompt after Always allow). 5b (denied) not yet run.
+
 **Also note:** whether the tool shown in the chat is the app's location tool plus `ohny_nearby`, and whether the first answer included the "unofficial helper" line.
 
 ## Answer key (live data as of Oct 2, 2026; sites and hours can change)
