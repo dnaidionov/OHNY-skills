@@ -31,9 +31,8 @@ Rules that always apply:
 // reaches the model: tool DESCRIPTIONS (sent every turn, even when no tool is called) and tool RESULTS.
 // So the rules that matter most live in both places.
 export const FORM_URL = 'https://ohny.fillout.com/26weekend';
-export const RULES = `OHNY RULES (always apply): (1) Hours, status and ticket availability change up to the last minute: ALWAYS use the ohny_* tools, never memory, and tell the visitor first if a place is canceled. (2) Check-in: you cannot check anyone in. Say so in one sentence and give the tappable link ${FORM_URL}; ask nothing first (no email, zip or group size), don't read out a waiver, never say they're checked in. (3) Visitors are on phones, often by voice: short replies, at most three options, no tables, no web addresses read aloud. (4) Tickets the visitor already holds are hard constraints: pass them to ohny_nearby as "fixed" and check plans with ohny_check_plan; "Sold Out" never applies to a ticket holder. (5) Say which places you left out and why (the "skipped" list). (6) This helper is unofficial and not affiliated with Open House New York. (7) If a tool fails, say you can't see live information right now; never guess.`;
+export const RULES_CORE = `Rules that matter most in OHNY conversations: (1) hours, status and tickets change up to the last minute: use the ohny_* tools, never memory. (2) Check-in: you cannot check anyone in; say so in one sentence and give the tappable link ${FORM_URL}, asking nothing first (no email, zip or group size), and never say they're checked in.`;
 export const REMINDER = `Check-in is link-only (${FORM_URL}), ask nothing first and never say they're checked in. Live data only from these tools. At most three options, voice-friendly. Name what you left out. Held tickets are hard constraints. Unofficial, not affiliated with OHNY.`;
-const SEE_RULES = ' Follow the OHNY RULES in the ohny_guide tool description.';
 
 const str = (d) => ({ type: 'string', description: d });
 const int = (d) => ({ type: 'integer', description: d });
@@ -43,7 +42,7 @@ export const TOOLS = [
   {
     name: 'ohny_nearby',
     title: 'Find OHNY sites near a place',
-    description: 'Use this when the visitor asks what to see, what is open, or what is near them or near a place they just visited. Returns sites that will be OPEN when the visitor arrives (now + walking time), closest/best-fitting first, with OHNY\'s own suggestions, heads-up hints and a list of places skipped and why. Pass the visitor\'s interests, child age and wheelchair need. Needs lat+lng or near=<site slug>. Follow the OHNY RULES in the ohny_guide tool description.',
+    description: `Only for the Open House New York (OHNY) Weekend festival (Oct 16-18, 2026), not for general places, restaurants or shops. Use when the visitor asks what to see or what is open near them or near a festival site. Returns festival sites that will be OPEN when they arrive, best-fitting first, with entry hints and the places skipped and why. Pass interests, child age and wheelchair need. Needs lat+lng or near=<site slug>.`,
     inputSchema: {
       type: 'object',
       properties: {
@@ -60,7 +59,7 @@ export const TOOLS = [
         interests_mode: { type: 'string', enum: ['require', 'prefer'], description: 'require = only matches (default); prefer = matches first' },
         borough: str('Limit to a borough'),
         exclude: str('Comma separated slugs to skip'),
-        fixed: str('Tickets the visitor already holds, as site-slug@YYYY-MM-DDTHH:MM (session start, New York time), several separated by ";". Add @lat,lng with the exact address from the ticket for precise timing, e.g. grand-central-26@2026-10-17T16:00@40.7527,-73.9772. Suggestions then leave time to reach the ticket and the reply says when to leave.'),
+        fixed: str('Held tickets: site-slug@YYYY-MM-DDTHH:MM (session start, New York time), several separated by ";". Optional @lat,lng after the time = exact address from the ticket, e.g. grand-central-26@2026-10-17T16:00@40.7527,-73.9772'),
         mode: { type: 'string', enum: ['walk', 'transit', 'car'], description: 'How they will travel to a held ticket (default walk; transit and car are rough estimates)' },
         min_stay_min: int('With held tickets: least time a suggested stop must allow before they have to leave (default 30)'),
         ticket_buffer_min: int('Minutes early to arrive for a ticketed session (default 15)'),
@@ -74,25 +73,25 @@ export const TOOLS = [
   {
     name: 'ohny_search',
     title: 'Search OHNY sites',
-    description: 'Use this when the visitor names a place or topic ("the Grolier Club", "rooftops in Brooklyn") or you need a site slug. Finds a site by name, partner, neighborhood or topic. Returns up to 5 cards with live status and directions links. Follow the OHNY RULES in the ohny_guide tool description.',
+    description: `Only for Open House New York (OHNY) Weekend sites (Oct 16-18, 2026). Use when the visitor names a festival site or topic ("the Grolier Club", "rooftops") or you need a site slug. Returns up to 5 sites with live status and directions links.`,
     inputSchema: { type: 'object', properties: { q: str('Name or topic, e.g. "grolier" or "rooftop"'), limit: int('Max results (default 5, max 10)'), now: NOW }, required: ['q'] },
     path: '/v1/search',
   },
   {
     name: 'ohny_site',
     title: 'Get details for one OHNY site',
-    description: 'Use this when the visitor asks about one specific site, before sending anyone to it, and before planning with it. Everything about the site, fetched fresh: description, access notes (entry rules), accessibility, websites, all visit times with ticket links, status now, directions links, heads-up hints, OHNY\'s related nearby sites, and the link to the OHNY check-in form. Follow the OHNY RULES in the ohny_guide tool description.',
+    description: `Only for Open House New York (OHNY) Weekend. Use for questions about one festival site, before sending anyone there, and before planning with it. Returns fresh details: description, entry rules, accessibility, websites, visit times with ticket links, status now, directions links, related nearby sites and the OHNY check-in form link.`,
     inputSchema: { type: 'object', properties: { slug: str('Site slug from a search or nearby result, e.g. "dieu-donne-26"'), now: NOW }, required: ['slug'] },
     path: '/v1/site/{slug}',
   },
   {
     name: 'ohny_check_plan',
     title: 'Check an itinerary',
-    description: 'Use this before presenting or changing a plan, and whenever the visitor holds tickets. Checks each stop: open when they arrive, tour sessions exist at those times, ticket held or sold out, and whether travel between stops fits (with arrive-early buffers for tours). Returns blocking problems and warnings per stop and a one-line verdict. Follow the OHNY RULES in the ohny_guide tool description.',
+    description: `Only for Open House New York (OHNY) Weekend itineraries. Use before presenting or changing a plan, and whenever the visitor holds tickets. Checks each stop: open on arrival, tour sessions exist, ticket held or sold out, and travel between stops (with an arrive-early buffer for tours). Returns blocking problems, warnings and a verdict.`,
     inputSchema: {
       type: 'object',
       properties: {
-        stops: str('Stops in time order as site-slug@YYYY-MM-DDTHH:MM, separated by ";": arrival time for a free site, session start for a tour. Optional @lat,lng after the time overrides the position (use the exact address from a ticket).'),
+        stops: str('Stops in time order: site-slug@YYYY-MM-DDTHH:MM separated by ";" (arrival time for a free site, session start for a tour); optional @lat,lng after the time'),
         held: str('Slugs of sites the visitor already holds tickets for, comma separated (they must also be in stops)'),
         mode: { type: 'string', enum: ['walk', 'transit', 'car'], description: 'Travel between stops (default walk; transit and car are rough estimates, confirm long hops with a maps app)' },
         stay_min: int('Assumed minutes at a free stop (default 45)'),
@@ -106,14 +105,14 @@ export const TOOLS = [
   {
     name: 'ohny_changes',
     title: 'What changed on OHNY\'s lineup',
-    description: 'Use this before finalising a plan, or when asked "anything new or canceled?". Lists cancellations, new sites and changed times on ohny.org since the saved copy. Follow the OHNY RULES in the ohny_guide tool description.',
+    description: `Only for Open House New York (OHNY) Weekend. Use before finalising a plan, or when asked about cancellations or new sites. Lists cancellations, new sites and changed times on ohny.org since the saved copy.`,
     inputSchema: { type: 'object', properties: { now: NOW } },
     path: '/v1/changes',
   },
   {
     name: 'ohny_guide',
     title: 'OHNY playbook',
-    description: `READ FIRST. ${RULES} Call this tool with topic "overview" at the start of any OHNY conversation, and before planning a day or explaining this helper. It returns the detailed playbook. topic: "overview" (start of session), "checkin" (how to answer a check-in request), "planning" (before planning a day), "api" (how to read tool results), "about" (explaining what this helper is). Read the topic before doing that task.`,
+    description: `Only for Open House New York (OHNY) Weekend, Oct 16-18, 2026: ignore it in any other conversation. Call with topic "overview" at the start of an OHNY conversation, and before planning a day or explaining this helper. ${RULES_CORE} Topics: "overview", "checkin", "planning", "api" (reading results), "about".`,
     inputSchema: { type: 'object', properties: { topic: { type: 'string', enum: Object.keys(GUIDE), description: 'Which part of the playbook' } }, required: ['topic'] },
     local: true,
   },

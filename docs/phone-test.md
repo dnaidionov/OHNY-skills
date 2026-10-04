@@ -22,6 +22,8 @@ The assistant can only answer exactly if the connector's rules reached it.
 
 Then, in a second new chat, paste: *"ohny, I'm at Washington Square Park (40.7308, -73.9973). Pretend it's Saturday October 17, 2026, 2:30 PM. I like history. What's open within 15 minutes' walk?"* and look at the tool-use lines in the reply. Ideally `ohny_guide` appears first, then `ohny_nearby`.
 
+**Control test (non-OHNY chat).** With the connector still switched on, start another new chat and ask something unrelated, for example: *"What's a good cheap lunch near Union Square that's open now?"* Pass: it answers as usual, doesn't call any OHNY tool and doesn't mention Open House New York. Fail: any OHNY tool appears or the answer talks about the festival.
+
 ## Test 1: does it work? (paste this)
 
 ```

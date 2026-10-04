@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { handle, _resetCacheForTests } from '../src/handler.js';
 import { _resetEnrichMemoForTests } from '../src/core/enrich.js';
 import { normalizeRecord } from '../src/core/normalize.js';
-import { TOOLS, INSTRUCTIONS, RULES, FORM_URL, REMINDER } from '../src/mcp.js';
+import { TOOLS, INSTRUCTIONS, RULES_CORE, FORM_URL, REMINDER } from '../src/mcp.js';
 
 const rec = (o) => ({ access_type: ['Drop-In'], borough: 'Manhattan', neighborhood: 'SoHo', city: 'New York', state: 'NY',
   saturday_open_access_date: 'Sat, Oct 17', sat_opening_time: '10:00 AM', sat_closing_time: '5:00 PM', ...o });
@@ -214,17 +214,25 @@ test('landing page describes the link-only check-in honestly', async () => {
   assert.doesNotMatch(t, /reads you the photo and risk waiver|asks whether you want to leave an email/i);
 });
 
-test('the rules reach the model even if the client ignores the connector instructions (descriptions and results carry them)', async () => {
-  // Claude was observed NOT to use the server instructions: tool descriptions are what always arrive.
+test('the rules reach the model even if the client ignores the connector instructions, but only in OHNY conversations', async () => {
+  // Claude was observed NOT to use the server instructions: tool descriptions are what arrive with the tools.
   const tools = (await rpcJson({ jsonrpc: '2.0', id: 20, method: 'tools/list' })).result.tools;
   const guide = tools.find((t) => t.name === 'ohny_guide');
-  assert.match(guide.description, /^READ FIRST\. OHNY RULES/);
   assert.ok(guide.description.includes(FORM_URL));
   assert.match(guide.description, /you cannot check anyone in/i);
-  assert.match(guide.description, /ask nothing first/i);
-  for (const t of tools) assert.match(t.description, /OHNY RULES/, `${t.name} should point at the rules`);
-  assert.ok(tools.reduce((n, t) => n + t.description.length, 0) < 5000, 'descriptions are sent every turn: keep them small');
-  assert.ok(RULES.length < 1200 && REMINDER.length < 400);
+  assert.match(guide.description, /asking nothing first/i);
+  assert.match(guide.description, /ignore it in any other conversation/);
+  assert.doesNotMatch(guide.description, /always apply|READ FIRST/i, 'must not read as global rules');
+  // scoping: a general "what is open near me" question must not be captured by these tools
+  for (const t of tools) {
+    assert.match(t.description.slice(0, 140), /Only for (the )?Open House New York \(OHNY\)/, `${t.name} must say up front that it is only for OHNY`);
+  }
+  assert.match(tools.find((t) => t.name === 'ohny_nearby').description, /not for general places, restaurants or shops/);
+  // context cost: these definitions ride along whenever the connector is on, so keep them small
+  const descChars = tools.reduce((n, t) => n + t.description.length, 0);
+  assert.ok(descChars < 2800, `descriptions are ${descChars} chars`);
+  assert.ok(JSON.stringify(tools).length < 8000, 'all tool definitions together should stay under ~2,000 tokens');
+  assert.ok(RULES_CORE.length < 700 && REMINDER.length < 400);
 
   // every successful data result starts with the short reminder
   const call = async (name, args) => (await rpcJson({ jsonrpc: '2.0', id: 21, method: 'tools/call', params: { name, arguments: args } })).result;

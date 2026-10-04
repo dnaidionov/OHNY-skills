@@ -157,6 +157,7 @@ export async function runSmoke(base, opts = {}) {
     const tools = (await rpc('tools/list')).result.tools;
     must(tools.length === 6, `${tools.length} tools`);
     must(tools.some((t) => t.name === 'ohny_check_plan'), 'plan checker missing');
+    must(tools.every((t) => /Only for (the )?Open House New York \(OHNY\)/.test(t.description.slice(0, 140))), 'a tool description is not scoped to OHNY (it could capture unrelated questions)');
     const guide = tools.find((t) => t.name === 'ohny_guide');
     must(guide?.description.includes('ohny.fillout.com/26weekend') && /you cannot check anyone in/i.test(guide.description), 'the check-in rule is missing from the tool descriptions (clients that ignore server instructions would never see it)');
     must(tools.every((t) => t.annotations?.readOnlyHint === true), 'a tool is not marked read-only');
