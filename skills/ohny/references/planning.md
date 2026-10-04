@@ -56,7 +56,7 @@ Offer a stop around 12-2 PM (lunch) and/or 6-8 PM, placed **near the surrounding
 
 **Before you present the plan, validate it with `/v1/plan/check` (tool `ohny_check_plan`)** (list the stops in time order as `slug@YYYY-MM-DDTHH:MM`, pass tickets in `held`, and the exact ticket coordinates when you have them). Fix every *blocking* problem first (a tour time that doesn't exist, a free site that's closed when they arrive, a hop that can't be made, a ticket held for a canceled site). Warnings (a tight hop, a long leg to confirm in a maps app, a ticket address still needed) go into the stop's note in a few words.
 
-Once they choose, save the plan to the platform's memory (stops, times, tickets, party size, mode) and present a **followable itinerary**:
+Once they choose, save the plan to the platform's memory (stops, times, tickets, party size, mode) if persistent memory is available, otherwise keep it for this conversation, and present a **followable itinerary**:
 
 - **If the platform can show a web page or artifact:** build a single self-contained page from `assets/itinerary-template.html`: a numbered list of stops with time, address, travel leg, ticket link, a "Directions" link, a "Done" checkbox and an "Ask about this" and "Change" button (these send a message back to chat). Fill the `ITINERARY` JSON block only; don't redesign the page. If it's a presentation tool, one slide per stop works the same way.
 - **Otherwise (voice or plain chat):** run it as a guided walk-through. Give one stop at a time: where, when, how to get there, one fun fact. Say "Tell me when you're done and I'll bring up the next stop." Keep a running list of what's been checked off; "what's left?" reads it back.
