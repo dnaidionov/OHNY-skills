@@ -39,6 +39,35 @@ export function landingHtml() {
   *{box-sizing:border-box}
   body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
   main{max-width:680px;margin:0 auto;padding:28px 16px 56px}
+  .layout{max-width:680px;margin:0 auto}
+  .layout main{margin:0}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+  [id]{scroll-margin-top:72px}
+  .pagenav{position:sticky;top:0;z-index:20;background:var(--bg);border-bottom:1px solid var(--line)}
+  .pagenav details{position:relative;padding:0 16px}
+  .pagenav summary{list-style:none;cursor:pointer;min-height:48px;display:flex;align-items:center;gap:8px;font-size:.95rem;min-width:0}
+  .pagenav summary .lbl{color:var(--muted);flex:none}
+  .pagenav summary .cur{font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;min-width:0}
+  .pagenav summary::-webkit-details-marker{display:none}
+  .pagenav summary::after{content:"";width:7px;height:7px;border-right:2px solid var(--muted);border-bottom:2px solid var(--muted);border-radius:1px;transform:translateY(-25%) rotate(45deg);transition:transform .15s ease;margin-right:4px;flex:none}
+  .pagenav details[open]>summary::after{transform:translateY(25%) rotate(-135deg)}
+  .pagenav ul{list-style:none;margin:0;padding:0}
+  .js .pagenav details>ul{position:absolute;left:12px;right:12px;top:100%;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:6px 6px;max-height:70vh;overflow:auto;box-shadow:0 12px 28px rgba(0,0,0,.14)}
+  .pagenav a{display:block;padding:9px 10px;border-radius:8px;text-decoration:none;color:var(--muted);font-size:.95rem}
+  .pagenav a:hover{color:var(--ink);background:var(--soft)}
+  .pagenav a.on{color:var(--ink);font-weight:600;background:var(--soft)}
+  .pagenav li li a{padding-left:24px;font-size:.9rem}
+  @media (min-width:920px){
+    .layout{display:grid;grid-template-columns:190px minmax(0,680px);gap:28px;max-width:898px}
+    [id]{scroll-margin-top:24px}
+    .pagenav{position:sticky;top:0;align-self:start;max-height:100vh;overflow:auto;border:none;background:none;padding:34px 0 24px;z-index:auto}
+    .pagenav details{padding:0}
+    .pagenav summary{display:none}
+    .js .pagenav details>ul{position:static;border:none;box-shadow:none;background:none;padding:0;max-height:none;overflow:visible}
+    .pagenav a{padding:6px 10px;font-size:.92rem}
+    .pagenav li li a{padding-left:22px;font-size:.88rem}
+  }
   .head{display:flex;align-items:center;gap:26px;margin:0 0 10px}
   .head .ohny-logo{width:64px;height:auto;flex:none;color:var(--ink)}
   h1{font-size:2rem;line-height:1.15;margin:0;letter-spacing:-.01em}
@@ -100,6 +129,32 @@ export function landingHtml() {
 </style>
 </head>
 <body>
+<script>document.documentElement.className='js'</script>
+<div class="layout">
+<nav class="pagenav" aria-label="On this page">
+  <details id="navd" open>
+    <summary><span class="lbl">On this page:</span><span class="cur">What it does</span></summary>
+    <ul>
+      <li><a href="#what">What it does</a></li>
+      <li><a href="#start">Get started</a></li>
+      <li><a href="#trying">Trying it before the festival</a></li>
+      <li><a href="#manual">User manual</a>
+        <ul>
+          <li><a href="#m-nearby">What's open near me</a></li>
+          <li><a href="#m-site">About a place</a></li>
+          <li><a href="#m-plan">Plan my day</a></li>
+          <li><a href="#m-directions">Directions</a></li>
+          <li><a href="#m-checkin">Check in</a></li>
+          <li><a href="#m-festival">Festival questions</a></li>
+          <li><a href="#m-changes">Changes</a></li>
+          <li><a href="#m-memory">What it remembers</a></li>
+        </ul>
+      </li>
+      <li><a href="#m-trouble">Troubleshooting</a></li>
+    </ul>
+  </details>
+</nav>
+<script>if(!matchMedia('(min-width:920px)').matches)document.getElementById('navd').open=false</script>
 <main>
   <div class="head">
     ${OHNY_LOGO_SVG}
@@ -108,7 +163,7 @@ export function landingHtml() {
   <p class="lead">An unofficial pocket guide to <strong>Open House New York Weekend</strong>, October 16&ndash;18, 2026. Ask it in your AI chat app, by voice on your phone.</p>
   <p class="notice"><strong>Independent project.</strong> Not affiliated with, endorsed by or sponsored by Open House New York. For anything official, see <a href="${esc(LINKS.ohny)}" target="_blank" rel="noopener noreferrer">ohny.org</a>.</p>
 
-  <h2>What it does</h2>
+  <h2 id="what">What it does</h2>
   <ul class="what">
     <li><strong>What's open near me?</strong> Checks hours at the moment you'd arrive, so it won't send you somewhere that closes first.</li>
     <li><strong>Get you to the check-in form</strong> for any site: it can't check you in itself, so it gives you OHNY's link to tap.</li>
@@ -118,7 +173,7 @@ export function landingHtml() {
   <p style="margin:8px 0"><a href="#manual">See everything it can do, with example questions &darr;</a></p>
   <p style="color:var(--muted);font-size:.95rem">It reads OHNY's public lineup live, so cancellations and last-minute changes show up. The guide service itself stores nothing about you; whatever your assistant remembers stays in your own AI account.</p>
 
-  <h2>Get started</h2>
+  <h2 id="start">Get started</h2>
   <div class="tabs" id="tabs">
     <div class="tablist" role="tablist" aria-label="Choose your AI app">
       <button class="tab" role="tab" id="tab-claude" aria-controls="panel-claude" aria-selected="true" type="button">Claude</button>
@@ -170,8 +225,6 @@ export function landingHtml() {
   <section class="manual" id="manual">
   <h2>User manual</h2>
   <p class="lead" style="margin-bottom:10px">Talk to it the way you'd talk to a friend who knows the festival. Start with the word <em>"ohny"</em> or <em>"Open House New York"</em> so your assistant knows to use it. Everything below also works by voice, and replies are kept short so they're easy to listen to.</p>
-  <p class="toc"><a href="#m-nearby">What's open near me</a> <a href="#m-site">About a place</a> <a href="#m-plan">Plan my day</a> <a href="#m-directions">Directions</a> <a href="#m-checkin">Check in</a> <a href="#m-festival">Festival questions</a> <a href="#m-changes">Changes</a> <a href="#m-memory">What it remembers</a> <a href="#m-trouble">Troubleshooting</a></p>
-
   <details class="card sec" open id="m-nearby">
     <summary><h3>1. Find what's open near me</h3></summary>
     <p>Tell it where you are and what you like, and it suggests places you can actually get into.</p>
@@ -389,6 +442,7 @@ export function landingHtml() {
     <br>This page is part of naidionov.com and is covered by that site's usual analytics.
   </footer>
 </main>
+</div>
 <div class="toast" id="toast" role="status"></div>
 <script>
 (function () {
@@ -410,6 +464,25 @@ export function landingHtml() {
       if (j < 0) return; e.preventDefault(); show(tabs[(j + tabs.length) % tabs.length].id.slice(4), true);
     });
   });
+  var navd = document.getElementById('navd'), wide = window.matchMedia('(min-width:920px)');
+  function syncNav() { navd.open = wide.matches; }
+  syncNav();
+  if (wide.addEventListener) wide.addEventListener('change', syncNav);
+  navd.addEventListener('click', function (e) { if (!wide.matches && e.target.closest('a')) navd.open = false; });
+  document.addEventListener('click', function (e) { if (!wide.matches && navd.open && !e.target.closest('.pagenav')) navd.open = false; });
+  var navLinks = Array.prototype.slice.call(navd.querySelectorAll('a'));
+  var navTargets = navLinks.map(function (a) { return document.getElementById(a.getAttribute('href').slice(1)); });
+  var curLabel = navd.querySelector('.cur');
+  var ticking = false;
+  function markActive() {
+    ticking = false;
+    var cur = 0, line = wide.matches ? 120 : 140;
+    navTargets.forEach(function (t, i) { if (t && t.getBoundingClientRect().top <= line) cur = i; });
+    navLinks.forEach(function (a, i) { if (i === cur) a.className = 'on'; else a.removeAttribute('class'); });
+    curLabel.textContent = navLinks[cur].textContent;
+  }
+  window.addEventListener('scroll', function () { if (!ticking) { ticking = true; requestAnimationFrame(markActive); } }, { passive: true });
+  markActive();
   function openTarget(id) {
     var el = id && document.getElementById(id);
     for (; el; el = el.parentElement) if (el.tagName === 'DETAILS') el.open = true;
