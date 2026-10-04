@@ -61,6 +61,7 @@ Fork this repo and see "Deploy" below (the Worker also answers under a path pref
   - **Sites added after the snapshot:** found automatically. Their description is fetched live from OHNY's detail file; their map position is looked up from the address (cached), or, with no usable address, estimated from the neighborhood and flagged approximate.
   - **Sites that move:** the old position is discarded and re-looked-up.
   - The saved snapshot (`data/lineup.json`) only supplies descriptions, websites and map positions for the sites it already knew. If ohny.org can't be reached the Worker says so (`live:false`). `GET /v1/changes` lists everything that differs from the snapshot. Rebuild the snapshot before the festival to make late additions exact.
+- **Tickets you already hold are hard constraints.** Pass them as `fixed=<site>@<date-time>` (with the exact address from the ticket as `@lat,lng`, since ticketed sites publish none) and every suggestion leaves time to reach the ticket; the reply says when to leave. "Sold Out" never applies to a ticket holder. `GET /v1/plan/check` (connector tool `ohny_check_plan`) validates a whole itinerary: open on arrival, tour sessions exist, tickets held, and travel between stops. A ticket whose time doesn't match a real OHNY session is reported first.
 - **Walking distance.** `nearby` takes `max_walk_min` ("what's within 15 minutes?") and checks each site against the time you'd **arrive** (now + walk), skipping places that close before you get there or leave under 10 minutes to look around. Skipped places are returned by name with the reason, so the assistant can tell the visitor. Results are ranked by a blend of how well a site fits the visitor's interests, how close it is, and (when they ask "what else is near here?", via `near=<slug>`) whether OHNY itself suggests it as nearby; a suggestion that doesn't match their interests is reported separately instead of recommended. Group needs filter the list: `child_age` (age limits) and `wheelchair=true`, with the reason given for each place left out.  and each result carries short entry-rule hints from the site's access notes (photo ID, bag limits, age limit, ...).
 - **Privacy.** The Worker keeps nothing and receives no names, emails or zip codes. The skill keeps the visitor's profile in the AI platform's own memory.
 - **Test mode.** Every call takes `now=2026-10-17T14:30` (New York time). Outside Oct 16-18 the skill asks the tester what moment to pretend it is, and lets them change it.
@@ -84,7 +85,7 @@ Fork this repo and see "Deploy" below (the Worker also answers under a path pref
 ## Run and test
 
 ```bash
-npm test                    # 52 unit tests, no network (the offline tests need python3)
+npm test                    # 76 unit tests, no network (the offline tests need python3)
 npm run build:data          # refresh data/lineup.json (do this again right before the festival)
 npx wrangler dev            # local API at http://localhost:8787
 curl 'http://localhost:8787/v1/nearby?lat=40.7295&lng=-73.9965&interests=history&now=2026-10-17T14:30'

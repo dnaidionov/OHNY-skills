@@ -14,10 +14,11 @@ const KNOWN_VERSIONS = ['2025-11-25', '2025-06-18', '2025-03-26', '2024-11-05'];
 // Shown to the model when the connector is added, so it knows how to behave. The full guide is a tool.
 export const INSTRUCTIONS = `You are a guide to Open House New York (OHNY) Weekend, Oct 16-18, 2026. Unofficial: NOT affiliated with OHNY. For hours, status, tickets or what's nearby ALWAYS call the ohny_* tools (never answer from memory); at the start of a session call ohny_guide with topic "overview". Visitors are on phones, often by voice: short replies, max three options.
 
-Tools: ohny_nearby (what's open near a point, ranked for the visitor), ohny_search (find a site by name/topic), ohny_site (full fresh details for one site), ohny_changes (what changed on ohny.org), ohny_guide (the full playbook: "overview" at the start, and "checkin", "planning" or "api" before doing those things).
+Tools: ohny_nearby (what's open near a point, ranked for the visitor), ohny_search (find a site by name/topic), ohny_site (full fresh details for one site), ohny_check_plan (validate an itinerary: open on arrival, sessions exist, travel between stops, tickets held), ohny_changes (what changed on ohny.org), ohny_guide (the full playbook: "overview" at the start, and "checkin", "planning" or "api" before doing those things).
 
 Rules that always apply:
 - OHNY changes things up to the last minute. Tell the visitor first if something is canceled or sold out, and mention when results aren't live (as_of / live flag).
+- Tickets the visitor already holds are HARD constraints. Record each (site, session date and time, party size), ask for the exact address on the ticket (ticketed sites publish none), pass them to ohny_nearby as "fixed", and run ohny_check_plan before presenting any plan. "Sold Out" on OHNY's list never applies to a ticket holder; only a canceled site or a missing or changed session does, and then tell them first. Say when to leave (your_tickets.leave_by).
 - Ask about interests, kids' ages, wheelchair needs and walking limit once, remember them (use your memory only if the visitor agrees), and pass them to ohny_nearby every time. Name any places you left out (the "skipped" list) and why.
 - Check-in: never check anyone in without reading back the details AND the photo/risk waiver in plain words and getting a clear yes; the form is https://ohny.fillout.com/26weekend and cannot be pre-filled, so give the link and read out what to enter. Call ohny_guide topic "checkin" first.
 - If today is not Oct 16-18, ask what day and time to pretend it is, and pass it as the "now" argument (YYYY-MM-DDTHH:MM, New York time).
@@ -51,6 +52,10 @@ export const TOOLS = [
         interests_mode: { type: 'string', enum: ['require', 'prefer'], description: 'require = only matches (default); prefer = matches first' },
         borough: str('Limit to a borough'),
         exclude: str('Comma separated slugs to skip'),
+        fixed: str('Tickets the visitor already holds, as site-slug@YYYY-MM-DDTHH:MM (session start, New York time), several separated by ";". Add @lat,lng with the exact address from the ticket for precise timing, e.g. grand-central-26@2026-10-17T16:00@40.7527,-73.9772. Suggestions then leave time to reach the ticket and the reply says when to leave.'),
+        mode: { type: 'string', enum: ['walk', 'transit', 'car'], description: 'How they will travel to a held ticket (default walk; transit and car are rough estimates)' },
+        min_stay_min: int('With held tickets: least time a suggested stop must allow before they have to leave (default 30)'),
+        ticket_buffer_min: int('Minutes early to arrive for a ticketed session (default 15)'),
         min_time_left_min: int('Skip places with less time left than this on arrival (default 10)'),
         closing_soon_min: int('Warn if closing within this many minutes of arrival (default 45)'),
         now: NOW,
@@ -71,6 +76,24 @@ export const TOOLS = [
     description: 'Use this when the visitor asks about one specific site, before sending anyone to it, and before planning with it. Everything about the site, fetched fresh: description, access notes (entry rules), accessibility, websites, all visit times with ticket links, status now, directions links, heads-up hints, OHNY\'s related nearby sites, and check-in info.',
     inputSchema: { type: 'object', properties: { slug: str('Site slug from a search or nearby result, e.g. "dieu-donne-26"'), now: NOW }, required: ['slug'] },
     path: '/v1/site/{slug}',
+  },
+  {
+    name: 'ohny_check_plan',
+    title: 'Check an itinerary',
+    description: 'Use this before presenting or changing a plan, and whenever the visitor holds tickets. Checks each stop: open when they arrive, tour sessions exist at those times, ticket held or sold out, and whether travel between stops fits (with arrive-early buffers for tours). Returns blocking problems and warnings per stop and a one-line verdict.',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        stops: str('Stops in time order as site-slug@YYYY-MM-DDTHH:MM, separated by ";": arrival time for a free site, session start for a tour. Optional @lat,lng after the time overrides the position (use the exact address from a ticket).'),
+        held: str('Slugs of sites the visitor already holds tickets for, comma separated (they must also be in stops)'),
+        mode: { type: 'string', enum: ['walk', 'transit', 'car'], description: 'Travel between stops (default walk; transit and car are rough estimates, confirm long hops with a maps app)' },
+        stay_min: int('Assumed minutes at a free stop (default 45)'),
+        buffer_min: int('Minutes early to arrive for a tour (default 15)'),
+        now: NOW,
+      },
+      required: ['stops'],
+    },
+    path: '/v1/plan/check',
   },
   {
     name: 'ohny_changes',
@@ -117,6 +140,7 @@ async function callTool(name, args, call) {
   }
   if (tool.name === 'ohny_site' && !args?.slug) return { result: text('slug is required (get one from ohny_search or ohny_nearby).', true) };
   if (tool.name === 'ohny_search' && !args?.q) return { result: text('q is required.', true) };
+  if (tool.name === 'ohny_check_plan' && !args?.stops) return { result: text('stops is required: site-slug@YYYY-MM-DDTHH:MM;... in time order.', true) };
   const body = await call(toUrl(tool, args));
   return { result: text(body.text, !body.ok) };
 }

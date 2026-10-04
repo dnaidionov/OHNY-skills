@@ -11,10 +11,13 @@ const rec = (o) => ({ access_type: ['Drop-In'], borough: 'Manhattan', neighborho
 const live = [
   rec({ record_id: 'recG', slug: 'grolier-26', experience_name: 'Grolier Club', address_1: '47 East 60th Street', zip: '10022', short_description: 'Books.', description: 'Fresh.' }),
   rec({ record_id: 'recV', slug: 'village-26', experience_name: 'Village Hall', address_1: '1 Main St', zip: '10012', short_description: 'History.', description: 'Fresh.' }),
+  { record_id: 'recT', slug: 'gct-26', experience_name: 'Grand Central Terminal', access_type: ['Sold Out'], borough: 'Manhattan', neighborhood: 'Midtown', city: 'New York', state: 'NY',
+    short_description: 'A tour of the terminal.', description: 'Fresh.',
+    ticketed_session_day_1_date: 'Sat, Oct 17', ticketed_session_start_time_1: '4:00 PM', ticketed_session_end_time_1: '5:00 PM' },
 ];
-const snapshot = { generated_at: '2026-10-01T00:00:00Z', sites: live.map((r, i) => ({ ...normalizeRecord(r), geo: { lat: 40.73 + i * 0.002, lng: -73.997, conf: 'address' } })) };
+const snapshot = { generated_at: '2026-10-01T00:00:00Z', sites: live.map((r, i) => ({ ...normalizeRecord(r), geo: i === 2 ? { lat: 40.7527, lng: -73.9772, conf: 'name' } : { lat: 40.73 + i * 0.002, lng: -73.997, conf: 'address' } })) };
 const upstream = async (url) => url.endsWith('/festival.json') ? Response.json({ records: live })
-  : /\/data\/rec(G|V)\.json$/.test(url) ? Response.json({ data: live.find((r) => url.includes(r.record_id)) }) : new Response('', { status: 404 });
+  : /\/data\/rec(G|V|T)\.json$/.test(url) ? Response.json({ data: live.find((r) => url.includes(r.record_id)) }) : new Response('', { status: 404 });
 
 const net = (broken) => (url, init) => {
   if (broken) return Promise.resolve(new Response('Bad gateway', { status: 502 }));

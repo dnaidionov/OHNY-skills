@@ -2,6 +2,7 @@ import { statusAt, statusLine, isCanceled } from './status.js';
 import { haversineKm, walkMinutes, mapsLinks } from './geo.js';
 import { interpretInterests } from './tags.js';
 import { policyFlags } from './policy.js';
+import { nextTicket, ticketLeg, describeTickets, clock, NEARBY_MIN_STAY_MIN, TICKET_BUFFER_MIN } from './tickets.js';
 
 const clip = (s, n) => (s && s.length > n ? `${s.slice(0, n - 1).trimEnd()}…` : s);
 
@@ -75,12 +76,15 @@ const kidFriendly = (site) => Boolean(site.family) || (site.tags ?? []).includes
  *   - being kid-friendly, when there's a child in the group.
  * interestsMode "require" (default) leaves out non-matches; "prefer" keeps them, ranked lower.
  * Ticketed sites appear only if a tour is in progress on arrival (flagged ticket_required) and not sold out.
+ * `tickets` are sessions the visitor already holds (see tickets.js): HARD constraints. A suggested place must leave
+ * `minStayMin` before they have to set off for the next ticket; Sold Out never applies to the ticket sites themselves.
  */
 export function nearby(sites, o) {
   const {
     lat, lng, interests, nowAbs, limit = 3, offset = 0, radiusKm, maxWalkMin, includeTicketed = true,
     includeSoldOut = false, closingSoonMin, borough, exclude = [], minRemainingMin = 10, arrivalAware = true,
     suggested = [], childAge, wheelchair = false, interestsMode = 'require',
+    tickets = [], mode = 'walk', minStayMin = NEARBY_MIN_STAY_MIN, ticketBuffer = TICKET_BUFFER_MIN,
   } = o;
   const interest = interpretInterests(interests);
   const hasInterests = interest.tags.length > 0 || interest.words.length > 0;
@@ -89,6 +93,8 @@ export function nearby(sites, o) {
   const maxKm = Math.min(radiusKm ?? Infinity, maxWalkMin ? kmForWalkMinutes(maxWalkMin) : Infinity);
   const refKm = Number.isFinite(maxKm) ? maxKm : 2;
   const suggestedSet = new Set(suggested);
+  const ticketSlugs = new Set(tickets.filter((t) => t.site).map((t) => t.site.slug));
+  const upNext = nextTicket(tickets, nowAbs);
 
   let unlocated = 0;
   let inRange = 0;
@@ -104,6 +110,7 @@ export function nearby(sites, o) {
     const km = haversineKm(here, site.geo);
     if (km > maxKm) continue;
     inRange++;
+    if (ticketSlugs.has(site.slug)) { bump('your_ticketed_site'); continue; }
     const walk = walkMinutes(km);
     const score = interestScore(site, interest);
     const offInterest = hasInterests && score === 0;
@@ -139,6 +146,16 @@ export function nearby(sites, o) {
       continue;
     }
 
+    let leg;
+    if (upNext) {
+      leg = ticketLeg(upNext, site, nowAbs + walk, { mode, buffer: ticketBuffer });
+      if (leg.availableMin < minStayMin) {
+        bump('would_make_you_late_for_your_ticket');
+        skipped.push({ site, km, walk, reason: 'ticket_conflict', why:
+          `You'd have only ${Math.max(0, Math.round(leg.availableMin))} minute${Math.round(leg.availableMin) === 1 ? '' : 's'} there before you must set off for your ${upNext.name} tour at ${clock(upNext.startAbs)}.` });
+        continue;
+      }
+    }
     bump('open_on_arrival');
     const sug = suggestedSet.has(site.slug);
     const match = Math.min(score, 6) / 6;
@@ -147,11 +164,11 @@ export function nearby(sites, o) {
     const rank = hasInterests
       ? 0.45 * match + 0.35 * prox + 0.2 * Number(sug) + 0.1 * kid
       : 0.75 * prox + 0.25 * Number(sug) + 0.1 * kid;
-    rows.push({ site, st, km, walk, rank, sug, fit, score, kid });
+    rows.push({ site, st, km, walk, rank, sug, fit, score, kid, leg });
   }
   rows.sort((a, b) => b.rank - a.rank || a.km - b.km);
   skipped.sort((a, b) => a.km - b.km);
-  const page = rows.slice(offset, offset + limit).map(({ site, st, km, walk, sug, fit, kid }) => card(site, st, {
+  const page = rows.slice(offset, offset + limit).map(({ site, st, km, walk, sug, fit, kid, leg }) => card(site, st, {
     ohny_suggests: sug || undefined,
     fits_interests: hasInterests ? interest.tags.filter((t) => site.tags?.includes(t)) : undefined,
     kid_friendly: kid ? true : undefined,
@@ -159,6 +176,10 @@ export function nearby(sites, o) {
     distance_km: Math.round(km * 10) / 10,
     walk_min: walk,
     time_left_on_arrival_min: st.closes_in_min,
+    ...(leg && Number.isFinite(leg.availableMin) ? {
+      time_before_your_ticket_min: Math.min(Math.round(leg.availableMin), st.closes_in_min),
+      leave_by: clock(Math.min(leg.leaveByAbs, nowAbs + walk + st.closes_in_min)),
+    } : {}),
     distance_approx: site.geo.conf !== 'address' ? true : undefined,
     maps: mapsLinks(site),
   }));
@@ -170,7 +191,9 @@ export function nearby(sites, o) {
       max_walk_min: maxWalkMin, arrival_aware: arrivalAware, min_time_left_min: minRemainingMin,
       interests: hasInterests ? { tags: interest.tags, mode: interestsMode } : undefined,
       child_age: childAge, wheelchair: wheelchair || undefined,
+      held_tickets: tickets.length ? { count: tickets.length, travel_mode: mode, min_stay_min: minStayMin, arrive_early_min: ticketBuffer } : undefined,
     },
+    your_tickets: tickets.length ? describeTickets(tickets, { here, nowAbs, mode, buffer: ticketBuffer }) : undefined,
     skipped_total: skipped.length || undefined,
     skipped: skipped.length ? skipped.slice(0, 8).map(({ site, walk, reason, why }) => ({ slug: site.slug, name: site.name, walk_min: walk, reason, why })) : undefined,
     ohny_suggests_but_not_your_interests: suggestedButOffInterest.length ? suggestedButOffInterest.slice(0, 5) : undefined,

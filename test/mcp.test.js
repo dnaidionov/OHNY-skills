@@ -44,13 +44,13 @@ test('notifications get 202 and no body; GET is 405; bad JSON is a parse error',
 test('tools/list exposes the read-only tools with schemas', async () => {
   const r = await rpcJson({ jsonrpc: '2.0', id: 3, method: 'tools/list' });
   const names = r.result.tools.map((t) => t.name);
-  assert.deepEqual(names, ['ohny_nearby', 'ohny_search', 'ohny_site', 'ohny_changes', 'ohny_guide']);
+  assert.deepEqual(names, ['ohny_nearby', 'ohny_search', 'ohny_site', 'ohny_check_plan', 'ohny_changes', 'ohny_guide']);
   for (const t of r.result.tools) {
     assert.equal(t.inputSchema.type, 'object');
     assert.equal(t.annotations.readOnlyHint, true);
     assert.equal(t.path, undefined);                                           // internals are not leaked
   }
-  assert.equal(TOOLS.length, 5);
+  assert.equal(TOOLS.length, 6);
 });
 
 test('tools/call runs the real routes: nearby, search, site, changes', async () => {
@@ -100,7 +100,7 @@ test('ohny_guide serves each playbook topic; prompts and unknown methods behave'
 test('works under a path prefix on a custom domain (/ohny/skills/mcp, /ohny/skills/v1/...)', async () => {
   const init = { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ jsonrpc: '2.0', id: 1, method: 'tools/list' }) };
   const viaPrefix = await handle(new Request('https://naidionov.com/ohny/skills/mcp', init), deps);
-  assert.equal((await viaPrefix.json()).result.tools.length, 5);
+  assert.equal((await viaPrefix.json()).result.tools.length, 6);
   const v1 = await handle(new Request('https://naidionov.com/ohny/skills/v1/search?q=alpha'), deps);
   assert.equal((await v1.json()).results[0].slug, 'a-26');
   assert.equal((await handle(new Request('https://naidionov.com/ohny/skills'), deps)).status, 200);       // help page

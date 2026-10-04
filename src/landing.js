@@ -65,6 +65,17 @@ export function landingHtml() {
   .tab:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
   .tabs .panel{margin-top:0;border-top-left-radius:0}
   .panel[hidden]{display:none}
+  .manual h3{margin:0 0 4px;font-size:1.02rem}
+  .manual .says{margin:8px 0 4px;font-size:.8rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+  .manual ul.eg{list-style:none;padding:0;margin:0 0 8px}
+  .manual ul.eg li{background:var(--soft);border:1px solid var(--line);border-radius:10px;padding:7px 12px;margin:6px 0;font-size:.95rem;font-style:italic}
+  .manual ul.uses{padding-left:1.1rem;margin:4px 0 8px;color:var(--muted);font-size:.95rem}
+  .manual ul.uses li{margin:3px 0}
+  .manual details{background:var(--card);border:1px solid var(--line);border-radius:12px;margin:8px 0;padding:0 14px}
+  .manual summary{cursor:pointer;font-weight:600;min-height:48px;display:flex;align-items:center}
+  .manual details[open] summary{margin-bottom:2px}
+  .manual details p{margin:4px 0 12px;color:var(--muted);font-size:.95rem}
+  .toc{display:flex;flex-wrap:wrap;gap:6px 14px;margin:0 0 6px;font-size:.92rem}
   .toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:var(--accent);color:var(--onaccent);padding:10px 16px;border-radius:10px;font-size:.9rem;opacity:0;pointer-events:none;transition:opacity .2s}
   .toast.on{opacity:1}
 </style>
@@ -85,6 +96,7 @@ export function landingHtml() {
     <li><strong>Plan your day</strong> around your interests, kids, accessibility, tickets and how you get around.</li>
     <li><strong>Tell you about a place</strong>, with entry rules and a fun fact or two, and help with directions.</li>
   </ul>
+  <p style="margin:8px 0"><a href="#manual">See everything it can do, with example questions &darr;</a></p>
   <p style="color:var(--muted);font-size:.95rem">It reads OHNY's public lineup live, so cancellations and last-minute changes show up. The guide service itself stores nothing about you; whatever your assistant remembers stays in your own AI account.</p>
 
   <h2>Get started</h2>
@@ -132,8 +144,197 @@ export function landingHtml() {
     </section>
   </div>
 
-  <h2>Trying it before the festival</h2>
+  <h2 id="trying">Trying it before the festival</h2>
   <p>Before October 16 the assistant will ask what day and time to pretend it is, for example "Saturday 2:30 PM", and you can change it any time.</p>
+
+  <section class="manual" id="manual">
+  <h2>User manual</h2>
+  <p class="lead" style="margin-bottom:10px">Talk to it the way you'd talk to a friend who knows the festival. Start with the word <em>"ohny"</em> or <em>"Open House New York"</em> so your assistant knows to use it. Everything below also works by voice, and replies are kept short so they're easy to listen to.</p>
+  <p class="toc"><a href="#m-nearby">What's open near me</a> <a href="#m-site">About a place</a> <a href="#m-plan">Plan my day</a> <a href="#m-directions">Directions</a> <a href="#m-checkin">Check in</a> <a href="#m-festival">Festival questions</a> <a href="#m-changes">Changes</a> <a href="#m-memory">What it remembers</a> <a href="#m-trouble">Troubleshooting</a></p>
+
+  <div class="card" id="m-nearby">
+    <h3>1. Find what's open near me</h3>
+    <p>Tell it where you are and what you like, and it suggests places you can actually get into.</p>
+    <p class="says">Try saying</p>
+    <ul class="eg">
+      <li>"ohny, what's open near me?"</li>
+      <li>"What's near the Brooklyn Public Library that my kids would like?"</li>
+      <li>"I'm at Grand Central. Any rooftops or architecture within a 15 minute walk?"</li>
+      <li>"What else is near here?" (right after you've visited a place)</li>
+    </ul>
+    <p class="says">What it takes into account</p>
+    <ul class="uses">
+      <li><strong>Where you are.</strong> Share your phone's location, or name a cross street, a landmark or the place you've just been.</li>
+      <li><strong>When you'd arrive,</strong> not just now: it adds the walk and leaves out places that will be closed or full by then. If a place closes soon after you'd get there, it tells you to head straight over.</li>
+      <li><strong>Your interests,</strong> such as architecture, history, art, rooftops, gardens or kids' activities.</li>
+      <li><strong>Children</strong> (the youngest one's age) and <strong>wheelchair access</strong>, so it can leave out places with an age limit or without access.</li>
+      <li><strong>How far you're willing to walk.</strong></li>
+      <li><strong>OHNY's own "worth a visit nearby" picks,</strong> which get a boost. A closer place that fits you better can still come first.</li>
+      <li><strong>Entry rules that could stop you,</strong> like photo ID, age limits, bag limits or security screening, mentioned in a few words.</li>
+      <li><strong>Tickets.</strong> Ticketed tours show up only while one is under way, and it says a ticket is needed. Sold-out and canceled places are never offered.</li>
+    </ul>
+    <p>It also tells you what it <em>left out and why</em> ("eleven places have closed for the day, two are tours that aren't running"), so a short list isn't a mystery.</p>
+  </div>
+
+  <div class="card" id="m-site">
+    <h3>2. Ask about a specific place</h3>
+    <p>Hours, what you'll see, entry rules, and a bit of the story behind the building.</p>
+    <p class="says">Try saying</p>
+    <ul class="eg">
+      <li>"Tell me about the Grolier Club."</li>
+      <li>"Is the Jefferson Market Courthouse wheelchair accessible?"</li>
+      <li>"Do I need a ticket for the Domino Sugar Refinery? What should I bring?"</li>
+    </ul>
+    <p class="says">What it takes into account</p>
+    <ul class="uses">
+      <li>OHNY's own description, access notes and accessibility details, fetched fresh each time, plus the site's own website.</li>
+      <li>Whether it's open, ticketed, sold out or canceled right now. A cancellation is the first thing you'll hear.</li>
+      <li>The practical must-knows: ID, bags, photography, footwear, stairs, arrive-early. It quotes these as OHNY states them and never invents them.</li>
+      <li>A fun fact or two, only when it can source them. It won't make up history.</li>
+      <li>OHNY's suggestions for nearby places, with walking times.</li>
+    </ul>
+    <p>If no site by that name is in OHNY's lineup, it tells you so plainly and offers to search by neighborhood or topic instead.</p>
+  </div>
+
+  <div class="card" id="m-plan">
+    <h3>3. Plan your day or the whole weekend</h3>
+    <p>It asks a few questions, one at a time, then offers two or three different plans for you to choose from and adjust.</p>
+    <p class="says">Try saying</p>
+    <ul class="eg">
+      <li>"Plan my Saturday in Brooklyn."</li>
+      <li>"We have four hours Sunday afternoon with a six-year-old. What should we do?"</li>
+      <li>"I already have tickets for 2 PM at the Refinery. Build a day around that."</li>
+      <li>"We're running late. Change the plan."</li>
+    </ul>
+    <p class="says">What it takes into account</p>
+    <ul class="uses">
+      <li><strong>Which days and how many hours,</strong> and when you start and finish.</li>
+      <li><strong>Interests, boroughs and places you already want to see.</strong></li>
+      <li><strong>Who's coming:</strong> group size, kids' ages, wheelchair or limited-stairs needs.</li>
+      <li><strong>How you'll get around</strong> and how far you'll walk.</li>
+      <li><strong>Tickets you already hold,</strong> which become fixed points the plan is built around.</li>
+      <li><strong>Whether you have a Passport,</strong> which lets you go ahead of the line at free sites. It budgets longer waits at popular free sites if you don't, and puts the most popular ones first thing or late.</li>
+      <li><strong>Real visit windows only.</strong> It never plans an arrival in the last 20 minutes of opening hours or after a tour's start time, and leaves buffers between stops (more for ticketed tours).</li>
+      <li><strong>Geography.</strong> Stops are grouped by neighborhood to avoid zig-zagging across boroughs.</li>
+      <li><strong>Entry rules</strong> that clash with your group, such as age limits, bags with strollers, stairs or no photography.</li>
+      <li><strong>Last-minute changes.</strong> It checks for cancellations before presenting a plan and again before each leg.</li>
+      <li><strong>Lunch or dinner</strong> for longer plans, near your stops, if you want it.</li>
+    </ul>
+    <p>Once you choose, you get a followable itinerary: a checklist page where your assistant can show one, or a guided walk-through, one stop at a time, in a voice chat.</p>
+  </div>
+
+  <div class="card" id="m-directions">
+    <h3>4. Get directions</h3>
+    <p class="says">Try saying</p>
+    <ul class="eg">
+      <li>"How do I get to the next stop?"</li>
+      <li>"Directions to the Tenement Museum by subway."</li>
+      <li>"Walking directions from here."</li>
+    </ul>
+    <p class="says">What it takes into account</p>
+    <ul class="uses">
+      <li>It gives you a tappable link that opens Google Maps or Apple Maps, with a one-sentence summary. Transit is the default in New York; say "walking" or "bike" to change it.</li>
+      <li>It won't quote subway routes from memory, since weekend service changes make those unreliable. The maps link has the current ones.</li>
+      <li>For a site where the exact address isn't published until you have a ticket, it says the location is approximate.</li>
+    </ul>
+  </div>
+
+  <div class="card" id="m-checkin">
+    <h3>5. Check in at a site</h3>
+    <p>OHNY asks every visitor to check in at each site before going in. This gets you through OHNY's own short form quickly.</p>
+    <p class="says">Try saying</p>
+    <ul class="eg">
+      <li>"Check me in."</li>
+      <li>"Check us in at the Morgan Library. There are three of us."</li>
+    </ul>
+    <p class="says">What it takes into account</p>
+    <ul class="uses">
+      <li><strong>The first time,</strong> it asks whether you want to leave an email or stay anonymous (both are fine), plus your zip or postal code and group size. It never asks for your name; the form has no name field.</li>
+      <li><strong>Which site.</strong> You name it, or it works it out from where you are, and confirms with you.</li>
+      <li><strong>The form's notice.</strong> It reads you the photo and risk waiver in plain words and waits for a clear "yes" before going further.</li>
+      <li><strong>The newsletter box</strong> is left alone unless you ask to join OHNY's mailing list.</li>
+      <li>It gives you the link to OHNY's official form and tells you what to enter, so the check-in is still yours to submit.</li>
+      <li>At the next site it reuses what you said you'd like remembered and only confirms the group size ("still three of you?").</li>
+    </ul>
+  </div>
+
+  <div class="card" id="m-festival">
+    <h3>6. Questions about the festival itself</h3>
+    <p class="says">Try saying</p>
+    <ul class="eg">
+      <li>"What is a Weekend Passport?"</li>
+      <li>"Do I need tickets for everything?"</li>
+      <li>"What are the festival dates?"</li>
+      <li>"Who made this? Is it official?"</li>
+    </ul>
+    <p class="says">What it takes into account</p>
+    <ul class="uses">
+      <li>It checks ohny.org first and says where an answer came from if it had to look elsewhere. For ticket rules, prices and Passport benefits it reads the official page instead of guessing.</li>
+      <li>It sells nothing and gets nothing from anything you buy. Tickets and Passports are bought on ohny.org, and it mentions them only when they'd clearly help what you're trying to do, never with pressure.</li>
+    </ul>
+  </div>
+
+  <div class="card" id="m-changes">
+    <h3>7. Anything new or canceled?</h3>
+    <p class="says">Try saying</p>
+    <ul class="eg">
+      <li>"Any cancellations or changes?"</li>
+      <li>"Is anything new on the lineup since last week?"</li>
+    </ul>
+    <p>It lists cancellations, new sites and changed times from ohny.org. It checks this on its own before it finalizes a plan.</p>
+  </div>
+
+  <div class="card" id="m-memory">
+    <h3>What it remembers (and doesn't)</h3>
+    <ul class="uses" style="margin-top:6px">
+      <li>Only what you tell it and agree to keep: your interests, group size, zip code, kids' ages, accessibility needs, how you like to get around, whether you hold a Passport, tickets you already have, and the places you've visited.</li>
+      <li>It's kept in your own AI account, not by the people who made this guide. Ask <em>"what do you know about me?"</em> to see it all, or say <em>"forget it"</em> to delete it.</li>
+      <li>It never saves your email unless you say so.</li>
+    </ul>
+  </div>
+
+  <h2 id="m-trouble">Troubleshooting</h2>
+  <details>
+    <summary>It doesn't seem to know about OHNY, or answers like a generic chatbot</summary>
+    <p>Start your message with "ohny" or "Open House New York" so the assistant knows to use the guide. Make sure it's switched on: in Claude, check that Ask OHNY is enabled in the chat's tools menu. If you used the paste-in method, paste the line again at the start of a new chat, since it only lasts for that chat.</p>
+  </details>
+  <details>
+    <summary>My assistant asks permission every time</summary>
+    <p>The first time, choose <strong>Always allow</strong>. None of the tools change anything, they only look things up.</p>
+  </details>
+  <details>
+    <summary>It says it can't see live information, or mentions a "saved copy"</summary>
+    <p>It couldn't reach OHNY's live list for a moment. It'll tell you, so please double-check hours and status on the site's own page at ohny.org (every site has one) before you set out. Trying again a minute later usually works.</p>
+  </details>
+  <details>
+    <summary>It says the festival isn't on and asks what day and time to pretend it is</summary>
+    <p>That's expected before October 16 (see <a href="#trying">Trying it before the festival</a>). Answer with something like "Saturday 2:30 PM". You can change it any time by saying "change the time to Sunday morning".</p>
+  </details>
+  <details>
+    <summary>It says it can't find a place I know is in the festival</summary>
+    <p>Try the exact name as it appears on ohny.org, a neighborhood, or a topic ("rooftops in Queens"). If it truly isn't in OHNY's lineup it will say so.</p>
+  </details>
+  <details>
+    <summary>The list of nearby places is short or empty</summary>
+    <p>It will tell you why. Often it's late in the day, or places are tours not currently running, or your walking limit or interests are narrow. Try "show me more, even if it's a longer walk" or "include other interests".</p>
+  </details>
+  <details>
+    <summary>It doesn't know where I am</summary>
+    <p>Allow location sharing in your app, or just say a cross street, a landmark or the place you've just been, for example "I'm outside Washington Square Park".</p>
+  </details>
+  <details>
+    <summary>A place was closed, full or different from what it told you</summary>
+    <p>Sorry about that. Sites can change things at the last minute, and busy places can run out of room, so it can't guarantee entry or wait times. Tell it what happened and ask for "what else is near here?". For anything official, contact OHNY at <a href="mailto:info@ohny.org">info@ohny.org</a> or see ohny.org.</p>
+  </details>
+  <details>
+    <summary>It's not working in ChatGPT or Gemini</summary>
+    <p>ChatGPT needs a Plus or higher plan with Developer Mode on to add connectors; otherwise use the paste-in method under <a href="#others" data-tab="others">Others</a>. Gemini uses the paste-in method too and needs its web browsing switched on, so live "open now" checks may be limited there.</p>
+  </details>
+  <details>
+    <summary>It said something wrong, or something else isn't working</summary>
+    <p>Please tell your assistant what happened so it can try again, and check the official page for the place. You can also report problems on the project's <a href="${esc(LINKS.github)}/issues" target="_blank" rel="noopener noreferrer">GitHub page</a>.</p>
+  </details>
+  </section>
 
   <footer>
     Made by <a href="${esc(LINKS.site)}" target="_blank" rel="noopener noreferrer">Dmitry Naidionov</a> &middot;

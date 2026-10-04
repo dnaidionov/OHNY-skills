@@ -7,6 +7,7 @@ import { mapsLinks, haversineKm, walkMinutes } from './core/geo.js';
 import { enrichSites } from './core/enrich.js';
 import { policyFlags } from './core/policy.js';
 import { handleMcp } from './mcp.js';
+import { parseSpecs, resolveTickets, checkPlan, TICKET_BUFFER_MIN, DEFAULT_STAY_MIN, NEARBY_MIN_STAY_MIN } from './core/tickets.js';
 import { landingHtml } from './landing.js';
 import { ICON_SVG } from './icon.js';
 import { ICON_PNG_512, ICON_PNG_48, FAVICON_ICO } from './icon-data.js';
@@ -144,6 +145,8 @@ export async function handle(request, deps) {
       endpoints: {
         'GET /v1/meta': 'Freshness, counts, festival dates',
         'GET /v1/nearby?lat=&lng=&interests=&limit=3&offset=0': 'Closest sites that will be open when you arrive, matching interests (also near=<slug>, max_walk_min, radius_km, min_time_left_min, include_ticketed, borough, child_age, wheelchair=true, interests_mode=prefer|require, exclude=slug,slug)',
+        'GET /v1/nearby ... &fixed=<slug>@<date-time>[;...][@lat,lng]': 'Tickets the visitor already holds are hard constraints: suggestions leave time to reach them; the reply has your_tickets with leave_by (also mode=walk|transit|car, min_stay_min, ticket_buffer_min)',
+        'GET /v1/plan/check?stops=<slug>@<date-time>;...&held=<slug>,...': 'Validate an itinerary: open at arrival, session times exist, travel between stops, tickets held (also mode, stay_min, buffer_min)',
         'GET /v1/search?q=': 'Find sites by name, partner, neighborhood or topic',
         'GET /v1/site/<slug>': 'Full, freshly fetched details for one site',
         'GET /v1/changes': 'What changed on ohny.org since the saved copy (cancellations, new times, new sites)',
@@ -178,6 +181,23 @@ export async function handle(request, deps) {
     })));
   }
 
+  const MODES = ['walk', 'transit', 'car'];
+  const travelMode = MODES.includes(q.get('mode')) ? q.get('mode') : 'walk';
+  const FIXED_HINT = 'Use fixed=<site-slug>@YYYY-MM-DDTHH:MM (the session start, New York time); separate several with ";"; add @lat,lng to use the exact address from the ticket, e.g. fixed=grand-central-26@2026-10-17T16:00@40.7527,-73.9772';
+
+  if (path === '/v1/plan/check') {
+    const specs = parseSpecs(q.get('stops'));
+    if (!specs.length) {
+      return fail(400, 'stops is required.', `List the stops in time order: stops=<slug>@YYYY-MM-DDTHH:MM;<slug>@... (arrival time for a free site, session start for a tour). Add held=<slug>,<slug> for tickets already held. ${FIXED_HINT}`);
+    }
+    const lineup = await getLineup(deps);
+    const result = checkPlan(lineup.sites, {
+      specs, held: (q.get('held') ?? '').split(/[;,]/).filter(Boolean), mode: travelMode,
+      stayMin: num(q.get('stay_min')) ?? DEFAULT_STAY_MIN, buffer: num(q.get('buffer_min')) ?? TICKET_BUFFER_MIN, nowAbs: now.abs,
+    });
+    return json(envelope(lineup, now, result));
+  }
+
   if (path === '/v1/nearby') {
     const lineup = await getLineup(deps);
     let lat = num(q.get('lat'));
@@ -194,8 +214,17 @@ export async function handle(request, deps) {
       return fail(400, 'lat and lng (or near=<site slug>) are required.',
         'If the visitor shared no location, ask for a cross street or landmark, look up its coordinates, then call again.');
     }
+    let tickets = [];
+    if (q.get('fixed')) {
+      const specs = parseSpecs(q.get('fixed'));
+      if (!specs.length) return fail(400, `Could not read fixed="${q.get('fixed')}".`, FIXED_HINT);
+      tickets = resolveTickets(lineup.sites, specs);
+    }
     const result = nearby(lineup.sites, {
       lat, lng, nowAbs: now.abs,
+      tickets, mode: travelMode,
+      minStayMin: num(q.get('min_stay_min')) ?? NEARBY_MIN_STAY_MIN,
+      ticketBuffer: num(q.get('ticket_buffer_min')) ?? TICKET_BUFFER_MIN,
       interests: q.get('interests') ?? '',
       suggested,
       childAge: num(q.get('child_age')),

@@ -88,7 +88,7 @@ export async function buildGuideData() {
         '- **If you can make a document, canvas or checklist:** a numbered list of stops (time, place, address, travel leg, ticket link, entry rules) with a "done" box for each is fine; update it as they go.\n- **Otherwise (voice or plain chat):**');
     }
     if (file === 'api.md') {
-      md = md.replace(/^# .*\n/, '# The OHNY tools\n\nIn this connector the web addresses below are the tools `ohny_nearby` (`/v1/nearby`), `ohny_search` (`/v1/search`), `ohny_site` (`/v1/site/<slug>`) and `ohny_changes` (`/v1/changes`). Call the tools; their parameters are the query parameters listed here. Ignore anything about fetching URLs yourself.\n');
+      md = md.replace(/^# .*\n/, '# The OHNY tools\n\nIn this connector the web addresses below are the tools `ohny_nearby` (`/v1/nearby`), `ohny_search` (`/v1/search`), `ohny_site` (`/v1/site/<slug>`), `ohny_check_plan` (`/v1/plan/check`) and `ohny_changes` (`/v1/changes`). Call the tools; their parameters are the query parameters listed here. Ignore anything about fetching URLs yourself.\n');
     }
     topics[file.replace('.md', '')] = rewriteRefs(md, 'mcp');
   }

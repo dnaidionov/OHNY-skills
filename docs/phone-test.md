@@ -65,6 +65,19 @@ Start a new voice chat (with the connector on, or after pasting the line in text
 
 Score each line: understood you? short enough to listen to? did it stop and wait for you? did it read out something silly (a URL, a table)?
 
+## Test 4: tickets I already hold (paste this in the same chat, after Test 1)
+
+```
+OHNY TICKET TEST. Be honest: if you can't do a step write CAN'T and say why, and say HOW you got each answer (which OHNY tool or page). Pretend it is Saturday October 17, 2026, 12:30 PM New York time. I'm at Washington Square Park (40.7308, -73.9973) and I will travel by subway. I like history.
+
+K1. I already hold 2 tickets for the Fifth Avenue Presbyterian Church Organ Tour today at 3:00 PM. My ticket says it meets at 7 West 55th Street. Plan the next two hours so I'm on time, with one or two history stops before it. Tell me when I must leave.
+K2. Actually, I think my ticket says 3:30 PM, not 3:00. Is that right?
+K3. Add the Renee & Chaim Gross Foundation at 2:30 PM first and then the tour. Does that work?
+K4. How do I get to the tour from where I'll be after the first stop?
+
+Report as plain lines: K1 ... K4: PASS / PARTLY / FAIL / CAN'T, one-sentence evidence, HOW I GOT IT.
+```
+
 ## Answer key (live data as of Oct 2, 2026; sites and hours can change)
 
 | Step | What a good answer looks like |
@@ -83,6 +96,10 @@ Score each line: understood you? short enough to listen to? did it stop and wait
 | F2 | It picks `manhattan-2.md` (latitude 40.725 to 40.754) and mentions `manhattan-1.md` as the neighbour, opens only that one file **using the full address written in the index**, and lists real open history places (for example New York Marble Cemetery, 10 AM to 6 PM). |
 | F3 | Opens the **LIVE link at the end of the place's line** (or the `official_record` link in F1's results) and shows a status (Drop-In, Ticketed, Sold Out or Canceled) and the hours. |
 | F4 | "I can't see live information right now", pointing to ohny.org. No guessed hours. |
+| K1 | Treats the ticket as fixed: does **not** say the tour is sold out or offer alternatives to it (OHNY lists it as Sold Out, which doesn't matter to a ticket holder). Gives a **leave-by time** (about 2:15 to 2:30 PM by subway) and one or two history stops that fit before it, such as the Renee & Chaim Gross Foundation (open until 4 PM, about 5 min away) or the Lower East Side Arts & Culture Open House (until 5 PM). Mentions arriving early and any entry rules (ID, bags). |
+| K2 | **Does not just agree.** Says OHNY lists the tour at **1:00 PM and 3:00 PM only**, and asks you to check the ticket. |
+| K3 | **No.** Starting at the Gross Foundation at 2:30 leaves about 28 minutes of travel, so you'd be roughly an hour late. It says so and offers a better order. |
+| K4 | A tappable maps link to the ticket's address (7 West 55th Street), with a short summary. |
 
 ## What the results tell you
 
@@ -95,6 +112,9 @@ Score each line: understood you? short enough to listen to? did it stop and wait
 | T6 says "you're checked in" | A serious fail: it must not claim that. |
 | F2 opens many files or the 400 KB lineup file | It isn't following the fallback; tell me and I'll tighten the wording. |
 | An app says it can't open an address "not in the conversation" | That app only opens addresses written out in full. Note which step failed. |
+| K1 says the tour is sold out, or drops it from the plan | The "Sold Out is irrelevant to ticket holders" rule isn't being followed: a fail. |
+| K2 accepts 3:30 PM | It isn't checking the ticket against OHNY: a fail. |
+| K3 says the plan works | It isn't checking travel time: a fail. |
 | Voice reads URLs or long lists aloud | Tell me the exact words it said so I can fix the style rules. |
 
 ## Send back

@@ -30,8 +30,24 @@ paths:
         - { name: borough, in: query, schema: { type: string } }
         - { name: include_ticketed, in: query, schema: { type: boolean, default: true } }
         - { name: exclude, in: query, schema: { type: string }, description: Comma separated slugs to skip }
+        - { name: fixed, in: query, schema: { type: string }, description: "Tickets the visitor already holds, as site-slug@YYYY-MM-DDTHH:MM (session start, New York time), several separated by ';'. Add @lat,lng with the exact address from the ticket. Suggestions then leave time to reach the ticket, and the reply says when to leave." }
+        - { name: mode, in: query, schema: { type: string, enum: [walk, transit, car], default: walk }, description: How they will travel to a held ticket (transit and car are rough estimates) }
+        - { name: min_stay_min, in: query, schema: { type: integer, default: 30 }, description: With held tickets, least time a suggested stop must allow before they must leave }
+        - { name: ticket_buffer_min, in: query, schema: { type: integer, default: 15 }, description: Minutes early to arrive for a ticketed session }
         - { name: now, in: query, schema: { type: string }, description: "Test mode: pretend it is this New York time, e.g. 2026-10-17T14:30" }
       responses: { "200": { description: Result cards plus freshness info } }
+  /v1/plan/check:
+    get:
+      operationId: checkPlan
+      summary: Validate an itinerary (open on arrival, tour sessions exist, tickets held, travel between stops)
+      parameters:
+        - { name: stops, in: query, required: true, schema: { type: string }, description: "Stops in time order as site-slug@YYYY-MM-DDTHH:MM separated by ';' (arrival time for a free site, session start for a tour); optional @lat,lng after the time" }
+        - { name: held, in: query, schema: { type: string }, description: Slugs of sites the visitor already holds tickets for, comma separated }
+        - { name: mode, in: query, schema: { type: string, enum: [walk, transit, car], default: walk } }
+        - { name: stay_min, in: query, schema: { type: integer, default: 45 } }
+        - { name: buffer_min, in: query, schema: { type: integer, default: 15 } }
+        - { name: now, in: query, schema: { type: string } }
+      responses: { "200": { description: ok, summary and per-stop issues (blocking or warning) } }
   /v1/search:
     get:
       operationId: searchSites

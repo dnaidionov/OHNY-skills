@@ -112,6 +112,30 @@ export async function runSmoke(base, opts = {}) {
     return `+${j.changes.added.length} / ~${j.changes.modified.length} / -${j.changes.removed.length}`;
   });
 
+  await check('held ticket: nearby respects it, plan check validates it', async () => {
+    // Any real tour from the live lineup that has a session: try a few searches until one does.
+    let site; let session;
+    for (const q of ['tour', 'walking tour', 'tower', 'terminal', 'building']) {
+      const sr = json(await http(`/v1/search?q=${encodeURIComponent(q)}&limit=10&now=${TEST_NOW}`));
+      for (const c of (sr.results ?? []).filter((r) => r.ticket_required).slice(0, 6)) {
+        const cand = json(await http(`/v1/site/${c.slug}?now=${TEST_NOW}`)).site;
+        const w = (cand.windows ?? []).find((x) => x.kind === 'session' && String(x.date).startsWith('2026-10-1'));
+        if (w) { site = cand; session = w; break; }
+      }
+      if (session) break;
+    }
+    must(session, 'no ticketed site with a session found to test with');
+    const tour = { slug: site.slug };
+    const hhmm = (m) => `${String(Math.floor(m / 60)).padStart(2, '0')}:${String(m % 60).padStart(2, '0')}`;
+    const start = `${session.date}T${hhmm(session.start)}`;
+    const nearby = json(await http(`/v1/nearby?lat=40.7308&lng=-73.9973&max_walk_min=20&fixed=${encodeURIComponent(`${tour.slug}@${start}`)}&now=${session.date}T${hhmm(Math.max(0, session.start - 120))}`));
+    must(Array.isArray(nearby.your_tickets) && nearby.your_tickets[0].ticket_ok === true, 'held ticket not recognised');
+    must(!nearby.results.some((c) => c.slug === tour.slug), 'the ticket site itself was suggested');
+    const bad = json(await http(`/v1/plan/check?stops=${encodeURIComponent(`${tour.slug}@${session.date}T03:07`)}&held=${tour.slug}`));
+    must(bad.ok === false && bad.stops[0].issues.some((i) => i.code === 'no_session_at_that_time'), 'plan check missed a ticket time that does not exist');
+    return `${site.name}: ${start}`;
+  });
+
   await check('connector: initialize + instructions', async () => {
     const r = await rpc('initialize', { protocolVersion: '2025-06-18', capabilities: {}, clientInfo: { name: 'smoke-test', version: '1' } });
     must(r.result?.serverInfo?.name === 'ohny-skills', 'bad serverInfo');
@@ -129,9 +153,10 @@ export async function runSmoke(base, opts = {}) {
     must(r.res.status === 405, `status ${r.res.status}`);
   });
 
-  await check('connector: tools/list (5 read-only tools)', async () => {
+  await check('connector: tools/list (6 read-only tools)', async () => {
     const tools = (await rpc('tools/list')).result.tools;
-    must(tools.length === 5, `${tools.length} tools`);
+    must(tools.length === 6, `${tools.length} tools`);
+    must(tools.some((t) => t.name === 'ohny_check_plan'), 'plan checker missing');
     must(tools.every((t) => t.annotations?.readOnlyHint === true), 'a tool is not marked read-only');
     return tools.map((t) => t.name).join(', ');
   });
