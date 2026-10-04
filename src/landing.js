@@ -75,6 +75,25 @@ export function landingHtml() {
   .manual summary{cursor:pointer;font-weight:600;min-height:48px;display:flex;align-items:center}
   .manual details[open] summary{margin-bottom:2px}
   .manual details p{margin:4px 0 12px;color:var(--muted);font-size:.95rem}
+  .manual details.sec,.manual details.sec-h{padding:0}
+  .manual details.sec{padding:0 16px}
+  .manual details.sec-h{background:none;border:none;margin:0}
+  .manual details.sec>summary,.manual details.sec-h>summary{display:block;min-height:44px;padding-top:11px;padding-bottom:11px}
+  .manual details.sec>summary h3,.manual details.sec-h>summary h2{display:inline;margin:0}
+  .manual details.sec-h>summary{margin-top:24px}
+  .manual details.sec-h>summary h2{font-size:1.15rem}
+  .manual details.sec[open]>summary{margin-bottom:4px}
+  .manual summary{list-style:none;position:relative;padding-right:30px}
+  .manual summary::-webkit-details-marker{display:none}
+  .manual details:not(.sec):not(.sec-h):not(.off)>summary{padding-top:12px;padding-bottom:12px}
+  .manual summary::after{content:"";position:absolute;right:6px;top:50%;width:7px;height:7px;border-right:2px solid var(--muted);border-bottom:2px solid var(--muted);border-radius:1px;transform:translateY(-70%) rotate(45deg);transition:transform .15s ease}
+  .manual details[open]>summary::after{transform:translateY(-25%) rotate(-135deg)}
+  .manual summary:hover::after{border-color:var(--ink)}
+  @media (prefers-reduced-motion:reduce){.manual summary::after{transition:none}}
+  .manual details.off{margin-top:14px;border:1px dashed var(--muted);background:repeating-linear-gradient(135deg,color-mix(in srgb,var(--soft) 65%,transparent) 0 7px,transparent 7px 14px)}
+  .manual details.off>summary{display:block;padding:10px 0;color:var(--muted)}
+  .manual details.off p,.manual details.off li{color:var(--ink)}
+  .manual details.off ul.uses{padding-left:1.1rem}
   .toc{display:flex;flex-wrap:wrap;gap:6px 14px;margin:0 0 6px;font-size:.92rem}
   .toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:var(--accent);color:var(--onaccent);padding:10px 16px;border-radius:10px;font-size:.9rem;opacity:0;pointer-events:none;transition:opacity .2s}
   .toast.on{opacity:1}
@@ -152,8 +171,8 @@ export function landingHtml() {
   <p class="lead" style="margin-bottom:10px">Talk to it the way you'd talk to a friend who knows the festival. Start with the word <em>"ohny"</em> or <em>"Open House New York"</em> so your assistant knows to use it. Everything below also works by voice, and replies are kept short so they're easy to listen to.</p>
   <p class="toc"><a href="#m-nearby">What's open near me</a> <a href="#m-site">About a place</a> <a href="#m-plan">Plan my day</a> <a href="#m-directions">Directions</a> <a href="#m-checkin">Check in</a> <a href="#m-festival">Festival questions</a> <a href="#m-changes">Changes</a> <a href="#m-memory">What it remembers</a> <a href="#m-trouble">Troubleshooting</a></p>
 
-  <div class="card" id="m-nearby">
-    <h3>1. Find what's open near me</h3>
+  <details class="card sec" open id="m-nearby">
+    <summary><h3>1. Find what's open near me</h3></summary>
     <p>Tell it where you are and what you like, and it suggests places you can actually get into.</p>
     <p class="says">Try saying</p>
     <ul class="eg">
@@ -171,13 +190,14 @@ export function landingHtml() {
       <li><strong>How far you're willing to walk.</strong></li>
       <li><strong>OHNY's own "worth a visit nearby" picks,</strong> which get a boost. A closer place that fits you better can still come first.</li>
       <li><strong>Entry rules that could stop you,</strong> like photo ID, age limits, bag limits or security screening, mentioned in a few words.</li>
-      <li><strong>Tickets.</strong> Ticketed tours show up only while one is under way, and it says a ticket is needed. Sold-out and canceled places are never offered.</li>
+      <li><strong>Tickets you already hold.</strong> Mention them and every suggestion leaves you time to get to your tour, with a "leave by" time. Anything that would make you late is left out (see "If you already have tickets" under Plan).</li>
+      <li><strong>Other ticketed tours</strong> show up only while one is under way, and it says a ticket is needed. Sold-out and canceled places are never offered as new ideas.</li>
     </ul>
     <p>It also tells you what it <em>left out and why</em> ("eleven places have closed for the day, two are tours that aren't running"), so a short list isn't a mystery.</p>
-  </div>
+  </details>
 
-  <div class="card" id="m-site">
-    <h3>2. Ask about a specific place</h3>
+  <details class="card sec" open id="m-site">
+    <summary><h3>2. Ask about a specific place</h3></summary>
     <p>Hours, what you'll see, entry rules, and a bit of the story behind the building.</p>
     <p class="says">Try saying</p>
     <ul class="eg">
@@ -194,16 +214,17 @@ export function landingHtml() {
       <li>OHNY's suggestions for nearby places, with walking times.</li>
     </ul>
     <p>If no site by that name is in OHNY's lineup, it tells you so plainly and offers to search by neighborhood or topic instead.</p>
-  </div>
+  </details>
 
-  <div class="card" id="m-plan">
-    <h3>3. Plan your day or the whole weekend</h3>
+  <details class="card sec" open id="m-plan">
+    <summary><h3>3. Plan your day or the whole weekend</h3></summary>
     <p>It asks a few questions, one at a time, then offers two or three different plans for you to choose from and adjust.</p>
     <p class="says">Try saying</p>
     <ul class="eg">
       <li>"Plan my Saturday in Brooklyn."</li>
       <li>"We have four hours Sunday afternoon with a six-year-old. What should we do?"</li>
       <li>"I already have tickets for 2 PM at the Refinery. Build a day around that."</li>
+      <li>"We have a 4 PM tour at the Morgan Library on Saturday. What can we fit in before it?"</li>
       <li>"We're running late. Change the plan."</li>
     </ul>
     <p class="says">What it takes into account</p>
@@ -212,7 +233,7 @@ export function landingHtml() {
       <li><strong>Interests, boroughs and places you already want to see.</strong></li>
       <li><strong>Who's coming:</strong> group size, kids' ages, wheelchair or limited-stairs needs.</li>
       <li><strong>How you'll get around</strong> and how far you'll walk.</li>
-      <li><strong>Tickets you already hold,</strong> which become fixed points the plan is built around.</li>
+      <li><strong>Tickets you already hold.</strong> These are fixed, not suggestions: the plan is built around them first, and everything else fits in the gaps. See "If you already have tickets" below.</li>
       <li><strong>Whether you have a Passport,</strong> which lets you go ahead of the line at free sites. It budgets longer waits at popular free sites if you don't, and puts the most popular ones first thing or late.</li>
       <li><strong>Real visit windows only.</strong> It never plans an arrival in the last 20 minutes of opening hours or after a tour's start time, and leaves buffers between stops (more for ticketed tours).</li>
       <li><strong>Geography.</strong> Stops are grouped by neighborhood to avoid zig-zagging across boroughs.</li>
@@ -220,11 +241,22 @@ export function landingHtml() {
       <li><strong>Last-minute changes.</strong> It checks for cancellations before presenting a plan and again before each leg.</li>
       <li><strong>Lunch or dinner</strong> for longer plans, near your stops, if you want it.</li>
     </ul>
-    <p>Once you choose, you get a followable itinerary: a checklist page where your assistant can show one, or a guided walk-through, one stop at a time, in a voice chat.</p>
-  </div>
+    <p>Before it shows you a plan it checks the whole thing: tour times that really exist, free sites open when you'd arrive, hops that can be made. Once you choose, you get a followable itinerary: a checklist page where your assistant can show one, or a guided walk-through, one stop at a time, in a voice chat.</p>
+    <p class="says">If you already have tickets</p>
+    <ul class="uses">
+      <li><strong>Tell it which site, the date and start time, and how many of you.</strong> You can mention them at any point, in a plan or in a quick "what's near me" question.</li>
+      <li><strong>It asks for the address or meeting point on your ticket.</strong> OHNY doesn't publish street addresses for ticketed sites, so without it, travel times are only rough.</li>
+      <li><strong>It checks the ticket against OHNY's schedule.</strong> If the time you gave doesn't match a real session, or the site has been canceled, it tells you first, shows the listed times and asks to see your ticket before planning around it.</li>
+      <li><strong>Your tour is an immovable block.</strong> The plan keeps the whole session, has you arrive 15 minutes early, and never puts two things in the same slot.</li>
+      <li><strong>It tells you when to leave</strong> for each ticket ("to be at the tour by 3:45, leave here by 2:57"), and shows how long you have at each stop before you need to head off.</li>
+      <li><strong>It never suggests something that would make you late.</strong> Places that don't fit are left out and it tells you why.</li>
+      <li><strong>"Sold Out" doesn't apply to you.</strong> That mark only means nobody else can buy tickets; it won't drop your tour or offer you alternatives to it.</li>
+      <li><strong>It reminds you of the entry rules</strong> at that stop (photo ID, bags, arriving early), and when you ask for directions it starts from the address on your ticket.</li>
+    </ul>
+  </details>
 
-  <div class="card" id="m-directions">
-    <h3>4. Get directions</h3>
+  <details class="card sec" open id="m-directions">
+    <summary><h3>4. Get directions</h3></summary>
     <p class="says">Try saying</p>
     <ul class="eg">
       <li>"How do I get to the next stop?"</li>
@@ -234,30 +266,42 @@ export function landingHtml() {
     <p class="says">What it takes into account</p>
     <ul class="uses">
       <li>It gives you a tappable link that opens Google Maps or Apple Maps, with a one-sentence summary. Transit is the default in New York; say "walking" or "bike" to change it.</li>
+      <li>If you're heading to a place you hold a ticket for, it uses the address or meeting point from your ticket and puts your leave-by time first.</li>
       <li>It won't quote subway routes from memory, since weekend service changes make those unreliable. The maps link has the current ones.</li>
       <li>For a site where the exact address isn't published until you have a ticket, it says the location is approximate.</li>
     </ul>
-  </div>
+  </details>
 
-  <div class="card" id="m-checkin">
-    <h3>5. Check in at a site</h3>
-    <p>OHNY asks every visitor to check in at each site before going in. Your assistant can't do the check-in for you, but it puts OHNY's own form link right in the chat so it's one tap.</p>
+  <details class="card sec" open id="m-checkin">
+    <summary><h3>5. Check in at a site <span class="tag">link only for now</span></h3></summary>
+    <p>OHNY asks every visitor to check in at each site before going in. In this version your assistant can't do the check-in for you, but it puts OHNY's own form link right in the chat so it's one tap.</p>
     <p class="says">Try saying</p>
     <ul class="eg">
       <li>"Check me in."</li>
       <li>"Check us in at the Morgan Library."</li>
     </ul>
-    <p class="says">What happens</p>
+    <p class="says">What happens now</p>
     <ul class="uses">
       <li><strong>No questions first.</strong> It doesn't ask for your email, zip code or group size, and doesn't read you a waiver. It just tells you it can't check you in itself and gives you the link.</li>
       <li><strong>You complete the form.</strong> In OHNY's form you pick the site, enter your zip code and how many people, and can add an email if you like. The form shows OHNY's photo and risk notice, which you accept by submitting. There is no name field.</li>
       <li><strong>Your details go straight to OHNY.</strong> The assistant never sees or keeps them.</li>
       <li>It will never say you're checked in, because only you can submit the form.</li>
     </ul>
-  </div>
+    <details class="off" open>
+      <summary>Temporarily switched off: check-in by your assistant <span class="tag">not available yet</span></summary>
+      <p><strong>Not available in this version.</strong> Checking you in from the chat is planned for a future version, most likely after this festival. Until then, use the form link above. Here is how it was designed to work:</p>
+      <ul class="uses">
+        <li><strong>The first time,</strong> it would ask whether you want to leave an email or stay anonymous (both fine), plus your zip or postal code and group size. It would never ask for your name; the form has no name field.</li>
+        <li><strong>Which site.</strong> You'd name it, or it would work it out from where you are, and confirm with you.</li>
+        <li><strong>The form's notice.</strong> It would read you the photo and risk waiver in plain words and wait for a clear "yes" before going further.</li>
+        <li><strong>The newsletter box</strong> would be left alone unless you asked to join OHNY's mailing list.</li>
+        <li><strong>At the next site</strong> it would reuse what you'd said you wanted remembered and only confirm the group size ("still three of you?").</li>
+      </ul>
+    </details>
+  </details>
 
-  <div class="card" id="m-festival">
-    <h3>6. Questions about the festival itself</h3>
+  <details class="card sec" open id="m-festival">
+    <summary><h3>6. Questions about the festival itself</h3></summary>
     <p class="says">Try saying</p>
     <ul class="eg">
       <li>"What is a Weekend Passport?"</li>
@@ -270,28 +314,29 @@ export function landingHtml() {
       <li>It checks ohny.org first and says where an answer came from if it had to look elsewhere. For ticket rules, prices and Passport benefits it reads the official page instead of guessing.</li>
       <li>It sells nothing and gets nothing from anything you buy. Tickets and Passports are bought on ohny.org, and it mentions them only when they'd clearly help what you're trying to do, never with pressure.</li>
     </ul>
-  </div>
+  </details>
 
-  <div class="card" id="m-changes">
-    <h3>7. Anything new or canceled?</h3>
+  <details class="card sec" open id="m-changes">
+    <summary><h3>7. Anything new or canceled?</h3></summary>
     <p class="says">Try saying</p>
     <ul class="eg">
       <li>"Any cancellations or changes?"</li>
       <li>"Is anything new on the lineup since last week?"</li>
     </ul>
     <p>It lists cancellations, new sites and changed times from ohny.org. It checks this on its own before it finalizes a plan.</p>
-  </div>
+  </details>
 
-  <div class="card" id="m-memory">
-    <h3>What it remembers (and doesn't)</h3>
+  <details class="card sec" open id="m-memory">
+    <summary><h3>What it remembers (and doesn't)</h3></summary>
     <ul class="uses" style="margin-top:6px">
-      <li>Only what you tell it and agree to keep: your interests, group size, zip code, kids' ages, accessibility needs, how you like to get around, whether you hold a Passport, tickets you already have, and the places you've visited.</li>
+      <li>Only what you tell it and agree to keep: your interests, group size, kids' ages, accessibility needs, how you like to get around, whether you hold a Passport, tickets you already have, and the places you've visited.</li>
       <li>It's kept in your own AI account, not by the people who made this guide. Ask <em>"what do you know about me?"</em> to see it all, or say <em>"forget it"</em> to delete it.</li>
-      <li>It never saves your email unless you say so.</li>
+      <li>It doesn't collect or keep check-in details such as your email or zip code; those go only into OHNY's form.</li>
     </ul>
-  </div>
+  </details>
 
-  <h2 id="m-trouble">Troubleshooting</h2>
+  <details class="sec-h" open id="m-trouble">
+  <summary><h2>Troubleshooting</h2></summary>
   <details>
     <summary>It doesn't seem to know about OHNY, or answers like a generic chatbot</summary>
     <p>Start your message with "ohny" or "Open House New York" so the assistant knows to use the guide. Make sure it's switched on: in Claude, check that Ask OHNY is enabled in the chat's tools menu. If you used the paste-in method, paste the line again at the start of a new chat, since it only lasts for that chat.</p>
@@ -332,6 +377,7 @@ export function landingHtml() {
     <summary>It said something wrong, or something else isn't working</summary>
     <p>Please tell your assistant what happened so it can try again, and check the official page for the place. You can also report problems on the project's <a href="${esc(LINKS.github)}/issues" target="_blank" rel="noopener noreferrer">GitHub page</a>.</p>
   </details>
+  </details>
   </section>
 
   <footer>
@@ -363,6 +409,16 @@ export function landingHtml() {
       if (j < 0) return; e.preventDefault(); show(tabs[(j + tabs.length) % tabs.length].id.slice(4), true);
     });
   });
+  function openTarget(id) {
+    var el = id && document.getElementById(id);
+    for (; el; el = el.parentElement) if (el.tagName === 'DETAILS') el.open = true;
+  }
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest && e.target.closest('a[href^="#m-"]');
+    if (a) openTarget(a.getAttribute('href').slice(1));
+  });
+  window.addEventListener('hashchange', function () { openTarget(location.hash.slice(1)); });
+  openTarget(location.hash.slice(1));
   var fromHash = location.hash.slice(1);
   if (document.getElementById('tab-' + fromHash)) show(fromHash);
   document.addEventListener('click', function (e) {
