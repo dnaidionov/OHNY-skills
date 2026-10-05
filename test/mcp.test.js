@@ -247,3 +247,27 @@ test('the rules reach the model even if the client ignores the connector instruc
   assert.equal(JSON.parse((await call('ohny_nearby', {})).content[0].text).ohny_reminder, undefined);
   assert.doesNotMatch((await call('ohny_guide', { topic: 'checkin' })).content[0].text, /ohny_reminder/);
 });
+
+test('ChatGPT mobile setup is labeled unverified and provides a clearly scoped phone trial', async () => {
+  const html = await (await handle(new Request('https://naidionov.com/ohny/skills', {
+    headers: { accept: 'text/html' },
+  }), deps)).text();
+  const panel = html.match(/<section[^>]*id="panel-chatgpt"[\s\S]*?<\/section>/)?.[0];
+  assert.ok(panel, 'ChatGPT setup panel must be available');
+  assert.match(panel, /ChatGPT mobile/);
+  assert.match(panel, /not ready|being verified/i);
+  assert.match(panel, /one-chat trial/i);
+  assert.match(panel, /id="paste-chatgpt"/);
+  assert.match(panel, /data-copy="paste-chatgpt"/);
+  assert.ok(panel.includes('https://raw.githubusercontent.com/dnaidionov/OHNY-skills/main/standalone/OHNY.md'));
+});
+
+test('ChatGPT visitor setup does not require desktop developer mode or claim an unverified plan entitlement', async () => {
+  const html = await (await handle(new Request('https://naidionov.com/ohny/skills', {
+    headers: { accept: 'text/html' },
+  }), deps)).text();
+  const panel = html.match(/<section[^>]*id="panel-chatgpt"[\s\S]*?<\/section>/)?.[0];
+  assert.ok(panel);
+  assert.doesNotMatch(panel, /Developer Mode|Plus or higher|Settings, Connectors|mcp-chatgpt|local project|npm /i);
+  assert.doesNotMatch(html, /ChatGPT needs a Plus or higher plan with Developer Mode/i);
+});

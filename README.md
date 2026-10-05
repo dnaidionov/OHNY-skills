@@ -2,13 +2,15 @@
 
 A pocket guide to Open House New York Weekend (Oct 16-18, 2026): the check-in link, "what's open near me", site and festival Q&A, day planning, directions. Built for phones and voice. **Not affiliated with OHNY.** Made by [Dmitry Naidionov](https://naidionov.com).
 
+**ChatGPT visitor target:** first-time setup entirely on a phone, followed by use in the native ChatGPT mobile app. That installation route is **not yet verified or ready for a supported launch**. See [the mobile requirements and trial instructions](docs/chatgpt-mobile.md).
+
 ## Develop with Codex, ChatGPT desktop, or Claude Code
 
 Use the same repository and shared instructions. Start with [the development guide](docs/development.md); it covers opening the folder in each app, separate worktrees for simultaneous work, tests, and handoffs. [Project decisions](docs/decisions.md) explain the setup. [Native platform checks](docs/platform-tests.md) distinguish actual app behavior from backend tests.
 
 ## Install
 
-Pick the route that fits your account. The first two work on a phone-first, "set it up once" basis.
+Choose the route for your app. The ChatGPT mobile route is still being verified; the no-install option below is a one-chat trial, not persistent setup.
 
 ### 1. Connector (recommended; works on Claude Free, and then on your phone)
 
@@ -18,8 +20,8 @@ The helper is also an MCP server, so it can be added as a **custom connector**. 
 - **One tap (Claude): [Add Ask OHNY to Claude](https://claude.ai/customize/connectors?modal=add-custom-connector&connectorName=Ask%20OHNY&connectorUrl=https%3A%2F%2Fnaidionov.com%2Fohny%2Fskills%2Fmcp)** opens Claude's "Add custom connector" dialog with the name and URL already filled in; you just review and confirm (sign in first if asked). Do this on claude.ai or the desktop app; it then shows up in the phone apps.
 - **Claude (all plans, Free gets one custom connector):** on claude.ai in a browser or the desktop app, open **Settings, Connectors, Add custom connector**, paste the URL, and save. Then open the Claude app on your phone, signed in to the same account: the connector is there, and voice works as usual. (As of writing, the mobile apps use connectors but can't add new ones.) Start a chat with "ohny, what's open near me?" or pick the **ohny** prompt from the + menu.
 - **Location (phone, optional):** the first time you ask what's open near you, Claude may ask to use your location. Allow it and it won't need to ask where you are. Change it later in Android: Settings, Apps, Claude, Permissions, or iPhone: Settings, Claude, Location. Not available on Team/Enterprise plans, or on claude.ai and the desktop app; there, name a cross street or landmark.
-- **ChatGPT (Plus, Pro, Team, Enterprise, Edu):** Settings, Connectors, turn on Developer Mode, **Create**, paste the URL, choose "No authentication". Free ChatGPT doesn't support custom connectors.
-- **Tap-to-install from a phone** needs the connector to be listed in a directory (Claude's connector directory, ChatGPT's app directory). That requires a submission and review by the platform, so it's not done yet.
+- **ChatGPT mobile:** there is no verified phone-only installation route yet. Use the [mobile guide](docs/chatgpt-mobile.md) for the current trial and release requirements. Desktop developer connections are for implementation/testing and do not meet visitor setup requirements.
+- **Public directory distribution** has not been completed. For ChatGPT, an account-available remote plugin is a candidate; a real listing/link and successful phone-only onboarding must be verified before offering an install button.
 - Check it with the official inspector: `npx @modelcontextprotocol/inspector --cli https://naidionov.com/ohny/skills/mcp --transport http --method tools/list`
 
 The six tools during the festival season are `ohny_nearby`, `ohny_search`, `ohny_site`, `ohny_check_plan`, `ohny_changes` and `ohny_guide` (the detailed playbook, read on demand). They are read-only and take no personal information. On first use Claude asks you to approve each tool: choose **Always allow** (or set it under Settings, Connectors, Ask OHNY), since none of them change anything.
@@ -30,7 +32,7 @@ Paste this into a new chat:
 
 > Use https://raw.githubusercontent.com/dnaidionov/OHNY-skills/main/standalone/OHNY.md as your guide to Open House New York Weekend for this chat. Then ask me what I'd like to do.
 
-It works for that conversation only (paste it again next time), needs the chatbot's web browsing to be on, and has no itinerary page; it can work on free accounts. `standalone/OHNY.md` is generated from the skill by `npm run build:standalone`, and a test fails if it gets out of date.
+This attempts to load the guide for that conversation only (paste it again next time). It depends on browsing access in the actual account; verify that the guide opens and live information is available. It does not install anything or establish voice support, and it has no itinerary page. `standalone/OHNY.md` is generated from the skill by `npm run build:standalone`, and a test fails if it gets out of date.
 
 ### 3. Claude skill (paid plans; add from a computer)
 
@@ -38,7 +40,7 @@ It works for that conversation only (paste it again next time), needs the chatbo
 2. In claude.ai or the desktop app open **Customize, Skills** (menu names change) and upload the zip. Code execution must be on. The phone apps then use it too, but can't upload skills themselves.
 3. Say **"ohny, what's open near me?"**. You can also say "Open House New York" or tag **#ohny**.
 
-For ChatGPT or Gemini skills: paste `skills/ohny/SKILL.md` as the instructions, add `skills/ohny/references/` as files, and for ChatGPT add an Action from `openapi.yaml`. Gemini may not be able to call the helper service.
+For developers evaluating a ChatGPT custom GPT, `openapi.yaml` describes the existing Actions API. It is not a published GPT or a verified mobile distribution route. Do not direct visitors to build their own GPT or upload repository files. Gemini's pasted-guide route may not be able to call the helper service.
 
 ### Trying it before the festival (Oct 16-18, 2026)
 
@@ -141,7 +143,7 @@ It checks the web page, live freshness from ohny.org, nearby, search, site detai
 | Platform | Free accounts | What to do |
 |---|---|---|
 | **Claude** | **No.** Uploading a custom skill needs Pro, Max, Team or Enterprise with code execution on. | Zip `skills/ohny` and add it under Customize, Skills. An org on Team/Enterprise can provision it for everyone. The helper's domain may need allowing for network access; if it can't be reached, the skill falls back to OHNY's public files. |
-| **ChatGPT** | **Unclear.** Reports say Skills are in beta on Free/Go/Plus/Pro, but creating *personal* skills or custom GPTs may be limited to Business/Enterprise/Edu. Free users could previously *use* GPTs made by others. | Check what your plan allows you to publish before relying on this. Either a skill (paste/upload `skills/ohny`) or a GPT (paste `SKILL.md` as instructions, upload `references/` and `assets/`, add an Action from `openapi.yaml`). |
+| **ChatGPT mobile** | **Not verified for OHNY.** Check every advertised plan using a real phone. | Phone-only setup is required. No supported installation is ready yet; see [the mobile guide](docs/chatgpt-mobile.md). Local skill uploads and developer setup are not visitor instructions. |
 | **Gemini** | **Probably yes** for plain instruction skills (announced for all Google AI tiers, 18+). Unknown whether a skill can call the helper service or be shared with others. | Paste `SKILL.md` (shortened if there's a length limit) and rely on Gemini's own web access to read `https://ohny.org/data/festival.json`. Expect a reduced experience (no helper service, no itinerary page). |
 
 ## The connector's season
@@ -158,6 +160,7 @@ The plain web API (`/v1/...`), the landing page and the paste-and-go file keep w
 
 ## Known gaps
 
+- **ChatGPT mobile installation is unverified.** Visitors must be able to set up OHNY entirely on their phones and use the native app. A desktop connection or a pasted guide does not pass that requirement; see `docs/chatgpt-mobile.md`.
 - **Check-in is disabled for now.** The assistant can't check anyone in. When asked, it says so in one sentence and gives OHNY's check-in form link (https://ohny.fillout.com/26weekend) to tap, without asking anything first or reading a waiver; the visitor completes the form themselves. Direct check-in would need OHNY's approval and a supported way to submit (see `skills/ohny/references/checkin.md`).
 - **Ticketed sites publish no street address** (it comes with the ticket). Their map positions come from name lookups or neighborhood centres and are flagged approximate.
 - **Live ticket availability** isn't in OHNY's data, only the "Sold Out" status and the ticket links.

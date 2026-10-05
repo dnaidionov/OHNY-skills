@@ -1,6 +1,6 @@
 # Test results log
 
-Native desktop acceptance scenarios are in [platform-tests.md](platform-tests.md). The phone runs below remain historical evidence for their recorded app versions and routes.
+Native acceptance scenarios are in [platform-tests.md](platform-tests.md), with ChatGPT phone-only setup requirements in [chatgpt-mobile.md](chatgpt-mobile.md). The phone runs below remain historical evidence for their recorded app versions and routes.
 
 ## Run 1: Claude app on Pixel 7 Plus, Claude 1.260928.20, Pro plan, custom connector (Oct 2, 2026)
 
@@ -61,3 +61,17 @@ Source: base commit `416913b` plus the shared-project setup change recorded with
 | Deployed-service, phone, and voice retest | NOT RUN | No production changes or claims of new native compatibility; earlier phone observations remain as recorded above. |
 
 The packaging counterargument was that an unchecked archive command is useful for manual workflows. It was rejected here because the owner explicitly requires failing tests to stop a build, and the offline suite is fast. Missing discovery paths were setup gaps, not a defect in the visitor calculations. No ambiguous product bug was inferred from these failures.
+
+## ChatGPT phone-only setup requirement: automated checks (October 4, 2026)
+
+Source: base commit `c46ea4f` plus the mobile-requirement change recorded with this entry, on `codex/shared-project-setup`. Environment: local macOS, Node 24.5.0, Python 3.14.0. This change updates repository documentation and landing-page source; it does not publish a plugin or deploy the page.
+
+| Check | Result | Evidence and limits |
+|---|---|---|
+| Positive/negative tests before implementation | Expected failure | Both new tests failed: the ChatGPT panel lacked an honest mobile status and scoped trial, and still required desktop developer setup with an unverified plan claim. |
+| Final `npm test` | PASS | 94 tests, zero failures, zero skipped. The page now labels mobile setup as unverified, provides a trial message with a matching copy target, and omits the old ChatGPT developer-mode/plan instructions. Existing backend, parity, discovery, generated-file, and packaging checks also passed. |
+| `git diff --check` | PASS | No whitespace errors. |
+| ChatGPT mobile M1–M9, iOS/Android and voice | NOT RUN | No verified OHNY install listing or native phone test evidence. The corrected page and passing tests do not establish a supported mobile route. |
+| Publication/deployment and live-page verification | NOT RUN | Changes are local to this branch. Production still has its previous instructions until a separate deployment. |
+
+Counterargument considered: developer-mode instructions can be useful to someone testing the backend. That is valid in the contributor guide, but does not make them acceptable first-time visitor instructions under the owner's phone-only requirement. The two failures are therefore documentation/UI defects for this target, not evidence of a broken backend or a platform limitation established by a phone test. The standalone prompt remains only a trial and cannot pass installation acceptance.

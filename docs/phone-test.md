@@ -5,7 +5,8 @@ Run this on a real phone, in each app (Claude, ChatGPT, Gemini), in a **fresh ch
 Before you start, note: phone model, app name and version, free or paid plan, and how OHNY is set up in that app (Claude connector, or the pasted line).
 
 - **Claude with the connector added:** just paste Test 1. The prompt only opens the web file if the OHNY tools aren't already there.
-- **ChatGPT and Gemini:** paste Test 1 as is. It loads the instructions from the web file itself.
+- **ChatGPT mobile:** first run M1–M3 in [the mobile setup requirements](chatgpt-mobile.md) using only your phone. The finished route must be usable in the native app without pasting the guide into each new chat. No route has passed this yet. You can paste Test 1 as a separate **one-chat trial**, but its automatic web-guide fallback cannot count as successful installation. Record whether installed tools or the fallback answered each scenario.
+- **Gemini:** paste Test 1 as is. It attempts to load the instructions from the web file itself.
 
 ## Test 0: does the connector work the way a first-time visitor would use it? (Claude with the connector)
 

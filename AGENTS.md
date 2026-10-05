@@ -4,7 +4,7 @@ This file governs development of this repository in Codex, ChatGPT desktop, and 
 
 ## Start each session
 
-Read the current `README.md`, `docs/development.md`, `docs/decisions.md`, `docs/platform-tests.md`, and the latest entries in `docs/test-results.md`. Read the skill and relevant references, tests, configuration, and recent Git history before changing their behavior. Re-read documents changed since your previous session; don't assume another tool's chat or memory is available.
+Read the current `README.md`, `docs/development.md`, `docs/chatgpt-mobile.md`, `docs/decisions.md`, `docs/platform-tests.md`, and the latest entries in `docs/test-results.md`. Read the skill and relevant references, tests, configuration, and recent Git history before changing their behavior. Re-read documents changed since your previous session; don't assume another tool's chat or memory is available.
 
 Check the working tree and branch first. Preserve unrelated changes. The scheduled lineup refresh can update the remote; check for remote changes before integrating work, without overwriting local edits. Parallel editors need separate Git worktrees or clones, each with its own branch. See `docs/development.md` for handoffs.
 
@@ -26,6 +26,7 @@ Check the working tree and branch first. Preserve unrelated changes. The schedul
 
 ## Product boundaries
 
+- ChatGPT visitors must complete first-time setup entirely on their phone and use the native mobile app. Desktop instructions are for development. Follow `docs/chatgpt-mobile.md`; desktop or backend success does not establish mobile support.
 - Preserve freshness labels, canceled-site handling, held-ticket constraints, and explicit unknown-site results. Never present saved lineup information as live.
 - Check-in is link-only. Do not submit forms, collect check-in details, buy tickets, or claim that a visitor is checked in.
 - Visitor preferences stay in that visitor's account or current conversation, with consent. Do not put personal profiles, credentials, tokens, or real visitor data into repository files or shared tests.

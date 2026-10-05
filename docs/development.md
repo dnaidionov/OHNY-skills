@@ -2,6 +2,8 @@
 
 Use one Git repository for the product, documentation, decisions, and tests. Each app keeps its own conversations and account connections. Put durable decisions and results back into the repository so another app can continue from the same evidence.
 
+**This guide is for contributors.** The ChatGPT visitor experience must support first-time setup entirely on a phone and use in the native ChatGPT mobile app. See [the mobile requirements and release tests](chatgpt-mobile.md). Desktop development setup does not satisfy that requirement.
+
 ## Shared sources
 
 | Source | Purpose |
@@ -14,6 +16,7 @@ Use one Git repository for the product, documentation, decisions, and tests. Eac
 | `src/core/`, `src/handler.js`, `src/mcp.js` | Shared calculations, HTTP API, and connector |
 | `openapi.yaml` | Existing ChatGPT Actions route; distinct from the MCP connector |
 | `docs/decisions.md` | Significant choices and their reasoning |
+| `docs/chatgpt-mobile.md` | Phone-only ChatGPT visitor setup, current limitations, and release requirements |
 | `docs/platform-tests.md`, `docs/test-results.md` | Acceptance scenarios and evidence from actual runs |
 
 The discovery entries are relative directory symlinks. They work in a macOS/Linux checkout and in separate worktrees without pointing back to one person's machine. Windows users must use a checkout with Git symlinks enabled and the necessary OS support, or work in WSL. A ZIP of the repository may not preserve these links; clone with Git. The packaged visitor skill is built directly from `skills/ohny/` and contains ordinary files.
@@ -30,7 +33,7 @@ Start Claude Code in the repository folder (or its assigned worktree). `CLAUDE.m
 
 Current Claude Code can read `AGENTS.md` directly in some configurations. The tiny import also works when `CLAUDE.md` takes precedence, and avoids maintaining two sets of rules. Do not run an initializer that replaces these shared instructions without reviewing its diff.
 
-### ChatGPT desktop
+### ChatGPT desktop (development only)
 
 Create or select a **local project**, attach this repository folder, and use it as the primary working directory. For simultaneous work, attach ChatGPT's assigned worktree instead. A cloud Project with uploaded files is a snapshot, not the same local working copy.
 
@@ -67,7 +70,7 @@ These smoke checks need network access to OHNY. Use a local MCP connection only 
 |---|---|---|
 | Shared backend, offline parity, generated files, packaging and CI | Codex or Claude Code | Passing automated checks and any relevant local smoke test |
 | Claude skill discovery, tool behavior, artifact controls | Claude Code plus the actual target Claude app | Native scenario results, exact app/version and route |
-| ChatGPT skill discovery, connector/Action behavior, itinerary interactions | ChatGPT desktop plus the actual target ChatGPT surface | Native scenario results, exact app/version and route |
+| ChatGPT visitor distribution, tool behavior, itinerary interactions | ChatGPT desktop for implementation; actual iOS/Android ChatGPT apps for acceptance | Phone-only onboarding M1–M3, mobile behavior M4–M9, exact app/version, plan, and route |
 
 These are task assignments, not ownership of separate product implementations. An integration fix belongs in shared code when the behavior is common. Claude Code results do not establish Claude mobile support; ChatGPT desktop results do not establish phone or voice support. Continue to use `docs/phone-test.md` for those tests.
 
@@ -112,9 +115,10 @@ Preserve historical results in `docs/test-results.md`. New entries must identify
 
 ## Current follow-up work
 
+- Complete an installable ChatGPT route that passes the phone-only requirements in `docs/chatgpt-mobile.md`. Neither a local skill nor desktop developer setup establishes mobile readiness. Record M1–M9 on every advertised mobile platform before claiming support.
 - Run `docs/platform-tests.md` in fresh Codex, Claude Code, and ChatGPT desktop sessions. Desktop/native discovery and connected-tool behavior remain unverified until recorded there.
 - The historical phone tests have unresolved cases; their old PASS results apply only to their recorded versions and routes.
-- The legacy consumer installation instructions contain plan-specific claims and an explicitly unverified table. Recheck them in each target account before promising public availability; repository compatibility does not validate those claims.
+- The ChatGPT visitor instructions now identify mobile setup as unverified and offer only a labeled one-chat trial. Remaining Claude/Gemini installation claims still need checks in each target account; repository compatibility does not validate plan or app availability.
 - The skill description currently says it checks visitors in, although its body requires link-only check-in. The standalone generator's profile-summary example still includes a zip code, conflicting with the current no-zip-code guidance. Correct these shared content inconsistencies with their associated validation before the next visitor release.
 
 ## Platform references

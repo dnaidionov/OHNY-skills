@@ -12,12 +12,18 @@ Use PASS, FAIL, PARTLY, NOT RUN, or BLOCKED. Include the actual tool, file, or o
 
 ## Development checks
 
+These checks apply to contributors in Codex, Claude Code, and ChatGPT desktop. They do not pass the ChatGPT mobile visitor release requirements.
+
 | ID | Check | Pass condition |
 |---|---|---|
 | D1 | Ask the tool to report its working directory, branch, commit, and project instructions. | It uses the intended checkout and current `AGENTS.md`, including its test-first and documentation rules. |
 | D2 | Ask it to read `docs/decisions.md` and identify the latest choice and reason. | It reads the file and accurately reports a recorded decision, without depending on another app's chat. |
 | D3 | Run `npm test` in that environment. | All tests pass, with counts reported; no required tests silently skipped. |
 | D4 | Inspect skill discovery in a fresh chat. | Codex exposes `$ohny`; Claude Code exposes `/ohny`; ChatGPT exposes `ohny` in its skill selector if supported. Record the loaded path. Explicitly reading a file is a separate route, not a discovery pass. |
+
+## ChatGPT mobile setup and release checks
+
+Run **M1–M9 in [chatgpt-mobile.md](chatgpt-mobile.md)** on each advertised native mobile app and plan. Setup must begin and finish on the phone, without developer mode or a computer. Complete M1–M3 before behavior testing: a guide pasted into the test conversation can conceal a missing installation. Record a standalone-guide trial separately. Voice is a separate result from text.
 
 ## Visitor checks
 
@@ -38,5 +44,7 @@ Use the supplied festival time for repeatable comparisons; check live sources wh
 Phone and voice coverage still uses `docs/phone-test.md`, including its location-denied case. Testing Claude Code alone does not validate the Claude phone app.
 
 ## Results as of this setup
+
+ChatGPT mobile M1–M9 are **NOT RUN**. There is no verified phone-only OHNY installation route in this repository yet. Mobile release readiness remains blocked until that route and native acceptance evidence exist.
 
 The repository's shared checks and discovery-path tests are recorded in `docs/test-results.md`. Fresh native D1–D4 and V1–V9 runs for Codex, Claude Code, and ChatGPT desktop have **NOT RUN** as part of this setup. Existing Claude phone observations remain historical evidence for their recorded configurations only.
