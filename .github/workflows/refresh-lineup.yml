@@ -33,6 +33,10 @@ jobs:
         if: steps.window.outputs.active == 'true'
         with:
           node-version: 24
+      - uses: actions/setup-python@v5
+        if: steps.window.outputs.active == 'true'
+        with:
+          python-version: '3.12'
       - name: Rebuild snapshot and offline files
         if: steps.window.outputs.active == 'true'
         env:
@@ -41,6 +45,9 @@ jobs:
           node scripts/build-snapshot.mjs
           node scripts/build-fallback.mjs
           node scripts/build-standalone.mjs
+      - name: Test regenerated files before committing
+        if: steps.window.outputs.active == 'true'
+        run: npm test
       - name: Commit if changed
         if: steps.window.outputs.active == 'true'
         run: |

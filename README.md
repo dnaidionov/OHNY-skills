@@ -2,6 +2,10 @@
 
 A pocket guide to Open House New York Weekend (Oct 16-18, 2026): the check-in link, "what's open near me", site and festival Q&A, day planning, directions. Built for phones and voice. **Not affiliated with OHNY.** Made by [Dmitry Naidionov](https://naidionov.com).
 
+## Develop with Codex, ChatGPT desktop, or Claude Code
+
+Use the same repository and shared instructions. Start with [the development guide](docs/development.md); it covers opening the folder in each app, separate worktrees for simultaneous work, tests, and handoffs. [Project decisions](docs/decisions.md) explain the setup. [Native platform checks](docs/platform-tests.md) distinguish actual app behavior from backend tests.
+
 ## Install
 
 Pick the route that fits your account. The first two work on a phone-first, "set it up once" basis.
@@ -18,7 +22,7 @@ The helper is also an MCP server, so it can be added as a **custom connector**. 
 - **Tap-to-install from a phone** needs the connector to be listed in a directory (Claude's connector directory, ChatGPT's app directory). That requires a submission and review by the platform, so it's not done yet.
 - Check it with the official inspector: `npx @modelcontextprotocol/inspector --cli https://naidionov.com/ohny/skills/mcp --transport http --method tools/list`
 
-The five tools are `ohny_nearby`, `ohny_search`, `ohny_site`, `ohny_changes` and `ohny_guide` (the detailed playbook, read on demand). They are read-only and take no personal information. On first use Claude asks you to approve each tool: choose **Always allow** (or set it under Settings, Connectors, Ask OHNY), since none of them change anything.
+The six tools during the festival season are `ohny_nearby`, `ohny_search`, `ohny_site`, `ohny_check_plan`, `ohny_changes` and `ohny_guide` (the detailed playbook, read on demand). They are read-only and take no personal information. On first use Claude asks you to approve each tool: choose **Always allow** (or set it under Settings, Connectors, Ask OHNY), since none of them change anything.
 
 ### 2. No install at all (any chatbot that can browse the web)
 
@@ -86,7 +90,8 @@ Fork this repo and see "Deploy" below (the Worker also answers under a path pref
 ## Run and test
 
 ```bash
-npm test                    # 76 unit tests, no network (the offline tests need python3)
+npm test                    # Offline checks; Node 24, Python 3.11+, zip and unzip required
+npm run package             # Tests first, then creates dist/ohny-skill.zip
 npm run build:data          # refresh data/lineup.json (do this again right before the festival)
 npx wrangler dev            # local API at http://localhost:8787
 curl 'http://localhost:8787/v1/nearby?lat=40.7295&lng=-73.9965&interests=history&now=2026-10-17T14:30'

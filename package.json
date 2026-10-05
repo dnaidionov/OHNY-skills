@@ -15,7 +15,8 @@
     "build:icons": "node scripts/build-icons.mjs",
     "build:standalone": "node scripts/build-standalone.mjs",
     "smoke": "node scripts/smoke-test.mjs",
-    "build:fallback": "node scripts/build-fallback.mjs"
+    "build:fallback": "node scripts/build-fallback.mjs",
+    "prepackage": "npm test"
   },
   "devDependencies": {
     "wrangler": "^4.0.0"

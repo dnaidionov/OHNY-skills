@@ -1,4 +1,6 @@
-# Phone test results log
+# Test results log
+
+Native desktop acceptance scenarios are in [platform-tests.md](platform-tests.md). The phone runs below remain historical evidence for their recorded app versions and routes.
 
 ## Run 1: Claude app on Pixel 7 Plus, Claude 1.260928.20, Pro plan, custom connector (Oct 2, 2026)
 
@@ -40,3 +42,22 @@ Still to retest after the fixes: T5, T7, F1b (new), F2, F3, in a fresh chat. If 
 | F4 | PASS | Honest two-sentence message. |
 
 Next: rerun F1b, F2 and F3 with the updated Test 2 (it uses `?v=3`), then ChatGPT, Gemini and voice.
+
+## Shared development setup: automated checks (October 4, 2026)
+
+Source: base commit `416913b` plus the shared-project setup change recorded with this entry. Environment: local macOS, Node 24.5.0, Python 3.14.0. Codex CLI 0.142.5 and Claude Code 2.1.287 were identified by their version commands; no fresh native agent session was run as part of these checks.
+
+| Check | Result | Evidence and limits |
+|---|---|---|
+| Baseline `npm test` before changes | PASS | 84 tests, zero failures, zero skipped. |
+| New tests before implementation | Expected failure | Eight tests: one passed, seven failed. Six failed because the two discovery links were absent; one proved that a failing test did not block packaging. These were the intended test-first failures, not regressions in the existing 84 checks. |
+| Final `npm test` | PASS | 92 tests, zero failures, zero skipped. Both discovery paths resolve to the canonical skill and support successful offline calls plus clear missing-location errors from another directory. |
+| `npm run package` | PASS | The prepackage check ran all 92 tests before creating `dist/ohny-skill.zip`. A separate isolated negative test verifies that a failing check prevents a new archive. |
+| Archive contents | PASS | All 21 files match the Git-tracked canonical skill files byte for byte, with no extra files or agent-specific copies. |
+| Skill structure validator | PASS | Official skill-creator `quick_validate.py` accepted `skills/ohny`. The default Python lacked PyYAML, so the validator ran in a temporary environment outside the repository; project dependencies were unchanged. |
+| Workflow YAML and diff formatting | PASS | Both workflows parse as YAML; neither suppresses failing steps. `git diff --check` passed. |
+| GitHub-hosted workflow run | NOT RUN | Local checks validate the commands and YAML. The new workflow has not been pushed or executed on GitHub. Branch protection has not been configured by this change. |
+| Fresh native Codex, Claude Code, ChatGPT desktop tests | NOT RUN | See D1–D4 and V1–V9 in `docs/platform-tests.md`; filesystem checks and CLI version output do not establish native discovery or behavior. |
+| Deployed-service, phone, and voice retest | NOT RUN | No production changes or claims of new native compatibility; earlier phone observations remain as recorded above. |
+
+The packaging counterargument was that an unchecked archive command is useful for manual workflows. It was rejected here because the owner explicitly requires failing tests to stop a build, and the offline suite is fast. Missing discovery paths were setup gaps, not a defect in the visitor calculations. No ambiguous product bug was inferred from these failures.
