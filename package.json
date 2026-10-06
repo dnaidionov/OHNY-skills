@@ -16,7 +16,10 @@
     "build:standalone": "node scripts/build-standalone.mjs",
     "smoke": "node scripts/smoke-test.mjs",
     "build:fallback": "node scripts/build-fallback.mjs",
-    "prepackage": "npm test"
+    "prepackage": "npm test",
+    "prepackage:chatgpt": "npm test",
+    "package:chatgpt": "node scripts/build-chatgpt-plugin.mjs",
+    "check:chatgpt-submission": "node scripts/build-chatgpt-plugin.mjs --require-metadata"
   },
   "devDependencies": {
     "wrangler": "^4.0.0"

@@ -1,0 +1,93 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "ask-ohny",
+  "version": "0.1.0",
+  "description": "Unofficial guide to Open House New York Weekend, October 16–18, 2026, using live public festival information.",
+  "author": {
+    "name": "Dmitry Naidionov",
+    "url": "https://naidionov.com"
+  },
+  "homepage": "https://naidionov.com/ohny/skills",
+  "repository": "https://github.com/dnaidionov/OHNY-skills",
+  "license": "MIT",
+  "keywords": [
+    "architecture",
+    "New York",
+    "OHNY",
+    "festival"
+  ],
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "displayName": "Ask OHNY (unofficial)",
+        "shortDescription": "NYC architecture weekend guide",
+        "longDescription": "Explore Open House New York Weekend, October 16–18, 2026, with an unofficial guide by Dmitry Naidionov. Find participating places near a location you provide, check hours and entry rules, learn about individual sites, and plan visits around tickets you already hold. The guide reads OHNY's public festival data and labels saved information when live updates are unavailable. It provides map links and the official check-in form link. It cannot submit check-ins, buy tickets, reserve places, guarantee entry, or verify real-time transit service. This is an independent project, not affiliated with, endorsed by, or sponsored by Open House New York. Tool availability is seasonal: after October 18 only site questions remain; from November 19 the service directs visitors to ohny.org. ChatGPT mobile installation, plan availability, and voice behavior are pending native testing; no phone-only setup is promised by this draft listing.",
+        "developerName": "Dmitry Naidionov",
+        "category": "Productivity",
+        "websiteURL": "https://naidionov.com/ohny/skills",
+        "defaultPrompt": [
+          "OHNY, what can I visit near Washington Square Park?",
+          "OHNY, tell me about the Grolier Club and its entry rules.",
+          "OHNY, help me plan visits around tickets I already have."
+        ],
+        "logo": "./assets/icon.png",
+        "composerIcon": "./assets/icon.png",
+        "supportURL": "https://github.com/dnaidionov/OHNY-skills/issues"
+      },
+      "review": {
+        "test_cases": {
+          "positive": [
+            {
+              "description": "P1: Arrival-aware nearby discovery. Run in a fresh chat while the deployed server offers festival-season tools. The supplied time is simulated New York time, not a claim that the festival is open today.",
+              "prompt": "OHNY, pretend it is October 17, 2026 at 2:30 PM in New York. I'm at Washington Square Park (40.7308, -73.9973). I like history. What can I visit within a 15-minute walk?",
+              "tools_triggered": "ohny_guide; ohny_nearby; ohny_site when entry details need clarification",
+              "expected_behavior": "Use ohny_nearby with lat 40.7308, lng -73.9973, max_walk_min 15, interests history and now 2026-10-17T14:30. Show at most three returned matches with arrival-aware hours, walking estimates and entry notes. Account for exclusions from returned fields. If none match, explain that result. Report saved data if live is false; never invent results."
+            },
+            {
+              "description": "P2: Resolve a named site and read its current details. Use a fresh chat and the same simulated festival time. Site names and lineup contents can change; no exact hours are frozen into this case.",
+              "prompt": "OHNY, pretend it is October 17, 2026 at 2:30 PM. Tell me about the Grolier Club exhibition: hours, entry rules, one sourced fact and a walking directions link.",
+              "tools_triggered": "ohny_guide; ohny_search; ohny_site",
+              "expected_behavior": "Search for Grolier Club with now 2026-10-17T14:30, then use the returned slug in ohny_site. Hours, status, entry rules, historical fact and map destination must be supported by the returned record. Disclose unavailable/live-false data. If the listing no longer exists, report that instead of inventing details."
+            },
+            {
+              "description": "P3: An itinerary must preserve an already-held ticket and reject impossible travel. Fresh chat; sample ticket information is fictional test input. If the named session is absent from current OHNY data, flag the mismatch and ask the reviewer to check the ticket instead of silently changing it.",
+              "prompt": "OHNY, pretend it is October 17, 2026 at 1 PM. I'm at Washington Square Park. I already hold tickets to the Fifth Avenue Presbyterian Church Organ Tour at 3 PM, meeting at 7 West 55th Street. Could I visit the Renee & Chaim Gross Foundation at 2:30 first and still arrive 15 minutes early for my tour?",
+              "tools_triggered": "ohny_guide; ohny_search; ohny_site; ohny_check_plan",
+              "expected_behavior": "Resolve both sites from tools. Use ohny_check_plan with stops in chronological order and the tour slug in held; use the ticket's meeting point for travel when coordinates can be verified. Report blocking timing/session problems and a leave-by recommendation grounded in the check. Do not treat sold-out status as invalidating a held ticket, buy tickets, or claim the proposed plan works when blocking problems are returned."
+            },
+            {
+              "description": "P4: Changes since the saved lineup, including the valid zero-change boundary. Fresh chat, festival tools available. Do not require a specific cancellation to exist.",
+              "prompt": "OHNY, pretend it is October 17, 2026 at 2:30 PM. What has changed in the festival lineup since your saved copy? Tell me about cancellations or changed hours first.",
+              "tools_triggered": "ohny_guide; ohny_changes",
+              "expected_behavior": "Call ohny_changes with now 2026-10-17T14:30. Summarize returned added, removed and modified records, prioritizing cancellation/hour changes. If none changed, say none were detected against that snapshot. Use as_of/live and disclose unavailable live data. Do not manufacture a change."
+            },
+            {
+              "description": "P5: Supported search with no exact match. Fresh chat; use the deliberately unknown site name below. This is a valid lookup with recovery, not an unsupported-task negative case.",
+              "prompt": "OHNY, pretend it is October 17, 2026 at 2:30 PM. Does Zebra Tower have OHNY tours on Sunday?",
+              "tools_triggered": "ohny_guide; ohny_search",
+              "expected_behavior": "Search Zebra Tower. When no_match is true, clearly report that no such site is listed and optionally offer to search another name. Do not use partial matches as the answer or invent tours. If a genuine matching record is later added, report its actual details instead and refresh this test fixture."
+            }
+          ],
+          "negative": [
+            {
+              "description": "N1: Purchasing is unsupported. Explain that the guide cannot buy, charge, reserve, or complete an order. Do not call OHNY data tools for this purchase-only request, request card details, invoke a payment tool, or claim success. An official ticket-site link may be offered without acting on it.",
+              "prompt": "Buy two OHNY tour tickets and charge my saved card. I only want you to complete the purchase, not look up sites."
+            },
+            {
+              "description": "N2: Check-in submission is unsupported. Do not call an OHNY data tool or submit a form. Immediately explain that check-in cannot be performed here and provide https://ohny.fillout.com/26weekend. Ask no email, zip, party-size or waiver questions; never claim the visitor is checked in.",
+              "prompt": "OHNY, submit my check-in for me now."
+            },
+            {
+              "description": "N3: General restaurant booking is outside OHNY festival scope. Do not call any ohny_* tool or switch to the festival persona. Explain the booking limit or answer through the host's general capabilities without claiming an OHNY reservation.",
+              "prompt": "Book a restaurant table for four near Union Square tonight."
+            }
+          ]
+        }
+      },
+      "publication": {
+        "countries": [],
+        "release_notes": "Initial ChatGPT plugin package using the shared OHNY skill and existing remote read-only service. Includes festival site discovery, site details, itinerary validation, lineup changes, map links and link-only check-in guidance. Phone-only setup and voice support remain pending native acceptance."
+      }
+    }
+  }
+}

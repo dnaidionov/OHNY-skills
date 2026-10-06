@@ -259,7 +259,8 @@ test('ChatGPT mobile setup is labeled unverified and provides a clearly scoped p
   assert.match(panel, /one-chat trial/i);
   assert.match(panel, /id="paste-chatgpt"/);
   assert.match(panel, /data-copy="paste-chatgpt"/);
-  assert.ok(panel.includes('https://raw.githubusercontent.com/dnaidionov/OHNY-skills/main/standalone/OHNY.md'));
+  assert.ok(panel.includes('https://naidionov.com/ohny/skills/guide'));
+  assert.ok(!panel.includes('raw.githubusercontent.com'));
 });
 
 test('ChatGPT visitor setup does not require desktop developer mode or claim an unverified plan entitlement', async () => {
@@ -270,4 +271,12 @@ test('ChatGPT visitor setup does not require desktop developer mode or claim an 
   assert.ok(panel);
   assert.doesNotMatch(panel, /Developer Mode|Plus or higher|Settings, Connectors|mcp-chatgpt|local project|npm /i);
   assert.doesNotMatch(html, /ChatGPT needs a Plus or higher plan with Developer Mode/i);
+});
+
+test('landing privacy copy describes transient processing without an unverified analytics claim', async () => {
+  const html = await (await handle(new Request('https://naidionov.com/ohny/skills', {
+    headers: { accept: 'text/html' },
+  }), deps)).text();
+  assert.match(html, /processes your requests without keeping a visitor profile/);
+  assert.doesNotMatch(html, /covered by that site's usual analytics/);
 });

@@ -75,3 +75,14 @@ Source: base commit `c46ea4f` plus the mobile-requirement change recorded with t
 | Publication/deployment and live-page verification | NOT RUN | Changes are local to this branch. Production still has its previous instructions until a separate deployment. |
 
 Counterargument considered: developer-mode instructions can be useful to someone testing the backend. That is valid in the contributor guide, but does not make them acceptable first-time visitor instructions under the owner's phone-only requirement. The two failures are therefore documentation/UI defects for this target, not evidence of a broken backend or a platform limitation established by a phone test. The standalone prompt remains only a trial and cannot pass installation acceptance.
+
+## 2026-10-05 — `/guide` route for the pasted-guide link
+
+Source: base commit `0fd7291` plus uncommitted working-tree changes on `codex/shared-project-setup`. Local macOS, Node 24.
+
+| Check | Result | Evidence and limits |
+|---|---|---|
+| Tests before implementation | Expected failure | 4 failed: `/guide` served plain text (with and without the `/ohny/skills` prefix), `/guide` needs no live data and rejects POST, `src/standalone-data.js` up to date, and the landing page's trial message pointed at GitHub raw. |
+| Final `npm test` | PASS | 114 tests, 0 failures. |
+| Gemini (iOS/Android) reads `https://naidionov.com/ohny/skills/guide` | NOT RUN | The original failure was on the GitHub raw link; the route is not deployed and no phone test has been done. |
+| Deployment and live check of `/guide` | NOT RUN | Local branch only. |

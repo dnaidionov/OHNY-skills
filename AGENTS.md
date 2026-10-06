@@ -4,7 +4,7 @@ This file governs development of this repository in Codex, ChatGPT desktop, and 
 
 ## Start each session
 
-Read the current `README.md`, `docs/development.md`, `docs/chatgpt-mobile.md`, `docs/decisions.md`, `docs/platform-tests.md`, and the latest entries in `docs/test-results.md`. Read the skill and relevant references, tests, configuration, and recent Git history before changing their behavior. Re-read documents changed since your previous session; don't assume another tool's chat or memory is available.
+Read the current `README.md`, `docs/development.md`, `docs/chatgpt-mobile.md`, `docs/chatgpt/publisher-guide.md`, `docs/decisions.md`, `docs/platform-tests.md`, and the latest entries in `docs/test-results.md`. Read the skill and relevant references, tests, configuration, and recent Git history before changing their behavior. Re-read documents changed since your previous session; don't assume another tool's chat or memory is available.
 
 Check the working tree and branch first. Preserve unrelated changes. The scheduled lineup refresh can update the remote; check for remote changes before integrating work, without overwriting local edits. Parallel editors need separate Git worktrees or clones, each with its own branch. See `docs/development.md` for handoffs.
 
@@ -21,6 +21,7 @@ Check the working tree and branch first. Preserve unrelated changes. The schedul
 - Run `npm test`. Any failed required test fails the change; show the failing test names and evidence. Consider whether an apparent bug is intentional or a test/environment issue. If the arguments leave genuine ambiguity, present both sides and your recommendation to the user.
 - Use `npm run package` for an installable archive; its prepackage check runs the tests first. Node 24, Python 3.11+, `zip`, and `unzip` are required for the full checks. Do not bypass failed checks to produce a release.
 - Edit source inputs, then regenerate derived outputs. Skill/reference changes: `npm run build:standalone` updates `standalone/OHNY.md` and `src/guide-data.js`. Snapshot/fallback changes: `npm run build:fallback` updates bundled JSON and area lists. Refreshing `data/lineup.json` with `npm run build:data` makes external requests; do it when lineup work requires it.
+- ChatGPT packaging: `npm run package:chatgpt` tests first, validates the public package, and writes an inventory/readiness report. Edit `plugins/ask-ohny/plugin.json` for listing/review metadata; never put private app bindings, secrets or unverified URLs in the public upload. A candidate ZIP may be valid while publication remains blocked.
 - Run `npm run smoke` when validating the deployed service; it checks production, not uncommitted local changes. Use `npm run smoke -- --base http://localhost:8787 --quiet` for a running local Worker.
 - Automated unit, packaging, and protocol checks do not prove native app behavior. Record exactly which product, version, source revision, route, and scenarios were tested in `docs/test-results.md`; use `docs/platform-tests.md`. Mark unavailable native checks NOT RUN or BLOCKED, never PASS.
 

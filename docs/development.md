@@ -14,6 +14,8 @@ Use one Git repository for the product, documentation, decisions, and tests. Eac
 | `.agents/skills/ohny` | Codex discovery link to the canonical skill |
 | `.claude/skills/ohny` | Claude Code discovery link to the canonical skill |
 | `src/core/`, `src/handler.js`, `src/mcp.js` | Shared calculations, HTTP API, and connector |
+| `plugins/ask-ohny/`, `scripts/build-chatgpt-plugin.mjs` | Portable ChatGPT plugin metadata, icon, and tested build from shared sources |
+| `docs/chatgpt/` | Publisher guide, phone acceptance, recording walkthrough and policy drafts |
 | `openapi.yaml` | Existing ChatGPT Actions route; distinct from the MCP connector |
 | `docs/decisions.md` | Significant choices and their reasoning |
 | `docs/chatgpt-mobile.md` | Phone-only ChatGPT visitor setup, current limitations, and release requirements |
@@ -105,6 +107,8 @@ Use Node 24, Python 3.11+, and `zip`/`unzip`. The tests use the standard librari
 ```sh
 npm test                    # Offline tests, including generated-file and discovery-link checks
 npm run package             # Runs tests first, then writes dist/ohny-skill.zip
+npm run package:chatgpt     # Runs tests first, then prepares the plugin ZIP and readiness report
+npm run check:chatgpt-submission # Fails if required listing/review metadata is missing
 npm run build:standalone    # Regenerates standalone/OHNY.md and src/guide-data.js
 npm run build:fallback      # Regenerates bundled JSON and small area lists
 ```
@@ -119,7 +123,7 @@ Preserve historical results in `docs/test-results.md`. New entries must identify
 - Run `docs/platform-tests.md` in fresh Codex, Claude Code, and ChatGPT desktop sessions. Desktop/native discovery and connected-tool behavior remain unverified until recorded there.
 - The historical phone tests have unresolved cases; their old PASS results apply only to their recorded versions and routes.
 - The ChatGPT visitor instructions now identify mobile setup as unverified and offer only a labeled one-chat trial. Remaining Claude/Gemini installation claims still need checks in each target account; repository compatibility does not validate plan or app availability.
-- The skill description currently says it checks visitors in, although its body requires link-only check-in. The standalone generator's profile-summary example still includes a zip code, conflicting with the current no-zip-code guidance. Correct these shared content inconsistencies with their associated validation before the next visitor release.
+- The October 5 packaging change corrects the skill description, unsupported voice promise, profile-summary example, and local-guide tool annotation. Deploy the corrected source separately before recording or scanning the submitted backend. Complete missing policy/demo/commerce materials reported by the ChatGPT build before submission.
 
 ## Platform references
 

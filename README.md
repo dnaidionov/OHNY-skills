@@ -8,6 +8,12 @@ A pocket guide to Open House New York Weekend (Oct 16-18, 2026): the check-in li
 
 Use the same repository and shared instructions. Start with [the development guide](docs/development.md); it covers opening the folder in each app, separate worktrees for simultaneous work, tests, and handoffs. [Project decisions](docs/decisions.md) explain the setup. [Native platform checks](docs/platform-tests.md) distinguish actual app behavior from backend tests.
 
+## ChatGPT deployment package
+
+`npm run package:chatgpt` runs the tests and creates a portable plugin ZIP plus an inventory/readiness report in `dist/`. Metadata and the OH/NY icon live in `plugins/ask-ohny/`; the build copies the canonical `skills/ohny/` without maintaining a second skill source. The ZIP includes the existing remote MCP connection. It does not deploy the Worker or publish/install a plugin.
+
+See [the publisher guide](docs/chatgpt/publisher-guide.md), [phone-only acceptance instructions](docs/chatgpt/phone-acceptance.md), and [demo recording walkthrough](docs/chatgpt/demo-recording.md). Policy drafts are in `docs/chatgpt/policies/`. `npm run check:chatgpt-submission` deliberately fails while required metadata is incomplete; a locally valid ZIP is not proof of public-submission readiness. The current missing items are listed in the generated readiness report.
+
 ## Install
 
 Choose the route for your app. The ChatGPT mobile route is still being verified; the no-install option below is a one-chat trial, not persistent setup.
@@ -24,13 +30,13 @@ The helper is also an MCP server, so it can be added as a **custom connector**. 
 - **Public directory distribution** has not been completed. For ChatGPT, an account-available remote plugin is a candidate; a real listing/link and successful phone-only onboarding must be verified before offering an install button.
 - Check it with the official inspector: `npx @modelcontextprotocol/inspector --cli https://naidionov.com/ohny/skills/mcp --transport http --method tools/list`
 
-The six tools during the festival season are `ohny_nearby`, `ohny_search`, `ohny_site`, `ohny_check_plan`, `ohny_changes` and `ohny_guide` (the detailed playbook, read on demand). They are read-only and take no personal information. On first use Claude asks you to approve each tool: choose **Always allow** (or set it under Settings, Connectors, Ask OHNY), since none of them change anything.
+The six tools during the festival season are `ohny_nearby`, `ohny_search`, `ohny_site`, `ohny_check_plan`, `ohny_changes` and `ohny_guide` (the detailed playbook, read on demand). They are read-only and process supplied location and visit preferences without keeping a visitor profile. Do not send names, email addresses, payment details or ticket barcodes. On first use Claude asks you to approve each tool: choose **Always allow** (or set it under Settings, Connectors, Ask OHNY), since none of them change anything.
 
 ### 2. No install at all (any chatbot that can browse the web)
 
 Paste this into a new chat:
 
-> Use https://raw.githubusercontent.com/dnaidionov/OHNY-skills/main/standalone/OHNY.md as your guide to Open House New York Weekend for this chat. Then ask me what I'd like to do.
+> Use https://naidionov.com/ohny/skills/guide as your guide to Open House New York Weekend for this chat. Then ask me what I'd like to do.
 
 This attempts to load the guide for that conversation only (paste it again next time). It depends on browsing access in the actual account; verify that the guide opens and live information is available. It does not install anything or establish voice support, and it has no itinerary page. `standalone/OHNY.md` is generated from the skill by `npm run build:standalone`, and a test fails if it gets out of date.
 
@@ -40,7 +46,7 @@ This attempts to load the guide for that conversation only (paste it again next 
 2. In claude.ai or the desktop app open **Customize, Skills** (menu names change) and upload the zip. Code execution must be on. The phone apps then use it too, but can't upload skills themselves.
 3. Say **"ohny, what's open near me?"**. You can also say "Open House New York" or tag **#ohny**.
 
-For developers evaluating a ChatGPT custom GPT, `openapi.yaml` describes the existing Actions API. It is not a published GPT or a verified mobile distribution route. Do not direct visitors to build their own GPT or upload repository files. Gemini's pasted-guide route may not be able to call the helper service.
+For developers evaluating a ChatGPT custom GPT, `openapi.yaml` describes the existing Actions API. It is not a published GPT or a verified mobile distribution route. Do not direct visitors to build their own GPT or upload repository files. Gemini's pasted-guide route may not be able to call the helper service. The pasted guide link is `https://naidionov.com/ohny/skills/guide` (served by the Worker as plain text); GitHub's raw host was not readable by Gemini in one report.
 
 ### Trying it before the festival (Oct 16-18, 2026)
 
@@ -70,7 +76,7 @@ Fork this repo and see "Deploy" below (the Worker also answers under a path pref
   - The saved snapshot (`data/lineup.json`) only supplies descriptions, websites and map positions for the sites it already knew. If ohny.org can't be reached the Worker says so (`live:false`). `GET /v1/changes` lists everything that differs from the snapshot. Rebuild the snapshot before the festival to make late additions exact.
 - **Tickets you already hold are hard constraints.** Pass them as `fixed=<site>@<date-time>` (with the exact address from the ticket as `@lat,lng`, since ticketed sites publish none) and every suggestion leaves time to reach the ticket; the reply says when to leave. "Sold Out" never applies to a ticket holder. `GET /v1/plan/check` (connector tool `ohny_check_plan`) validates a whole itinerary: open on arrival, tour sessions exist, tickets held, and travel between stops. A ticket whose time doesn't match a real OHNY session is reported first.
 - **Walking distance.** `nearby` takes `max_walk_min` ("what's within 15 minutes?") and checks each site against the time you'd **arrive** (now + walk), skipping places that close before you get there or leave under 10 minutes to look around. Skipped places are returned by name with the reason, so the assistant can tell the visitor. Results are ranked by a blend of how well a site fits the visitor's interests, how close it is, and (when they ask "what else is near here?", via `near=<slug>`) whether OHNY itself suggests it as nearby; a suggestion that doesn't match their interests is reported separately instead of recommended. Group needs filter the list: `child_age` (age limits) and `wheelchair=true`, with the reason given for each place left out.  and each result carries short entry-rule hints from the site's access notes (photo ID, bag limits, age limit, ...).
-- **Privacy.** The Worker keeps nothing and receives no names, emails or zip codes. The skill keeps the visitor's profile in the AI platform's own memory.
+- **Privacy.** The Worker processes supplied location and visit preferences without maintaining a visitor profile. Chat history and any consented saved preferences remain subject to the AI platform's account settings. Hosting-provider processing is separate from application storage.
 - **Test mode.** Every call takes `now=2026-10-17T14:30` (New York time). Outside Oct 16-18 the skill asks the tester what moment to pretend it is, and lets them change it.
 
 ## Layout

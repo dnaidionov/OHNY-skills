@@ -10,6 +10,7 @@ import { handleMcp } from './mcp.js';
 import { parseSpecs, resolveTickets, checkPlan, TICKET_BUFFER_MIN, DEFAULT_STAY_MIN, NEARBY_MIN_STAY_MIN } from './core/tickets.js';
 import { landingHtml } from './landing.js';
 import { ICON_SVG } from './icon.js';
+import { STANDALONE } from './standalone-data.js';
 import { ICON_PNG_512, ICON_PNG_48, FAVICON_ICO } from './icon-data.js';
 
 const b64bytes = (b64) => Uint8Array.from(atob(b64), (c) => c.charCodeAt(0));
@@ -125,6 +126,14 @@ export async function handle(request, deps) {
   if (ICONS[path]) {
     return new Response(ICONS[path][1], {
       headers: { 'content-type': ICONS[path][0], 'cache-control': 'public, max-age=86400', 'access-control-allow-origin': '*', 'x-content-type-options': 'nosniff' },
+    });
+  }
+
+  // The standalone guide as plain text: the link visitors paste into chatbots that can read web pages
+  // (GitHub's raw host is refused by some of them, e.g. Gemini). Static, needs no live data.
+  if (path === '/guide' || path === '/guide.md') {
+    return new Response(STANDALONE, {
+      headers: { 'content-type': 'text/plain; charset=utf-8', 'cache-control': 'public, max-age=300', 'access-control-allow-origin': '*', 'x-content-type-options': 'nosniff' },
     });
   }
 

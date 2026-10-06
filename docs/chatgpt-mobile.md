@@ -2,7 +2,9 @@
 
 **Required:** a visitor completes setup entirely on their phone and uses OHNY in the native ChatGPT mobile app. No computer, local project folder, Git checkout, terminal, or desktop skill installation is part of the visitor journey. ChatGPT desktop remains a development tool.
 
-**Current status: not ready for a supported mobile launch.** The repository has a shared skill and a deployed remote service, but no verified OHNY installation route or recorded end-to-end acceptance run for ChatGPT mobile. The local skill ZIP and passing backend tests do not establish mobile installation.
+**Current status: a local plugin package is prepared; not ready for a supported mobile launch.** The repository has a shared skill and a deployed remote service, but no verified OHNY installation route or recorded end-to-end acceptance run for ChatGPT mobile. The local skill ZIP and passing backend tests do not establish mobile installation.
+
+The publisher package, listing metadata, policy drafts and recording/publishing guides are now prepared. Follow [the publisher guide](chatgpt/publisher-guide.md) and [phone-only test walkthrough](chatgpt/phone-acceptance.md). A ZIP does not complete identity/domain verification, policy publication, demo recording, portal scans, review or native acceptance.
 
 ## Try a single conversation on your phone
 
@@ -11,7 +13,7 @@ This is a test of one conversation, not the finished reusable setup. It depends 
 1. On your phone, open the ChatGPT app and start a new chat with web browsing available.
 2. Paste this message:
 
-   > Use https://raw.githubusercontent.com/dnaidionov/OHNY-skills/main/standalone/OHNY.md as your guide to Open House New York Weekend for this chat. Then ask me what I'd like to do.
+   > Use https://naidionov.com/ohny/skills/guide as your guide to Open House New York Weekend for this chat. Then ask me what I'd like to do.
 
 3. Ask about a place or nearby sites. Supply a cross street or landmark if the app cannot access your location. Outside the festival dates, provide the day and time to use for the test.
 4. If it cannot open the guide or check live data, treat the trial as unavailable or limited. Do not accept guessed hours, ticket status, or a claim that a saved lineup is current.

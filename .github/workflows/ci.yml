@@ -21,3 +21,5 @@ jobs:
           python-version: '3.12'
       - name: Test and package the shared skill
         run: npm run package
+      - name: Package and validate the ChatGPT plugin candidate
+        run: node scripts/build-chatgpt-plugin.mjs

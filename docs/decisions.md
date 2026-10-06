@@ -39,3 +39,13 @@ Keep the shared skill and backend. Evaluate an account-available remote OHNY plu
 **Alternatives and reasoning:** local skill links solve development discovery only. Desktop developer connections help test the service, but they do not meet this requirement. Pasting the standalone guide is a useful phone experiment; requiring it again for every chat does not provide the intended reusable setup. A custom GPT using the existing Action schema remains an option to evaluate, not an already tested product. Remote plugin distribution reuses the MCP service but adds registration/review and mobile validation work. Choose a public route based on actual onboarding and tool behavior rather than assuming desktop availability carries over.
 
 Remove the landing page's ChatGPT developer-mode instructions and unverified plan promises. Show the incomplete mobile status and a clearly labeled one-chat trial. Keep development instructions in the contributor guide. Two tests first demonstrated that the old visitor panel violated the new requirement; retain them to prevent misleading installation claims. This content correction does not deploy the site or complete mobile distribution. Native phone and voice checks remain NOT RUN until evidence is recorded.
+
+## 2026-10-05 — Serve the pasted guide from naidionov.com, not GitHub's raw host
+
+A Gemini visitor who pasted the "use <link> as your guide" message got "I wasn't able to access the link." The link pointed at `raw.githubusercontent.com/.../standalone/OHNY.md`. The cause is not confirmed (raw GitHub being refused by Gemini's reader and browsing being off in that chat both fit the report), so this is a likelier route, not a proven fix.
+
+The Worker now serves the standalone guide as `text/plain` at `/guide` (also `/guide.md`, and under `/ohny/skills/`). The text is generated into `src/standalone-data.js` by `npm run build:standalone`, so it needs no file access or live data and cannot drift (a test fails if it is stale). The paste line on the landing page, README, `docs/chatgpt-mobile.md` and `docs/phone-test.md` Test 1 now use `https://naidionov.com/ohny/skills/guide`.
+
+**Alternatives:** keep GitHub raw (known to fail for this visitor); a static page on the main naidionov.com site (a second place to keep in sync, outside this repo); pasting the full 42 KB guide (too long for many phone chats). The skill's saved-lineup fallbacks still use GitHub raw and are unchanged.
+
+**Limits:** this does not establish that Gemini can read the new link. Gemini and ChatGPT trials remain NOT RUN until tried on a phone. Deployment is a separate step.

@@ -9,7 +9,7 @@ export const LINKS = {
   ohny: 'https://ohny.org',
   mcp: 'https://naidionov.com/ohny/skills/mcp',
   claude: 'https://claude.ai/customize/connectors?modal=add-custom-connector&connectorName=Ask%20OHNY&connectorUrl=https%3A%2F%2Fnaidionov.com%2Fohny%2Fskills%2Fmcp',
-  standalone: 'https://raw.githubusercontent.com/dnaidionov/OHNY-skills/main/standalone/OHNY.md',
+  standalone: 'https://naidionov.com/ohny/skills/guide',
 };
 
 export const PASTE_LINE = `Use ${LINKS.standalone} as your guide to Open House New York Weekend for this chat. Then ask me what I'd like to do.`;
@@ -171,7 +171,7 @@ export function landingHtml() {
     <li><strong>Tell you about a place</strong>, with entry rules and a fun fact or two, and help with directions.</li>
   </ul>
   <p style="margin:8px 0"><a href="#manual">See everything it can do, with example questions &darr;</a></p>
-  <p style="color:var(--muted);font-size:.95rem">It reads OHNY's public lineup live, so cancellations and last-minute changes show up. The guide service itself stores nothing about you; whatever your assistant remembers stays in your own AI account.</p>
+  <p style="color:var(--muted);font-size:.95rem">It reads OHNY's public lineup live, so cancellations and last-minute changes show up. The guide service processes your requests without keeping a visitor profile; whatever your assistant remembers stays in your own AI account.</p>
 
   <h2 id="start">Get started</h2>
   <div class="tabs" id="tabs">
@@ -440,7 +440,6 @@ export function landingHtml() {
     <a href="${esc(LINKS.github)}" target="_blank" rel="noopener noreferrer">Source on GitHub</a> (MIT) &middot;
     <a href="?format=json">For developers</a>
     <br>The Open House New York name and logo belong to OHNY and are shown for identification only; this project is not affiliated with OHNY. Claude is a trademark of Anthropic.
-    <br>This page is part of naidionov.com and is covered by that site's usual analytics.
   </footer>
 </main>
 </div>
