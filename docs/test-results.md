@@ -131,3 +131,13 @@ Source: commits `82503fd` and the HEAD fix, deployed to `naidionov.com/ohny/skil
 | Shared Gem opens on a visitor's phone with no setup | NOT RUN | Not tried. |
 
 Conclusion for now: Gemini's reader in this account reads well-known sites but not any of the project's hosts (two domains and GitHub), regardless of content type or HEAD support. The cause is not established. Candidates, none confirmed: the reader only serves pages it already has indexed or cached; a zone or account bot setting at Cloudflare; robots rules. The feed approach is therefore **not working** as designed, and the Gem cannot yet get OHNY data.
+
+## 2026-10-06 — Gem re-test after the "don't recommend when the feed is unreadable" rule
+
+Same setup as the earlier Gemini web run (desktop Chrome, Flash, Gem "Ask OHNY (unofficial)" with the updated instructions). Phone app not driven.
+
+| Check | Result | Evidence and limits |
+|---|---|---|
+| Scenario 1 again: "what's open near Grand Central, architecture, Sat Oct 17 2 PM, on foot" | PASS for the safety rule, still no OHNY data | The Gem said it is unofficial, said it could not access `changes.md` and `index.md`, declined to look up or recommend sites, hours or ticket status, and pointed to ohny.org/festival/lineup. It did not use Google Maps data this time (the earlier run did). |
+| Minor wording | Note | It volunteered the check-in link unasked ("To self-check in..."), which the instructions do not call for. Not a rule violation; consider tightening. |
+| Whether the Gem can get live OHNY data | Still FAIL | Gemini's reader still cannot read the feed (see the earlier entry). One run; model output varies. |
