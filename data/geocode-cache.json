@@ -1333,5 +1333,10 @@
   "lng": -74.0105065,
   "label": "Equitable Building, 120, Broadway, Financial District, Lower Manhattan, Manhattan, New York County, New York, 10271, United States"
  },
- "Monumental Labs, Brooklyn, New York": null
+ "Monumental Labs, Brooklyn, New York": null,
+ "Swedish Cottage Marionette Theatre, New York, NY, 10028": {
+  "lat": 40.7799611,
+  "lng": -73.9703474,
+  "label": "Swedish Cottage Marionette Theatre, 79th Street Transverse, Upper West Side, Manhattan, New York County, New York, 10024, United States"
+ }
 }
