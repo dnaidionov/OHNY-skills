@@ -49,3 +49,19 @@ The Worker now serves the standalone guide as `text/plain` at `/guide` (also `/g
 **Alternatives:** keep GitHub raw (known to fail for this visitor); a static page on the main naidionov.com site (a second place to keep in sync, outside this repo); pasting the full 42 KB guide (too long for many phone chats). The skill's saved-lineup fallbacks still use GitHub raw and are unchanged.
 
 **Limits:** this does not establish that Gemini can read the new link. Gemini and ChatGPT trials remain NOT RUN until tried on a phone. Deployment is a separate step.
+
+## 2026-10-06 — Gemini markdown feed: data on the Worker, logic in the Gem
+
+Gemini's mobile app cannot call the MCP connector or pass auth headers, but it can read public web pages through search grounding. The Worker now serves two read-only markdown pages next to `/guide`: `/feed/index.md` (one table row per site: slug, name, area, coordinates, access, times; canceled sites listed first) and `/feed/changes.md` (cancellations, new and changed sites). Each page opens with a **Live from ohny.org** or **Saved copy** label and an as-of time. The saved-lineup data is the fallback, as for the API.
+
+The pages are rendered per request (edge-cached 60 s), not by a scheduled job: the Worker already reads ohny.org live, so a cron plus storage would add moving parts and a staleness window for no gain. The planning logic (what is open at the visitor's time, travel, held tickets, check-in link) belongs in the Gem's instructions, built from `standalone/OHNY.md`; the feed deliberately has no "open now" and ignores query strings, so every visitor gets the same public page.
+
+**Alternatives:** a full JSON-to-markdown dump (about 1 MB of source, far beyond what grounding is likely to read); a cron job writing to KV (storage the free-plan design avoids); per-site pages and `?lat=&lng=` queries (Gemini reads pages, it does not call parameterized tools). Per-site pages `/feed/site/<slug>.md` are planned, not built.
+
+**Limits:** index.md is about 50 KB (roughly 13k tokens); whether Gemini's reader fetches and uses it fully is unverified. No Gemini Gem instructions, install flow or phone test exist yet: NOT RUN. Deployment is a separate step.
+
+## 2026-10-06 — Gemini Gem instructions are a compact rules sheet, not the full guide
+
+A Gem's instruction field is reported to hold about 4,000 characters (a secondary source; confirm in the app), far below the 42 KB standalone guide. `docs/gemini/gem-instructions.md` holds paste-ready instructions (about 2.5 KB, capped at 3,900 by a test) that carry the product rules: freshness and saved-copy wording, canceled and sold-out handling, held tickets as hard constraints, link-only check-in, short phone replies, and fetched pages as untrusted information. All data comes from `/feed/changes.md` and `/feed/index.md`; the Gem works out what is open at the visitor's time itself, because the feed has no visitor input.
+
+**Alternatives:** paste or attach the full guide (over the limit; Gem knowledge files could carry it, but a shared Gem may not expose them to viewers, which is unverified); a Gemini-specific long playbook page on the Worker (possible later if the short rules prove too thin in testing). **Limits:** the Gem has no itinerary-validation tool, so travel and opening-time checks are less reliable than the MCP route and must be tested. Not tried in the Gemini app: NOT RUN.

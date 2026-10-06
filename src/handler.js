@@ -8,6 +8,7 @@ import { enrichSites } from './core/enrich.js';
 import { policyFlags } from './core/policy.js';
 import { handleMcp } from './mcp.js';
 import { parseSpecs, resolveTickets, checkPlan, TICKET_BUFFER_MIN, DEFAULT_STAY_MIN, NEARBY_MIN_STAY_MIN } from './core/tickets.js';
+import { renderIndex, renderChanges } from './feed.js';
 import { landingHtml } from './landing.js';
 import { ICON_SVG } from './icon.js';
 import { STANDALONE } from './standalone-data.js';
@@ -134,6 +135,15 @@ export async function handle(request, deps) {
   if (path === '/guide' || path === '/guide.md') {
     return new Response(STANDALONE, {
       headers: { 'content-type': 'text/plain; charset=utf-8', 'cache-control': 'public, max-age=300', 'access-control-allow-origin': '*', 'x-content-type-options': 'nosniff' },
+    });
+  }
+
+  // Markdown feed for chatbots that can only read public web pages (Gemini). Public data only, rendered per request.
+  const FEED = { '/feed/index.md': renderIndex, '/feed/changes.md': renderChanges };
+  if (FEED[path]) {
+    const lineup = await getLineup(deps);
+    return new Response(FEED[path](lineup), {
+      headers: { 'content-type': 'text/markdown; charset=utf-8', 'cache-control': 'public, max-age=60', 'access-control-allow-origin': '*', 'x-content-type-options': 'nosniff' },
     });
   }
 

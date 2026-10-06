@@ -86,3 +86,27 @@ Source: base commit `0fd7291` plus uncommitted working-tree changes on `codex/sh
 | Final `npm test` | PASS | 114 tests, 0 failures. |
 | Gemini (iOS/Android) reads `https://naidionov.com/ohny/skills/guide` | NOT RUN | The original failure was on the GitHub raw link; the route is not deployed and no phone test has been done. |
 | Deployment and live check of `/guide` | NOT RUN | Local branch only. |
+
+## 2026-10-06 — Gemini markdown feed (`/feed/index.md`, `/feed/changes.md`)
+
+Source: base commit `db0c031` plus uncommitted working-tree changes on `codex/shared-project-setup`. Local macOS, Node 24.
+
+| Check | Result | Evidence and limits |
+|---|---|---|
+| Tests before implementation | Expected failure | `test/feed.test.js`: 9 of 12 failed with 404 (routes, freshness labels, table rows, canceled-first, pipe escaping, changes page, saved-copy label); the 3 negative checks passed vacuously and were strengthened to require a 200 first. |
+| Final `npm test` | PASS | 126 tests, 0 failures. |
+| Real-data size | Measured | `index.md` from the bundled snapshot is about 52 KB before rounding coordinates to 4 decimals. |
+| Gemini (iOS/Android) fetches and uses the feed | NOT RUN | No Gem instructions, install flow or phone test exist yet. |
+| Deployment and live check | NOT RUN | Local branch only. |
+
+## 2026-10-06 — Gemini Gem instructions (draft)
+
+Source: base commit `db0c031` plus uncommitted working-tree changes on `codex/shared-project-setup`. Local macOS, Node 24.
+
+| Check | Result | Evidence and limits |
+|---|---|---|
+| Tests before the file existed | Expected failure | `test/gemini.test.js`: 7 of 7 failed (instructions file missing). |
+| Final `npm test` | PASS | See the run recorded with this change; instructions are 2,488 characters against the 3,900 cap. |
+| Gem instruction field accepts the text; real character limit | NOT RUN | The ~4,000 limit comes from a secondary web source, not the Gemini app. |
+| Gem reads both feed pages, works out "open at arrival", honors held tickets and the check-in rule | NOT RUN | Needs the deployed Worker and a phone test in the Gemini app. |
+| Shared Gem opens on a visitor's phone with no setup step | NOT RUN | Unverified. |

@@ -46,7 +46,7 @@ This attempts to load the guide for that conversation only (paste it again next 
 2. In claude.ai or the desktop app open **Customize, Skills** (menu names change) and upload the zip. Code execution must be on. The phone apps then use it too, but can't upload skills themselves.
 3. Say **"ohny, what's open near me?"**. You can also say "Open House New York" or tag **#ohny**.
 
-For developers evaluating a ChatGPT custom GPT, `openapi.yaml` describes the existing Actions API. It is not a published GPT or a verified mobile distribution route. Do not direct visitors to build their own GPT or upload repository files. Gemini's pasted-guide route may not be able to call the helper service. The pasted guide link is `https://naidionov.com/ohny/skills/guide` (served by the Worker as plain text); GitHub's raw host was not readable by Gemini in one report.
+For developers evaluating a ChatGPT custom GPT, `openapi.yaml` describes the existing Actions API. It is not a published GPT or a verified mobile distribution route. Do not direct visitors to build their own GPT or upload repository files. Gemini's pasted-guide route may not be able to call the helper service. The pasted guide link is `https://naidionov.com/ohny/skills/guide` (served by the Worker as plain text); GitHub's raw host was not readable by Gemini in one report. For Gemini, the Worker also serves public markdown data pages, `/feed/index.md` (all sites with times, canceled first) and `/feed/changes.md`, for a Gem to read with web grounding; the planning logic stays in the Gem's instructions. Not yet tested in the Gemini app.
 
 ### Trying it before the festival (Oct 16-18, 2026)
 
