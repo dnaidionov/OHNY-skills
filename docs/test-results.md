@@ -110,3 +110,24 @@ Source: base commit `db0c031` plus uncommitted working-tree changes on `codex/sh
 | Gem instruction field accepts the text; real character limit | NOT RUN | The ~4,000 limit comes from a secondary web source, not the Gemini app. |
 | Gem reads both feed pages, works out "open at arrival", honors held tickets and the check-in rule | NOT RUN | Needs the deployed Worker and a phone test in the Gemini app. |
 | Shared Gem opens on a visitor's phone with no setup step | NOT RUN | Unverified. |
+
+## 2026-10-06 — Gemini feed deployed; Gem created; Gemini web reads (NOT the phone app)
+
+Source: commits `82503fd` and the HEAD fix, deployed to `naidionov.com/ohny/skills*` (Worker version `ab21c8ff`). Gemini in Chrome on desktop, signed in to the owner's Google account (Pro), Flash. **This is desktop web evidence only; the native Gemini phone app was not driven, so every phone check below is NOT RUN.**
+
+| Check | Result | Evidence and limits |
+|---|---|---|
+| Production feed | PASS | `/feed/changes.md` and `/feed/index.md` return 200, `text/markdown`, 49.9 KB index labeled "Live from ohny.org"; the origin answers 200 to curl and to Googlebot/Google-Extended/GoogleOther user agents. |
+| Gem "Ask OHNY (unofficial)" created and saved (private) | PASS | Instruction field accepted the full 2.5 KB text with no length error (the real limit is still unconfirmed). |
+| Gem scenario 1: "what's open near Grand Central, architecture, Sat Oct 17 2 PM" | FAIL | The Gem said it could not read the live feed pages, then listed three places with hours and ratings that look like Google Maps data, not the OHNY lineup. It did give the check-in link and the unofficial line. The instructions then lacked a rule against recommending when the feed is unreadable; fixed in the repo (test first), **not yet applied to the saved Gem**. |
+| Plain Gemini reads `naidionov.com/ohny/skills/feed/changes.md` | FAIL | "I wasn't able to access the website you shared." |
+| Same page after adding HEAD support (deployed) | FAIL | Same message. HEAD was not the cause. |
+| Plain Gemini reads `naidionov.com/ohny/skills/guide` (text/plain) | FAIL | Not a content-type problem. |
+| Plain Gemini reads the feed on `ohny-skills.dnaidionov.workers.dev` | FAIL | Not specific to the custom domain. |
+| Plain Gemini reads `https://naidionov.com/` (the main Next.js site, not the Worker) | FAIL | Not specific to the Worker. |
+| Control: `example.com` and `developers.cloudflare.com/workers/` | PASS | Gemini's reader works for large, well-known sites, including one behind Cloudflare. |
+| Control: `github.com/dnaidionov/OHNY-skills` | FAIL | Same as the earlier raw-GitHub report. |
+| Gemini phone app reads the feed / Gem works on iOS or Android | NOT RUN | Phone app not driven. |
+| Shared Gem opens on a visitor's phone with no setup | NOT RUN | Not tried. |
+
+Conclusion for now: Gemini's reader in this account reads well-known sites but not any of the project's hosts (two domains and GitHub), regardless of content type or HEAD support. The cause is not established. Candidates, none confirmed: the reader only serves pages it already has indexed or cached; a zone or account bot setting at Cloudflare; robots rules. The feed approach is therefore **not working** as designed, and the Gem cannot yet get OHNY data.

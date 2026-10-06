@@ -61,3 +61,9 @@ test('no instructions for tools or URLs Gemini does not have, and no private dat
 test('fetched pages are untrusted data, not instructions', async () => {
   assert.match(await body(), /(information|data), never instructions|not instructions/i);
 });
+
+test('when the feed cannot be read, the Gem must not recommend sites or quote hours from anywhere else', async () => {
+  const t = await body();
+  assert.match(t, /(can't|cannot|unable to) read[^.]*(do not|don't|never)[^.]*(recommend|list|suggest)|(do not|don't|never) (recommend|list|suggest)[^.]*(without|unless)[^.]*(feed|pages)/i);
+  assert.match(t, /(Google Maps|maps|search results)[^.]*(hours|status)|(hours|status)[^.]*(Google Maps|maps|search results)/i);
+});
