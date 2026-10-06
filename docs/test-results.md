@@ -151,3 +151,15 @@ Plain Gemini (desktop web, Flash) asked to read `https://naidionov.com/ohny/skil
 The owner pasted into a plain Gemini chat (their own run, not driven by me) a request to read the public gist `https://gist.github.com/dnaidionov/9a3ab441d37275bd105bb349ce87c697` (a copy of `/feed/changes.md`) and give its first heading. Gemini answered "OHNY Weekend 2026: what changed": **PASS**. Limits: this was the gist page, not the raw-file URL; only `changes.md` (1.7 KB), not the 50 KB `index.md`; desktop or unspecified client, not confirmed on the phone app; one run.
 
 Conclusion: the feed's content and markdown format are readable by Gemini. The earlier failures were specific to naidionov.com and the workers.dev address (reason still unknown). The public gist is a temporary test artifact and is not kept up to date.
+
+## 2026-10-06 — Gist mirror script and workflow
+
+Source: working tree on `codex/shared-project-setup`. Local macOS, Node 24.
+
+| Check | Result | Evidence and limits |
+|---|---|---|
+| Tests before implementation | Expected failure | `test/mirror-feed.test.js` failed to load (`scripts/mirror-feed.mjs` missing). |
+| Final `npm test` | PASS | 143 tests, 0 failures (8 new: copy, skip when only as-of differs, partial update, fetch failure, error page, missing label, saved-copy label, workflow contents). |
+| Script run against the real gist with the owner's local `gh` login | PASS | Two runs: "Updated: none", since only the as-of time differed. A real content change was only checked by the offline tests. |
+| Scheduled workflow runs on GitHub | NOT RUN | Needs the `GIST_TOKEN` secret and a merge to `main`. |
+| Gemini reads the 50 KB `index.md` on the gist, and the raw URLs | NOT RUN | `index.md` was added to the gist; my own Gemini test was blocked by the permission check, so the owner is asked to run it. |
