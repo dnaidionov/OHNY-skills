@@ -141,3 +141,7 @@ Same setup as the earlier Gemini web run (desktop Chrome, Flash, Gem "Ask OHNY (
 | Scenario 1 again: "what's open near Grand Central, architecture, Sat Oct 17 2 PM, on foot" | PASS for the safety rule, still no OHNY data | The Gem said it is unofficial, said it could not access `changes.md` and `index.md`, declined to look up or recommend sites, hours or ticket status, and pointed to ohny.org/festival/lineup. It did not use Google Maps data this time (the earlier run did). |
 | Minor wording | Note | It volunteered the check-in link unasked ("To self-check in..."), which the instructions do not call for. Not a rule violation; consider tightening. |
 | Whether the Gem can get live OHNY data | Still FAIL | Gemini's reader still cannot read the feed (see the earlier entry). One run; model output varies. |
+
+## 2026-10-06 — Format check: JSON endpoint in Gemini web
+
+Plain Gemini (desktop web, Flash) asked to read `https://naidionov.com/ohny/skills/v1/meta` (JSON) and report `total_sites`: **FAIL**. The conversation was titled "Failed Website Data Retrieval". Together with the earlier markdown, plain-text and HTML failures, no format of ours has been readable; the block appears to be at the host level. Not yet tried: the same content on a different host (would need publishing it somewhere public, which needs the owner's go-ahead). Phone app not driven.
