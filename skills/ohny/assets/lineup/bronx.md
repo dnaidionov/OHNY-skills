@@ -1,7 +1,7 @@
 # OHNY Weekend 2026: Bronx, area bronx (21 sites)
 
 Covers latitude 40.80386 to 40.9102, longitude -73.92595 to -73.87281. Mostly: Hunts Point, Mott Haven, Highbridge, Bedford Park.
-SAVED COPY from 2026-10-06 14:19 UTC. OHNY changes things up to the last minute: cancellations, sold-out tours and new times will NOT show here. Before sending anyone to a site, open the LIVE link at the end of its line (a small file at ohny.org, always current).
+SAVED COPY from 2026-10-06 19:38 UTC. OHNY changes things up to the last minute: cancellations, sold-out tours and new times will NOT show here. Before sending anyone to a site, open the LIVE link at the end of its line (a small file at ohny.org, always current).
 Unofficial helper, not affiliated with Open House New York. Times are New York time.
 Line format: slug | name | neighborhood | address | lat,lng (a trailing ~ means approximate position) | access | when | tags | short description | LIVE link
 "when": drop-in hours are open without a ticket; TOURS need a ticket for that time slot.
