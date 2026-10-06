@@ -1,6 +1,6 @@
 # Gemini Gem: Ask OHNY (unofficial)
 
-Status: **drafted, not tested in the Gemini app.** The Gem has no tools and cannot call the MCP connector; it reads the Worker's public markdown feed through Gemini's web access (see the 2026-10-06 entry in `docs/decisions.md`). Everything the Gem needs from the feed is public and identical for every visitor.
+Status: **tested on Gemini web 2026-10-06: Gemini could not read the feed pages, so this Gem cannot get OHNY data yet (see `docs/test-results.md`). Phone app not tested.** The Gem has no tools and cannot call the MCP connector; it reads the Worker's public markdown feed through Gemini's web access (see the 2026-10-06 entry in `docs/decisions.md`). Everything the Gem needs from the feed is public and identical for every visitor.
 
 ## Set up (development)
 
