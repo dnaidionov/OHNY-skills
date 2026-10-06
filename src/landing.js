@@ -9,7 +9,7 @@ export const LINKS = {
   ohny: 'https://ohny.org',
   mcp: 'https://naidionov.com/ohny/skills/mcp',
   claude: 'https://claude.ai/customize/connectors?modal=add-custom-connector&connectorName=Ask%20OHNY&connectorUrl=https%3A%2F%2Fnaidionov.com%2Fohny%2Fskills%2Fmcp',
-  standalone: 'https://raw.githubusercontent.com/dnaidionov/OHNY-skills/main/standalone/OHNY.md',
+  standalone: 'https://naidionov.com/ohny/skills/guide',
 };
 
 export const PASTE_LINE = `Use ${LINKS.standalone} as your guide to Open House New York Weekend for this chat. Then ask me what I'd like to do.`;
@@ -171,7 +171,7 @@ export function landingHtml() {
     <li><strong>Tell you about a place</strong>, with entry rules and a fun fact or two, and help with directions.</li>
   </ul>
   <p style="margin:8px 0"><a href="#manual">See everything it can do, with example questions &darr;</a></p>
-  <p style="color:var(--muted);font-size:.95rem">It reads OHNY's public lineup live, so cancellations and last-minute changes show up. The guide service itself stores nothing about you; whatever your assistant remembers stays in your own AI account.</p>
+  <p style="color:var(--muted);font-size:.95rem">It reads OHNY's public lineup live, so cancellations and last-minute changes show up. The guide service processes your requests without keeping a visitor profile; whatever your assistant remembers stays in your own AI account.</p>
 
   <h2 id="start">Get started</h2>
   <div class="tabs" id="tabs">
@@ -193,11 +193,12 @@ export function landingHtml() {
     </section>
 
     <section class="card panel" role="tabpanel" id="panel-chatgpt" aria-labelledby="tab-chatgpt" hidden>
-      <h3>ChatGPT <span class="tag">Plus or higher</span></h3>
-      <p>In Settings, Connectors, turn on Developer Mode, choose Create, paste this address and select "No authentication".</p>
-      <code class="copybox" id="mcp-chatgpt">${esc(LINKS.mcp)}</code>
-      <button class="btn ghost" type="button" data-copy="mcp-chatgpt">Copy address</button>
-      <p>Free ChatGPT accounts can't add connectors; use the paste method under <a href="#others" data-tab="others">Others</a> instead.</p>
+      <h3>ChatGPT mobile <span class="tag">setup being verified</span></h3>
+      <p>The full phone-only setup is not ready yet.</p>
+      <p><strong>One-chat trial:</strong> open a new chat in the ChatGPT app on your phone and paste this message. It needs access to web pages.</p>
+      <code class="copybox" id="paste-chatgpt">${esc(PASTE_LINE)}</code>
+      <button class="btn ghost" type="button" data-copy="paste-chatgpt">Copy trial message</button>
+      <p>This only applies to the current chat; it does not install OHNY. If ChatGPT cannot open the guide or check live information, current hours and availability cannot be confirmed.</p>
     </section>
 
     <section class="card panel" role="tabpanel" id="panel-gemini" aria-labelledby="tab-gemini" hidden>
@@ -425,7 +426,7 @@ export function landingHtml() {
   </details>
   <details>
     <summary>It's not working in ChatGPT or Gemini</summary>
-    <p>ChatGPT needs a Plus or higher plan with Developer Mode on to add connectors; otherwise use the paste-in method under <a href="#others" data-tab="others">Others</a>. Gemini uses the paste-in method too and needs its web browsing switched on, so live "open now" checks may be limited there.</p>
+    <p>ChatGPT mobile setup is still being verified. You can try the one-chat message under <a href="#chatgpt" data-tab="chatgpt">ChatGPT</a> if your account can open web pages. Gemini uses a pasted message too. If the guide or live information cannot be read, neither trial can confirm what is open now.</p>
   </details>
   <details>
     <summary>It said something wrong, or something else isn't working</summary>
@@ -439,7 +440,6 @@ export function landingHtml() {
     <a href="${esc(LINKS.github)}" target="_blank" rel="noopener noreferrer">Source on GitHub</a> (MIT) &middot;
     <a href="?format=json">For developers</a>
     <br>The Open House New York name and logo belong to OHNY and are shown for identification only; this project is not affiliated with OHNY. Claude is a trademark of Anthropic.
-    <br>This page is part of naidionov.com and is covered by that site's usual analytics.
   </footer>
 </main>
 </div>

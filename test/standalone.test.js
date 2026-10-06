@@ -22,3 +22,8 @@ test('src/guide-data.js (served by the MCP ohny_guide tool) is up to date', asyn
   const { buildGuideData, GUIDE_OUT } = await import('../scripts/build-standalone.mjs');
   assert.equal(await readFile(GUIDE_OUT, 'utf8'), await buildGuideData());
 });
+
+test('src/standalone-data.js (served at /guide) is up to date', async () => {
+  const { buildStandaloneData, STANDALONE_OUT } = await import('../scripts/build-standalone.mjs');
+  assert.equal(await readFile(STANDALONE_OUT, 'utf8'), await buildStandaloneData());
+});

@@ -124,7 +124,7 @@ const TOOLS_ALL = [
     inputSchema: { type: 'object', properties: { topic: { type: 'string', enum: Object.keys(GUIDE), description: 'Which part of the playbook' } }, required: ['topic'] },
     local: true,
   },
-].map((t) => ({ ...t, annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: true } }));
+].map((t) => ({ ...t, annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: !t.local } }));
 
 export const TOOLS = TOOLS_ALL;
 

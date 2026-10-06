@@ -130,3 +130,22 @@ test('fetch is never called as a method (Cloudflare throws "Illegal invocation" 
     { snapshot, fetchImpl: strict, realNow: new Date('2026-10-17T18:30:00Z') })).json();
   assert.equal(body.live, true);
 });
+
+test('/guide serves the standalone guide as plain text, also under the custom-domain prefix', async () => {
+  const { buildStandalone } = await import('../scripts/build-standalone.mjs');
+  const expected = await buildStandalone();
+  for (const path of ['/guide', '/guide/', '/guide.md', '/ohny/skills/guide', '/ohny/skills/guide.md']) {
+    const res = await call(path);
+    assert.equal(res.status, 200, path);
+    assert.match(res.headers.get('content-type'), /^text\/plain/);
+    assert.equal(await res.text(), expected, path);
+  }
+});
+
+test('/guide needs no live data and rejects non-GET', async () => {
+  const res = await call('/guide', { fail: true });
+  assert.equal(res.status, 200);
+  const post = await handle(new Request('https://x.test/guide', { method: 'POST' }), { snapshot, fetchImpl: mkFetch(), realNow: new Date() });
+  assert.equal(post.status, 405);
+  assert.equal((await call('/guides')).status, 404);
+});

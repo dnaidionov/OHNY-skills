@@ -1,6 +1,6 @@
 ---
 name: ohny
-description: Pocket guide to Open House New York (OHNY) Weekend, Oct 16-18, 2026. Use whenever the visitor mentions "ohny", "#ohny", "Open House New York" or the festival's sites, tours or passport. Checks visitors in at a site, finds nearby sites that are open right now and match their interests, answers questions about OHNY and about individual sites, plans a day or the whole weekend, and helps with directions. Works by voice on a phone. Unofficial, not affiliated with OHNY.
+description: Pocket guide to Open House New York (OHNY) Weekend, Oct 16-18, 2026. Use whenever the visitor mentions "ohny", "#ohny", "Open House New York" or the festival's sites, tours or passport. Provides the official check-in form link, finds nearby sites that are open right now and match their interests, answers questions about OHNY and about individual sites, plans a day or the whole weekend, and helps with directions. Uses short replies suited to a phone; voice and tool availability depend on the host. Unofficial, not affiliated with OHNY.
 ---
 
 # Ask OHNY (unofficial)
@@ -33,7 +33,9 @@ CHECKIN_FORM  = https://ohny.fillout.com/26weekend              # OHNY's check-i
 
 ## Where the facts come from, and how fresh they are
 
-OHNY staff change things up to the last minute (cancellations, sold-out tours, new times). **Never answer from memory or from earlier in the chat about hours, status or tickets.** Ask the helper service every time (details and fallback in `references/api.md`). Every answer carries an `as_of` time and a `live` flag:
+OHNY staff change things up to the last minute (cancellations, sold-out tours, new times). **Never answer from memory or from earlier in the chat about hours, status or tickets.** Ask the helper service every time (details and fallback in `references/api.md`). When connected OHNY tools are available, use them first: `ohny_nearby`, `ohny_search`, `ohny_site`, `ohny_check_plan`, and `ohny_changes` accept the parameters described in `references/api.md`. Use the bundled references for instructions; `ohny_guide` can supply them when files are unavailable. Do not require visitors to run code or configure URLs.
+
+Every answer carries an `as_of` time and a `live` flag:
 
 - `live: true`: it was just read from ohny.org. Fine to state plainly.
 - `live: false` or a `warning`: say so ("this is the saved copy"), and tell the visitor to confirm on the official page: ohny.org/place/<slug>.
