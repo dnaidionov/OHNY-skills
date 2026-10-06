@@ -145,3 +145,9 @@ Same setup as the earlier Gemini web run (desktop Chrome, Flash, Gem "Ask OHNY (
 ## 2026-10-06 — Format check: JSON endpoint in Gemini web
 
 Plain Gemini (desktop web, Flash) asked to read `https://naidionov.com/ohny/skills/v1/meta` (JSON) and report `total_sites`: **FAIL**. The conversation was titled "Failed Website Data Retrieval". Together with the earlier markdown, plain-text and HTML failures, no format of ours has been readable; the block appears to be at the host level. Not yet tried: the same content on a different host (would need publishing it somewhere public, which needs the owner's go-ahead). Phone app not driven.
+
+## 2026-10-06 — Same feed content on a different host: gist read test
+
+The owner pasted into a plain Gemini chat (their own run, not driven by me) a request to read the public gist `https://gist.github.com/dnaidionov/9a3ab441d37275bd105bb349ce87c697` (a copy of `/feed/changes.md`) and give its first heading. Gemini answered "OHNY Weekend 2026: what changed": **PASS**. Limits: this was the gist page, not the raw-file URL; only `changes.md` (1.7 KB), not the 50 KB `index.md`; desktop or unspecified client, not confirmed on the phone app; one run.
+
+Conclusion: the feed's content and markdown format are readable by Gemini. The earlier failures were specific to naidionov.com and the workers.dev address (reason still unknown). The public gist is a temporary test artifact and is not kept up to date.
