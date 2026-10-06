@@ -95,6 +95,11 @@ function findSite(sites, key) {
 }
 
 export async function handle(request, deps) {
+  // HEAD is GET without the body (some page fetchers probe with it before reading).
+  if (request.method === 'HEAD') {
+    const res = await handle(new Request(request.url, { method: 'GET', headers: request.headers }), deps);
+    return new Response(null, { status: res.status, headers: res.headers });
+  }
   deps = { fetchImpl: fetch, base: 'https://ohny.org', realNow: new Date(), ...deps };
   // Cloudflare throws "Illegal invocation" if fetch is called as a method of another object
   // (deps.fetchImpl(...)), so always call it as a plain function.

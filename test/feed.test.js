@@ -120,3 +120,15 @@ test('feed rejects non-GET and unknown paths; no site pages yet', async () => {
   assert.equal((await call('/feed/nope.md')).status, 404);
   assert.equal((await call('/feed')).status, 404);
 });
+
+test('HEAD works like GET without a body, for the feed and the guide (fetchers often probe with HEAD)', async () => {
+  for (const path of ['/feed/index.md', '/feed/changes.md', '/guide']) {
+    const get = await call(path);
+    const head = await call(path, undefined, { method: 'HEAD' });
+    assert.equal(head.status, 200, path);
+    assert.equal(head.headers.get('content-type'), get.headers.get('content-type'), path);
+    assert.equal(await head.text(), '', path);
+  }
+  assert.equal((await call('/feed/nope.md', undefined, { method: 'HEAD' })).status, 404);
+  assert.equal((await call('/feed/index.md', undefined, { method: 'PUT' })).status, 405);
+});
