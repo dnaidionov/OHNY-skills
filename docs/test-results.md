@@ -316,3 +316,16 @@ Owner's report: "i have tickets for vertical tour of st john the divine for satu
 | Summaries lose or invent data | The agent told the visitor tours run "on the hour (like 1:00 or 2:00 PM)": there is no 1:00 session. After three turns it searched again for a slug it had already found, so the slug did not survive the summary. |
 | A plan needs many such calls | search → site → Search Maps → nearby (fixed) → verify slug (again) → plan/check: 4-6 nested model calls, each 10-200 s and each a chance of "no content in Gemini response". This matches the error appearing after the visitor confirms the time, when planning starts. |
 | Side incident (fixed) | During the reproduction the page layout changed and a click typed the test message into the app's start-screen description (editable in Preview). Corrected in "Edit title and description" and verified; it was never published. |
+
+## 2026-10-07 — `/v1/plan/day` + `format=text`: deployed, Opal prompt updated, owner's script re-run; republished 3:59 PM
+
+Tests first: `test/plan-day.test.js` (10; all failed with 404 before; a fixture expectation was corrected when the planner rightly skipped a site that opens after arrival), new Opal prompt tests; `npm test` 190/190. Deployed Worker d16e6b32-5cd8-4ab1-853b-cc48aba4c38c; `npm run smoke` 17/17. Live `plan/day` for `vertical-26` at 2:00 PM from Columbus Circle returns a confirmed session, before/after stops, order and check in ~3.6 KB of text; a 1:30 PM ticket returns "no tour … starting Sat 1:30 PM. Listed times: Sat 2:00 PM, Sat 12:00 PM" and no plan.
+
+Owner's script in the Opal editor Preview (desktop), same wording:
+
+| Turn | Result |
+|---|---|
+| "i have tickets for vertical tour of st john the divine for saturday afternoon. plan my saturday around that" | PASS: unofficial line, "Pretending it's Saturday at noon", asked the session time (~25 s). |
+| "i don't remember, maybe 1:30pm" | PASS: "The tour isn't listed for 1:30 PM. On Saturday, sessions are at 12:00 PM and 2:00 PM. Which one is on your ticket?" (correct times; the earlier run invented a 1:00 session). |
+| "2pm then. I'll start from Columbus Circle around 10am. I like architecture and history." | PASS: "Live from ohny.org. Here's a plan for your Saturday: 10:23 AM Cast Hall at the Institute of Classical Architecture & Art … 2:00 PM your Vertical Tour … 3:01 PM Synod Hall, right there at the Cathedral, open until 4:00 PM. Travel times are rough. Does your ticket list a specific street address for the tour? Anything else?" Identical to the API's plan. Trace: Search Maps 5.5 s + two fetches (14.5 s, 12.0 s), about 36 s for the turn (previously single fetches took 58 s and 206 s+). No error. |
+| Gaps | Did not say the leave-by time (12:13 PM from Cast Hall) unprompted. Search Maps chip sits after the Event Query chip in the Opal editor (cosmetic). Phone not tested. |
