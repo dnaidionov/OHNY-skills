@@ -250,3 +250,7 @@ Same app and setup as the previous entry (editor Preview, desktop Chrome; not a 
 | Service unreachable (backup URL, then "can't see live information", list nothing) | NOT RUN | Would need production down or a deliberately broken URL in the Opal step. The rule is in the prompt and covered by a text test only. |
 | Held-ticket re-test after the UTC fix | NOT RUN | The Cast Hall re-test showed the new wording ("live from ohny.org"). |
 | Phone browser via a shared link | NOT RUN | App not published or shared. |
+
+## 2026-10-07 — Opal app published
+
+At the owner's request the Opal app "OHNY Explorer" was shared as **Anyone with the link** (not Public, so not listed in Google search), with "Allow access to editor view and remix" turned **off** so visitors can run it but not see or copy the prompt and workflow, then published (Opal: "Last Published: Oct 7, 2026, 1:47 AM"). Link: https://opal.google/app/1fMOIm-S5yvvrO6MHE57jlyZYIZRix5KU. Opening the link on a phone (mobile browser, sign-in requirement, readability of long links) is **NOT RUN**.
