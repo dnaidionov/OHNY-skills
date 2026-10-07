@@ -17,21 +17,32 @@ test('the paste-ready instructions exist and fit a short Gem field', async () =>
   assert.ok(t.length <= 3900, `${t.length} characters`);
 });
 
-test('instructions send the Gem to the live feed, changes first', async () => {
+test('instructions send the Gem to the mirrored gist page, changes file first', async () => {
   const t = await body();
-  assert.ok(t.includes(`${BASE}/feed/changes.md`) && t.includes(`${BASE}/feed/index.md`));
-  assert.ok(t.indexOf('changes.md') < t.indexOf('index.md'));
+  const wf = await readFile(new URL('../.github/workflows/mirror-feed.yml', import.meta.url), 'utf8');
+  const id = /GIST_ID: (\w+)/.exec(wf)[1];
+  assert.ok(t.includes(`https://gist.github.com/dnaidionov/${id}`), 'the gist page URL the mirror writes to');
+  assert.ok(t.indexOf('ohny-feed-changes.md') > -1 && t.indexOf('ohny-feed-changes.md') < t.indexOf('ohny-feed-index.md'));
   assert.match(t, /before (answering|every answer)|every (time|answer)/i);
 });
 
-test('the feed pages the instructions name are routes the Worker serves', async () => {
-  const { handle } = await import('../src/handler.js');
-  const snapshot = { generated_at: '2026-10-01T00:00:00Z', sites: [] };
+test('the Gem is not sent to hosts Gemini refused to read', async () => {
   const t = await body();
-  for (const url of t.match(/https:\/\/naidionov\.com\/ohny\/skills\/feed\/[\w.\/-]+\.md/g) ?? []) {
-    const res = await handle(new Request(url), { snapshot, fetchImpl: async () => new Response('', { status: 503 }), realNow: new Date() });
-    assert.equal(res.status, 200, url);
-  }
+  assert.doesNotMatch(t, /naidionov\.com\/ohny\/skills\/feed|gist\.githubusercontent|workers\.dev/);
+});
+
+test('the file names in the instructions are the ones the mirror writes', async () => {
+  const { FILES } = await import('../scripts/mirror-feed.mjs');
+  const t = await body();
+  for (const name of Object.values(FILES)) assert.ok(t.includes(name), name);
+});
+
+test('the Gem says the copy can be up to 30 minutes old', async () => {
+  assert.match(await body(), /30 minutes/);
+});
+
+test('check-in link is given only when the visitor asks', async () => {
+  assert.match(await body(), /(only|just) when (they|the visitor) ask/i);
 });
 
 test('freshness, canceled, held-ticket and check-in rules are all stated', async () => {

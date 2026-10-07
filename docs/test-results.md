@@ -169,3 +169,16 @@ Source: working tree on `codex/shared-project-setup`. Local macOS, Node 24.
 The owner asked Gemini to read `https://gist.githubusercontent.com/dnaidionov/9a3ab441d37275bd105bb349ce87c697/raw/ohny-feed-index.md` and count the canceled sites (expected 2). The reply opened "I'm an unofficial guide and not affiliated with Open House New York", so it came from the **Gem**, not a plain chat. Result: **FAIL**: "I wasn't able to access the website you shared directly." The Gem followed its no-data rule (no sites listed, pointed to ohny.org/festival/lineup).
 
 Not established: whether the gist **page** URL works for the 50 KB file (the earlier pass was the page URL, 1.7 KB, in a plain chat); whether a plain chat can read the raw URL; whether a Gem fetches differently from a plain chat. The page-URL half of the test was not reported. Only one URL per kind was tried, once each.
+
+## 2026-10-06 — Gist page URL: owner's reads pass, but the Gem does not fetch it by itself
+
+Source: branch `gemini/shared-project-setup` at the commit that switches the Gem to the gist page URL. Gemini on the web, desktop. Phone app not driven.
+
+| Check | Result | Evidence and limits |
+|---|---|---|
+| Owner, plain chat: asked to read `https://gist.github.com/dnaidionov/9a3ab441d37275bd105bb349ce87c697` and count canceled sites | PASS | Answered 2 and named Monumental Labs and Murry Bergtraum (the 50 KB index file). The URL was **typed in the message**. |
+| Owner, same question in the Gem (URL typed in the message) | PASS | Same correct answer. |
+| Gem instructions switched to the gist URL; saved Gem reloaded | PASS | New text persisted (2,868 characters). |
+| Me, in the Gem, **without** a URL in the message: "what's open near Grand Central, architecture, Sat Oct 17 2 PM, on foot" | FAIL (safe) | The Gem said it could not access the feed data page, refused to recommend or list sites, and sent the visitor to ohny.org/festival/lineup. It did not mention check-in (the new rule held) and used no Google Maps data. One run. |
+
+Reading: Gemini reads the gist when the **user types the URL in the message**, but did not open the same URL when it appeared only in the Gem's instructions. This is a hypothesis from two comparisons, not an established rule. It also leaves open why naidionov.com failed even when typed in the message. If the hypothesis holds, a Gem cannot fetch a live page on its own, and the gist mirror alone does not give the Gem live data.
