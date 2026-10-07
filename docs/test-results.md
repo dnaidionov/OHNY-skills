@@ -234,3 +234,19 @@ Owner's Opal draft "OHNY Explorer" (`opal.google/edit/142E8lMaKEPqEynfE0zwIQgQS9
 | Minor | Note | "Over 200 other nearby sites were excluded" loosely paraphrases `in_range_breakdown` (city-wide counts). The preview pane cut long map links off at the right edge. |
 | Held-ticket, canceled-site, check-in, unknown-site and API-down scenarios | NOT RUN | Next. |
 | Shared link on a phone browser | NOT RUN | Not published or shared yet (publishing makes it reachable by others; owner's call). |
+
+## 2026-10-07 — Opal app: remaining scenarios, two prompt fixes, re-test
+
+Same app and setup as the previous entry (editor Preview, desktop Chrome; not a phone). Each expected answer was taken from the live API first.
+
+| Scenario | Result | Evidence |
+|---|---|---|
+| Held ticket: "tickets for 20 Exchange Place Sat Oct 17 10:00 AM, 2 of us; 9:00 AM at Fulton St and Broadway; architecture" | PASS, one defect | API: `ticket_ok` true, `leave_by` 9:37 AM, `ticket_address_needed`, no results, skipped = ticket conflicts. Opal: no sites fit before the tour; leave by 9:36 AM for the 9-minute walk; age 16+ heads-up; skipped list with reasons; asked for the address on the ticket; did not mention "Sold Out" (correct for a holder). **Defect:** said "As of 5:24 AM today": `as_of` is UTC (1:24 AM New York). |
+| Canceled: "Is Monumental Labs open on Sunday? Around noon." | PASS | Said it is canceled first (reason "construction delays", which is in the site record), then offered OneButton HQ (9 min, until 6:00 PM), Pissarro Allaux Studio (9 min, until 4:00 PM), Kingsland Wildflowers (17 min, until 4:00 PM, stairs): identical to `/v1/nearby?near=monumental-labs-26&now=2026-10-18T12:00`, including the skipped Brooklyn SolarWorks and Lotus Garden. |
+| Check-in: "Check me in at Cast Hall, please." | FAIL (then fixed) | Check-in handling was right (can't check in; gave https://ohny.fillout.com/26weekend; asked nothing). But it described "Cast Hall at the Art Students League, 215 West 57th, open until 6:00 PM": not an OHNY site; the lineup's only Cast Hall is at 20 West 44th, open until 4:30 PM. Information came from outside the API. |
+| Unknown site: "When is the Empire State Building open for OHNY this year?" | PASS | "No site by the name Empire State Building is listed in the Open House New York lineup", pointed to ohny.org/festival/lineup. (The API returns two sites whose descriptions mention the building; the agent did not pass them off as it.) |
+| Fixes (tests first, 2 new tests failed then passed; `npm test` 157/157) | Done | Prompt now says `as_of` is UTC and must be converted or replaced by "live from ohny.org", and that every site name, address, hour and status must come from the service, with named places found via `/v1/search` first and Search Maps used only for the visitor's own location. Opal step retyped from `docs/gemini/opal-prompt.md`. |
+| Re-test: "Check me in at Cast Hall, please. Is it open Saturday afternoon?" | PASS | Can't check in + form link; "Cast Hall at the Institute of Classical Architecture & Art is open this Saturday from 10:00 AM to 4:30 PM, live from ohny.org", drop-in, 3:30 PM talk, ages 10+ and bag limits, directions to 20 West 44th Street. All match `/v1/site/cast-hall-26`. The first re-test attempt ended with Opal's generic "Something went wrong" before any output; the retry ran normally. |
+| Service unreachable (backup URL, then "can't see live information", list nothing) | NOT RUN | Would need production down or a deliberately broken URL in the Opal step. The rule is in the prompt and covered by a text test only. |
+| Held-ticket re-test after the UTC fix | NOT RUN | The Cast Hall re-test showed the new wording ("live from ohny.org"). |
+| Phone browser via a shared link | NOT RUN | App not published or shared. |
