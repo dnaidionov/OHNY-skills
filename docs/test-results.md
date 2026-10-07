@@ -292,3 +292,7 @@ Desktop editor Preview, owner's account (memory is per Google account). Each cha
 | Cleanup | Done | "Forget everything" → trace "Forgetting Your Information As Requested"; run stopped; prompt republished. |
 
 Conclusion: memory save, recall, list and forget work through Opal's tool. Staying in the chat after an answer works in most runs but not all; when it fails the visitor sees the final answer and must restart to continue.
+
+## 2026-10-07 — Plural interests and nearby ranking (Worker)
+
+Tests first: `test/interests.test.js` (6 tests; 3 failed before the singular fix, 1 more before the ranking fix, all with the bug's symptoms); `npm test` 168/168. On the bundled lineup from Union Square, Sat 2 PM: before, `rooftops,gardens` → 45/53/73-minute sites and `rooftop,garden` → 18/25/25; after, both → New York Marble Cemetery (19 min), Original Maps of Manhattan (45 min, coarse tags), Church of the Transfiguration (18 min). Grand Central architecture and no-interest results unchanged (Cast Hall, General Society first). Not deployed: production still runs the old ranking.

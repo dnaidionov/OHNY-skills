@@ -52,17 +52,38 @@ export function deriveTags(site) {
   return [...new Set(tags)];
 }
 
-/** "rooftops and old churches" -> { tags: ['views','sacred'], words: ['rooftops','old','churches'] } */
+/** Rough English singular, so "gardens"/"garden" and "galleries"/"gallery" match alike. Leaves glass, campus, bus alone. */
+export function singular(word) {
+  const w = word.toLowerCase();
+  if (w.length <= 3 || /(ss|us|is)$/.test(w)) return w;
+  if (/ies$/.test(w) && w.length > 4) return `${w.slice(0, -3)}y`;
+  if (/(ches|shes|sses|xes|zes)$/.test(w)) return w.slice(0, -2);
+  if (/s$/.test(w)) return w.slice(0, -1);
+  return w;
+}
+
+const norm = (phrase) => phrase.toLowerCase().split(/[^a-z0-9]+/).filter(Boolean).map(singular).join(' ');
+const NORMALIZED_ALIASES = Object.entries(INTEREST_ALIASES).map(([tag, aliases]) => [tag, aliases.map(norm)]);
+
+/** "rooftops and old churches" -> { tags: ['views','sacred'], words: ['rooftop','old','church'] } (words are singular stems) */
 export function interpretInterests(input) {
   const list = (Array.isArray(input) ? input : String(input ?? '').split(/[,;]| and /i))
     .map((s) => s.trim().toLowerCase()).filter(Boolean);
   const tags = new Set();
   const words = new Set();
   for (const phrase of list) {
-    for (const [tag, aliases] of Object.entries(INTEREST_ALIASES)) {
-      if (aliases.some((a) => phrase === a || phrase.includes(a))) tags.add(tag);
+    const p = ` ${norm(phrase)} `;
+    for (const [tag, aliases] of NORMALIZED_ALIASES) {
+      if (aliases.some((a) => p.includes(` ${a} `))) tags.add(tag);
     }
-    for (const w of phrase.split(/\s+/)) if (w.length > 3) words.add(w);
+    for (const w of phrase.split(/\s+/)) if (w.length > 3) words.add(singular(w));
   }
   return { tags: [...tags], words: [...words] };
+}
+
+/** Does site text contain this interest word in singular or plural form? */
+export function hasWord(text, stem) {
+  const lower = text.toLowerCase();
+  if (lower.includes(stem)) return true;
+  return lower.split(/[^a-z0-9]+/).some((t) => t && singular(t) === stem);
 }
