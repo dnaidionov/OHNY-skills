@@ -67,3 +67,28 @@ test('if the service cannot be reached the agent says so and lists nothing', asy
   assert.match(t, /API_BASE_BACKUP|ohny-skills\.dnaidionov\.workers\.dev/);
   assert.match(t, /(do not|don't|never) (recommend|list)[^.]*(sites|places)/i);
 });
+
+test('the prompt has no "@" (Opal turns "@" into a tool-picker shortcut); it writes %40 instead', async () => {
+  const t = await buildOpalPrompt();
+  assert.doesNotMatch(t, /@/);
+  assert.match(t, /fixed=<slug>%40<YYYY-MM-DDTHH:MM>/);
+});
+
+test('the Worker reads %40 in fixed= and stops= exactly like @', async () => {
+  const { normalizeRecord } = await import('../src/core/normalize.js');
+  const rec = { record_id: 'recA', slug: 'a-26', experience_name: 'Alpha Hall', access_type: ['Ticketed'], borough: 'Manhattan', neighborhood: 'SoHo', city: 'New York', state: 'NY', address_1: '1 Main St',
+    saturday_open_access_date: 'Sat, Oct 17', sat_opening_time: '10:00 AM', sat_closing_time: '5:00 PM' };
+  const snapshot = { generated_at: '2026-10-01T00:00:00Z', sites: [{ ...normalizeRecord(rec), geo: { lat: 40.73, lng: -73.99, conf: 'address' } }] };
+  const deps = { snapshot, fetchImpl: async () => new Response('', { status: 503 }), realNow: new Date('2026-10-17T14:00:00Z') };
+  for (const [a, b] of [
+    ['/v1/nearby?lat=40.73&lng=-73.99&fixed=a-26@2026-10-17T14:00', '/v1/nearby?lat=40.73&lng=-73.99&fixed=a-26%402026-10-17T14:00'],
+    ['/v1/plan/check?stops=a-26@2026-10-17T11:00', '/v1/plan/check?stops=a-26%402026-10-17T11:00'],
+  ]) {
+    _resetCacheForTests();
+    const x = await (await handle(new Request(`https://x.test${a}`), deps)).json();
+    _resetCacheForTests();
+    const y = await (await handle(new Request(`https://x.test${b}`), deps)).json();
+    delete x.as_of; delete y.as_of;
+    assert.deepEqual(y, x, b);
+  }
+});

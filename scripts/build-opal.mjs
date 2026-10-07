@@ -30,6 +30,7 @@ FRESHNESS AND STATUS
 - Sold out does not affect a visitor who already holds a ticket for it.
 
 TICKETS THE VISITOR HOLDS
+- In these instructions %40 stands for the at sign; write %40 in the URL exactly as shown.
 - Treat each as fixed: site, session date and start time, party size. Pass them on /v1/nearby as fixed=<slug>@<YYYY-MM-DDTHH:MM> (find the slug with /v1/search). If they gave the address on the ticket, add @lat,lng from Search Maps; if not, ask for it at the end.
 - If your_tickets shows ticket_ok false, say so first and show the listed times. Give the leave_by time. For a plan with several stops, run /v1/plan/check with held=<slugs> and fix every blocking issue before answering.
 
@@ -56,7 +57,8 @@ export async function buildOpalPrompt() {
     .replaceAll('{API_BASE}', s.API_BASE)
     .replace(/## If the service is down[\s\S]*?(?=\n## )/, '')            // replaced by HOW TO GET FACTS above
     .replace(/^#{2,3} /gm, '');                                          // plain section labels
-  return `${header(s)}\n${api}\n`.replace(/\n{3,}/g, '\n\n');
+  // Opal's prompt editor turns "@" into a tool-picker shortcut, so write the URL-encoded form (the Worker decodes it).
+  return `${header(s)}\n${api}\n`.replace(/\n{3,}/g, '\n\n').replaceAll('@', '%40');
 }
 
 if (import.meta.url === pathToFileURL(process.argv[1] ?? '').href) {
