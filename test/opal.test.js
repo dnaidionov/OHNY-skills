@@ -105,3 +105,23 @@ test('site names, addresses and hours come only from the service; named places a
   assert.match(t, /names a place[^.]*\/v1\/search[^.]*first/i);
   assert.match(t, /never use Search Maps[^.]*(identify|find)[^.]*(site|place)/i);
 });
+
+test('the agent holds a conversation: asks for missing details, then keeps helping until the visitor is done', async () => {
+  const t = await buildOpalPrompt();
+  assert.doesNotMatch(t, /one go|does not chat back/i);
+  assert.match(t, /ask (one|a) (short )?question at a time/i);
+  assert.match(t, /Anything else\?/);
+  assert.match(t, /until the visitor (says|is) (they're |they are )?done/i);
+  assert.match(t, /earlier in (this|the) (chat|conversation)[^.]*(location|tickets|interests)/i);
+  assert.match(t, /(re-?check|call the service again|fetch again)[^.]*(every|each) (answer|time)/i);  // facts stay live on later turns
+});
+
+test('memory is opt-in: ask first, keep only listed preferences, support forget, never personal identifiers', async () => {
+  const t = await buildOpalPrompt();
+  assert.match(t, /Use Memory/);
+  assert.match(t, /only (after|if) (they|the visitor) (say|says|agree|agrees) yes|ask(ing)? first/i);
+  assert.match(t, /interests[^.]*tickets/i);
+  assert.match(t, /forget/i);
+  assert.match(t, /never (remember|save|store)[^.]*(email|name|zip)/i);
+  assert.match(t, /never (remember|save|store)[^.]*(hours|status)/i);   // live facts are never remembered
+});
