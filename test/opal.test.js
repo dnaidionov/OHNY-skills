@@ -125,3 +125,13 @@ test('memory is opt-in: ask first, keep only listed preferences, support forget,
   assert.match(t, /never (remember|save|store)[^.]*(email|name|zip)/i);
   assert.match(t, /never (remember|save|store)[^.]*(hours|status)/i);   // live facts are never remembered
 });
+
+test('the agent pauses in the chat for replies instead of ending with a question (first Opal run ended the workflow on "Anything else?")', async () => {
+  const t = await buildOpalPrompt();
+  assert.match(t, /use the chat to ask[^.]*wait for (their|the visitor's) reply/i);
+  assert.match(t, /Only finish[^.]*(says|say) (they're|they are) done/i);
+  assert.match(t, /Never end[^.]*with a question/i);
+  // the chat rule is the last section, so it can be inserted just before Opal's tool and input chips
+  assert.match(t.trim(), /HOW THIS CHAT WORKS[\s\S]*$/);
+  assert.ok(t.lastIndexOf('HOW THIS CHAT WORKS') > t.lastIndexOf('HELPER SERVICE REFERENCE'));
+});
