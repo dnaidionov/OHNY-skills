@@ -274,3 +274,21 @@ Prompt changes (tests first; `npm test` 161/161): CONVERSATION and MEMORY sectio
 | Goodbye and location-memory fixes in a live run | NOT RUN | Prompt updated, tested as text, and republished; not yet exercised in a chat. |
 | Memory across visits (yes / later visit / forget) | NOT RUN | |
 | Phone browser via the shared link | NOT RUN | |
+
+## 2026-10-07 — Opal re-test: goodbye and memory; republished 2:46 AM
+
+Desktop editor Preview, owner's account (memory is per Google account). Each chat is a fresh run.
+
+| Check | Result | Evidence |
+|---|---|---|
+| Opal reliability | Note | "Agent unable to proceed: no content in Gemini response" on 2 first attempts in this session (plus one "Something went wrong" earlier today); each retry ran. About 3 failures in ~17 runs today. |
+| Chat 1: "Union Square, Saturday 2 PM, rooftops and gardens" | PASS | Asked "do you hold any tickets?" in the chat first; three results; offered to remember **interests only** (location-offer fix held); "Yes" → "Saved! I'll remember the rooftops and gardens"; "No, that's all" → "Provided three OHNY sites … saved your interests to memory. Enjoy the weekend and goodbye!" (**goodbye fix held**: no question). |
+| Results quality, chat 1 | Note (Worker issue) | Results were 45-73 minutes' walk away. The API gives these for `interests=rooftops,gardens` but different, nearer ones for `rooftop,garden` (Church of the Transfiguration 18 min, Meatpacking tour, Westbeth): `src/core/tags.js` aliases are inconsistent for singular/plural ("gardens" → nature, "garden" not). Affects every route; needs its own fix. |
+| Chat 2 (before the start-of-chat recall rule): Grand Central, no interests given | FAIL, then fixed | Did not use saved interests (same results as no interests), offered to remember "your location or any interests", repeated the unofficial line on a later turn. "What do you remember?" → "rooftops and gardens" (memory had saved). "Forget everything" → trace "Deleting Your Saved Memory" → "I've forgotten everything". |
+| Chat 3: "What do you remember about me?" | PASS | "I don't remember anything about your interests or tickets yet." |
+| Fixes (tests first; `npm test` 162/162) | Done | Chat section now: check Use Memory at the start of each chat and say so; when offering, name only interests, Passport, tickets, kids' ages, accessibility, never location; unofficial line only in the first message. Inserted in Opal. |
+| Chat A: "Please remember that I love rooftops" | PASS | Confirmed with choices, saved, follow-up without the unofficial line. |
+| Chat B: Grand Central, interests not mentioned | PARTLY | Opened "Still into rooftops?" (**recall fixed**), result 3 said "fits your interest in views", no location offer. **But** the workflow ended with "Anything else? Want me to remember your interest in rooftops for next time?" written into the final answer instead of waiting in the chat (the earlier failure, now intermittent), and it re-offered to save an interest already saved. |
+| Cleanup | Done | "Forget everything" → trace "Forgetting Your Information As Requested"; run stopped; prompt republished. |
+
+Conclusion: memory save, recall, list and forget work through Opal's tool. Staying in the chat after an answer works in most runs but not all; when it fails the visitor sees the final answer and must restart to continue.
