@@ -333,3 +333,7 @@ Owner's script in the Opal editor Preview (desktop), same wording:
 ## 2026-10-07 — `ohny_plan_day` connector tool (local only, not deployed)
 
 Tests first: `test/connectors-plan-day.test.js` (8: tool schema and read-only annotations, call maps to `/v1/plan/day`, missing-ticket error, instructions point to it, hidden after the festival, OpenAPI `planDay` with ticket required, API index entry, landing-page manual example) failed before the change. `test/mcp.test.js` and `test/phases.test.js` were updated to seven tools. `npm test` 198/198. The smoke script now expects 7 tools and checks plan/day. It has not been run against production because the Worker isn't deployed. Claude and ChatGPT apps: NOT RUN.
+
+## 2026-10-07 — `ohny_plan_day` deployed
+
+Deployed Worker c2178986-c6fd-477f-9bab-50e6a94291be. The first `npm run smoke` passed on naidionov.com (19/19), but workers.dev still listed 6 tools for a moment while the deploy reached it. Both lists showed 7 tools a minute later, and the re-run passed: naidionov.com 19/19, workers.dev 17/17. Live connector call `ohny_plan_day` (ticket "vertical tour st john the divine@2026-10-17T14:00", from Columbus Circle, pretend 10:00): no error, the name resolved, itinerary 10:09 AM Prime Produce → 2:00 PM Vertical Tour → 3:01 PM Synod Hall, check ok. Claude and ChatGPT apps: NOT RUN.
