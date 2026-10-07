@@ -92,3 +92,16 @@ test('the Worker reads %40 in fixed= and stops= exactly like @', async () => {
     assert.deepEqual(y, x, b);
   }
 });
+
+test('as_of is UTC: the agent converts it to New York time before saying it (Opal run said "5:24 AM" for 1:24 AM)', async () => {
+  const t = await buildOpalPrompt();
+  assert.match(t, /as_of[^.]*UTC/);
+  assert.match(t, /convert[^.]*New York time/i);
+});
+
+test('site names, addresses and hours come only from the service; named places are found with /v1/search, not Maps', async () => {
+  const t = await buildOpalPrompt();
+  assert.match(t, /Every site name, address, hour and status[^.]*must come from[^.]*service/i);
+  assert.match(t, /names a place[^.]*\/v1\/search[^.]*first/i);
+  assert.match(t, /never use Search Maps[^.]*(identify|find)[^.]*(site|place)/i);
+});
