@@ -59,6 +59,9 @@ const scenarios = [
   ['near a site (OHNY picks first, off-interest listed)', { now: '2026-10-17T13:30', near: 'roof', interests: 'history' }, ['--now', '2026-10-17T13:30', '--near', 'roof', '--limit', '10', '--interests', 'history']],
   ['child and wheelchair', { now: '2026-10-17T13:30', lat: 40.73, lng: -73.995, childAge: 7, wheelchair: true }, ['--now', '2026-10-17T13:30', '--lat', '40.73', '--lng', '-73.995', '--limit', '10', '--child-age', '7', '--wheelchair']],
   ['late afternoon, arrival-aware', { now: '2026-10-17T16:48', lat: 40.73, lng: -73.995 }, ['--now', '2026-10-17T16:48', '--lat', '40.73', '--lng', '-73.995', '--limit', '10']],
+  ['singular interests (garden, rooftop)', { now: '2026-10-17T13:30', lat: 40.73, lng: -73.995, interests: 'garden,rooftop' }, ['--now', '2026-10-17T13:30', '--lat', '40.73', '--lng', '-73.995', '--limit', '10', '--interests', 'garden,rooftop']],
+  ['plural interests (gardens, rooftops)', { now: '2026-10-17T13:30', lat: 40.73, lng: -73.995, interests: 'gardens,rooftops' }, ['--now', '2026-10-17T13:30', '--lat', '40.73', '--lng', '-73.995', '--limit', '10', '--interests', 'gardens,rooftops']],
+  ['free words (accounting)', { now: '2026-10-17T13:30', lat: 40.73, lng: -73.995, interests: 'accounting offices' }, ['--now', '2026-10-17T13:30', '--lat', '40.73', '--lng', '-73.995', '--limit', '10', '--interests', 'accounting offices']],
   ['no ticketed, paged', { now: '2026-10-17T13:30', lat: 40.73, lng: -73.995, includeTicketed: false, limit: 2, offset: 1 }, ['--now', '2026-10-17T13:30', '--lat', '40.73', '--lng', '-73.995', '--no-ticketed', '--limit', '2', '--offset', '1']],
 ];
 for (const [name, jsOpts, pyArgs] of scenarios) {

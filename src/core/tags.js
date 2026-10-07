@@ -6,9 +6,10 @@ export const TAG_RULES = {
   history: /\b(histor\w*|heritage|colonial|19th|18th|20th century|centur(y|ies)|founded|museum of the city|memorial|civil war|immigra\w*|ellis island|landmark)\b/i,
   art: /\b(art(s|ist\w*|work)?|gallery|galleries|studio|sculpt\w*|mural\w*|exhibit\w*|paint\w*|print ?shop|craft\w*)\b/i,
   design: /\b(design\w*|interior\w*|lighting|furniture|material\w*|fabricat\w*)\b/i,
-  nature: /\b(garden\w*|park|farm\w*|green ?house|ecolog\w*|wildlife|nature|trees?|botanic\w*|wetland\w*|habitat)\b/i,
+  nature: /\b(garden\w*|green ?house|ecolog\w*|wildlife|nature|trees?|botanic\w*|wetland\w*|habitat)\b/i,  // + WEAK_RULES.nature
   waterfront: /\b(water(front|works)?|harbor|harbour|river|pier|ferry|marina|boat\w*|canal|bay|shore\w*|island)\b/i,
-  views: /\b(rooftop|roof deck|terrace|observation|skyline|penthouse|views?|top floor|\d{2,3}(th|st|nd|rd) floor)\b/i,
+  // "view" alone is usually a verb ("View rare maps") or "on view": count only plural or noun-like uses.
+  views: /\b(rooftop|roof deck|terrace|observation|skyline|penthouse|views|(panoramic|sweeping|skyline|city|harbor|river|water|unobstructed|360°?)[- ]views?|views? (of|over|from|across)|top floor|\d{2,3}(th|st|nd|rd) floor)\b/i,
   sacred: /\b(church|cathedral|synagogue|temple|mosque|chapel|sacred|worship|congregation|monastery|shrine|religio\w*)\b/i,
   industrial: /\b(industrial|factory|power (plant|station)|generating|infrastructure|treatment|sanitation|digester|pump\w*|substation|foundry|warehouse|terminal|shipyard)\b/i,
   transit: /\b(subway|train|rail(road|way)?|station|transit|bus|trolley|tunnel|bridge|mta|airport|aviation)\b/i,
@@ -44,10 +45,20 @@ export const INTEREST_ALIASES = {
   residential: ['homes', 'houses', 'apartments', 'residential', 'housing', 'interiors'],
 };
 
+/** Words that are often just place names ("National Park Service", "Sunset Park", "Blackwell Farm map"): they tag a site
+ * only when they appear in its name or summary, or at least twice in its text. */
+export const WEAK_RULES = {
+  nature: /\b(parks?|farms?|farming)\b/gi,
+};
+
 export function deriveTags(site) {
-  const text = [site.name, site.short, site.description, site.partner, ...(site.series ?? []), site.series_description, site.special]
-    .filter(Boolean).join(' . ');
+  const head = [site.name, site.short, ...(site.series ?? []), site.special].filter(Boolean).join(' . ');
+  const text = [head, site.description, site.partner, site.series_description].filter(Boolean).join(' . ');
   const tags = Object.entries(TAG_RULES).filter(([, re]) => re.test(text)).map(([t]) => t);
+  for (const [tag, re] of Object.entries(WEAK_RULES)) {
+    if (tags.includes(tag)) continue;
+    if ((head.match(re) ?? []).length > 0 || (text.match(re) ?? []).length >= 2) tags.push(tag);
+  }
   if (site.family) tags.push('kids');
   return [...new Set(tags)];
 }
@@ -64,8 +75,10 @@ export function singular(word) {
 
 const norm = (phrase) => phrase.toLowerCase().split(/[^a-z0-9]+/).filter(Boolean).map(singular).join(' ');
 const NORMALIZED_ALIASES = Object.entries(INTEREST_ALIASES).map(([tag, aliases]) => [tag, aliases.map(norm)]);
+// Single alias words ("views", "gardens") are left to the tag rules, which know "on view" isn't a view.
+const ALIAS_WORDS = new Set(NORMALIZED_ALIASES.flatMap(([, a]) => a.filter((x) => !x.includes(' '))));
 
-/** "rooftops and old churches" -> { tags: ['views','sacred'], words: ['rooftop','old','church'] } (words are singular stems) */
+/** "rooftops and old churches" -> { tags: ['views','sacred'], words: [] } (words: singular stems of non-alias words) */
 export function interpretInterests(input) {
   const list = (Array.isArray(input) ? input : String(input ?? '').split(/[,;]| and /i))
     .map((s) => s.trim().toLowerCase()).filter(Boolean);
@@ -76,7 +89,7 @@ export function interpretInterests(input) {
     for (const [tag, aliases] of NORMALIZED_ALIASES) {
       if (aliases.some((a) => p.includes(` ${a} `))) tags.add(tag);
     }
-    for (const w of phrase.split(/\s+/)) if (w.length > 3) words.add(singular(w));
+    for (const w of phrase.split(/\s+/)) if (w.length > 3 && !ALIAS_WORDS.has(singular(w))) words.add(singular(w));
   }
   return { tags: [...tags], words: [...words] };
 }

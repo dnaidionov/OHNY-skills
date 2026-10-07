@@ -20,7 +20,8 @@
     "prepackage:chatgpt": "npm test",
     "package:chatgpt": "node scripts/build-chatgpt-plugin.mjs",
     "check:chatgpt-submission": "node scripts/build-chatgpt-plugin.mjs --require-metadata",
-    "build:opal": "node scripts/build-opal.mjs"
+    "build:opal": "node scripts/build-opal.mjs",
+    "retag": "node scripts/retag-snapshot.mjs"
   },
   "devDependencies": {
     "wrangler": "^4.0.0"
