@@ -296,3 +296,5 @@ Conclusion: memory save, recall, list and forget work through Opal's tool. Stayi
 ## 2026-10-07 — Plural interests and nearby ranking (Worker)
 
 Tests first: `test/interests.test.js` (6 tests; 3 failed before the singular fix, 1 more before the ranking fix, all with the bug's symptoms); `npm test` 168/168. On the bundled lineup from Union Square, Sat 2 PM: before, `rooftops,gardens` → 45/53/73-minute sites and `rooftop,garden` → 18/25/25; after, both → New York Marble Cemetery (19 min), Original Maps of Manhattan (45 min, coarse tags), Church of the Transfiguration (18 min). Grand Central architecture and no-interest results unchanged (Cast Hall, General Society first). Not deployed: production still runs the old ranking.
+
+Deployed 2026-10-07 (Worker version a16e8c86-b934-4532-b848-35e07b42d453) after `npm test` 168/168. Production `nearby` from Union Square, Sat 2 PM: `rooftops,gardens` and `rooftop,garden` both return New York Marble Cemetery (19 min), Original Maps of Manhattan (45 min), Church of the Transfiguration (18 min), live. `npm run smoke`: 17/17 checks passed (ohny-skills.dnaidionov.workers.dev).
