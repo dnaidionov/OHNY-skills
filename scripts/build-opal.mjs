@@ -71,7 +71,10 @@ export async function buildOpalPrompt() {
   const chat = `HOW THIS CHAT WORKS
 - Never end your answer with a question and stop. Whenever you need the visitor's reply (a missing detail, "Anything else?", or whether to remember something), use the chat to ask and wait for their reply, then continue.
 - Only finish, handing your last answer to the next step, when the visitor says they're done, and then end with a one-line summary and goodbye, with no further question.
-- Never offer to remember where they are: their location changes.`;
+- Never offer to remember where they are: their location changes.
+- At the start of each chat, check Use Memory for saved preferences before your first answer; if there are any, use them and say so in a few words.
+- When offering to remember, name only interests, Passport, tickets, kids' ages and accessibility needs, never their location.
+- Say the unofficial line only in your first message of the chat, not in later messages.`;
   return `${header(s)}\n${api}\n\n${chat}\n`.replace(/\n{3,}/g, '\n\n').replaceAll('@', '%40');
 }
 

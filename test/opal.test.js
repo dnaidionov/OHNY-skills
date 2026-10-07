@@ -142,3 +142,11 @@ test('the goodbye asks nothing more, and the visitor\'s location is never offere
   assert.match(chat, /done[^.]*(summary|goodbye)[^.]*(no|without)[^.]*question/i);
   assert.match(chat, /(Don't|Never) (offer to )?remember where (they are|the visitor is)/i);
 });
+
+test('chat rules from the memory re-test: recall at the start, offer only allowed items, unofficial line once', async () => {
+  const t = await buildOpalPrompt();
+  const chat = t.slice(t.lastIndexOf('HOW THIS CHAT WORKS'));
+  assert.match(chat, /start of (each|every) chat[^.]*Use Memory/i);
+  assert.match(chat, /offer(ing)? to remember[^.]*only[^.]*interests/i);
+  assert.match(chat, /unofficial[^.]*only in your first message/i);
+});
