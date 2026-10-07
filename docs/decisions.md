@@ -89,3 +89,11 @@ Results (details in `docs/test-results.md`): Gemini reads a public gist page whe
 Consequences: (1) A Gem cannot be promised live cancellations. Do not describe Gemini as supported on the landing page or in the README for live data. (2) The gist mirror workflow only helps if the visitor pastes the link, which is poor on a phone; it is built but not enabled (no `GIST_TOKEN` secret, not on `main`). (3) A Drive document would work as a labeled **saved copy** attached to the Gem; it would need a manual refresh (re-create and re-attach), and it should be clearly labeled with its as-of time. (4) The Gem must keep its rule of never listing sites when it cannot read live data; that rule held in every run.
 
 **Options not taken yet:** a Docs/Drive API refresh job with a service account (heavy, and unproven that the Gem rereads changes); asking the visitor to paste the gist link at the start (works, clumsy); accepting that Gemini visitors get a pointer to ohny.org plus the check-in link. Claude and ChatGPT remain the supported routes with live data.
+
+## 2026-10-07 — Gemini route: an Opal app that calls the Worker's GET API
+
+Opal (Google Labs) steps cannot call MCP, but the agent step's Get Webpage tool reads `naidionov.com/ohny/skills/v1/*` (unlike Gemini chat's reader). The app's agent prompt is generated from the skill (`scripts/build-opal.mjs` → `docs/gemini/opal-prompt.md`: Opal-specific rules plus `references/api.md` and the URLs from SKILL.md settings), tested like the standalone guide, and pasted into the Opal step. Opal writes "@" as a tool shortcut, so the prompt uses `%40`.
+
+**Limits, stated plainly:** Opal and "Gems made by Labs" turn off on 2026-11-17 with no migration (Google FAQ), so this serves the 2026 festival only. Shared Opal apps are used in a phone's mobile browser, not inside the Gemini mobile app (Google help). Each run is one request and one answer, not a conversation. The first end-to-end scenario matched the API exactly; the other scenarios and the phone check are not yet run.
+
+**Alternatives:** the feed + Gem (Gem could not fetch pages on its own), a Drive-knowledge Gem (snapshot only), "skills in Gemini" (Opal's successor; capabilities unverified).

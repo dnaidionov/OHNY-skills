@@ -222,3 +222,15 @@ Owner's Opal draft "OHNY Explorer" (`opal.google/edit/142E8lMaKEPqEynfE0zwIQgQS9
 | Creating a new Opal app from the home page | BLOCKED | "Create New" did nothing when clicked (2026-10-07); Opal turns off on 2026-11-17. |
 
 Note: unlike Gemini's chat reader, which refused naidionov.com in every test on 2026-10-06, Opal's Get Webpage tool read it.
+
+## 2026-10-07 — Opal app built on the Worker API; first end-to-end scenario
+
+Owner's Opal draft "OHNY Explorer" (`opal.google/edit/142E8lMaKEPqEynfE0zwIQgQS9v2fE5lL`), editor Preview, desktop Chrome. Steps: Event Query (user input) → "Retrieve events" (Agent; prompt = `docs/gemini/opal-prompt.md`, tools Get Webpage and Search Maps, then the Event Query input) → "Render Event Webpage" (switched to Manual layout showing the agent's answer as-is). Original prompts saved in `docs/gemini/opal-draft-retrieve-events.md`.
+
+| Check | Result | Evidence and limits |
+|---|---|---|
+| Prompt build and tests | PASS | `npm run build:opal`; `npm test` 155/155, including: generated file up to date, URLs from SKILL.md settings, every named endpoint is a real route, all product rules present, no MCP tool names, no "@" (Opal's editor turns "@" into a tool shortcut, which scrambled the first paste; the prompt writes `%40`, which the Worker decodes to "@", verified by test). |
+| Scenario "What's open near Grand Central? I like architecture. Saturday Oct 17 at 2 PM, on foot." | PASS | Answer opened with the unofficial line and "as of Oct 7"; top three = Cast Hall at the Institute of Classical Architecture & Art (7 min, open until 4:30 PM, ages 10+ recommended, bag limits), General Society of Mechanics and Tradesmen (7 min, until 4:30 PM, ages 12+, stairs), National Academy of Design (36 min, until 6:00 PM), each with a Google Maps link; named Heliocentric Studios, Weeksville and the Sign Museum as left out because they'd close before arrival. A direct `/v1/nearby?lat=40.7527&lng=-73.9772&interests=architecture&now=2026-10-17T14:00` call returned the same three sites, walking times, closing times, heads-up items and skipped places (live: true). |
+| Minor | Note | "Over 200 other nearby sites were excluded" loosely paraphrases `in_range_breakdown` (city-wide counts). The preview pane cut long map links off at the right edge. |
+| Held-ticket, canceled-site, check-in, unknown-site and API-down scenarios | NOT RUN | Next. |
+| Shared link on a phone browser | NOT RUN | Not published or shared yet (publishing makes it reachable by others; owner's call). |
