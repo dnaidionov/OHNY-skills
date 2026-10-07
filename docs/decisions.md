@@ -119,3 +119,11 @@ Rules now: views needs "views" or a noun-like "view" (panoramic/city/harbor… v
 Interest words that are tag aliases ("views", "gardens", "churches") are no longer also matched as raw words: after the plural fix, "views" became "view" and matched "on view". The tag rules decide those; free words ("gothic", "accounting") are still matched in the text.
 
 Saved data: `npm run retag` (new, offline) re-derives tags in `data/lineup.json`, then `npm run build:fallback`; a test fails if saved tags don't match the rules. The offline Python tool (`skills/ohny/scripts/ohny_offline.py`) got the same singular-stem matching, alias-word rule and ranking, with parity tests for singular, plural and free-word interests.
+
+## 2026-10-07 — One-call day planning (`/v1/plan/day`) and `format=text`
+
+The owner's Opal run ("tickets for the St John the Divine vertical tour Saturday afternoon, plan my Saturday") failed after the time was confirmed. Opal's Get Webpage is a nested Gemini Flash call with URL context that summarises the page: one fetch took 58 s, another hung 200 s+, a summary invented a "1:00" session, and the agent lost the slug and searched again. A plan needed 4-6 such calls, each a chance of "no content in Gemini response".
+
+New `GET /v1/plan/day?ticket=<slug or name>@<time>&from=<lat>,<lng>` (`src/core/plan.js`) does the whole plan server-side from existing pieces: name lookup via `search`, `resolveTickets` (session check with the real listed times), `nearby` before the first ticket (with leave-by) and after the last (from that site at its end time), and `checkPlan` on the suggested order. If any ticket isn't confirmed it plans nothing and says why. `plan/day`, `nearby` and `search` accept `format=text` (`src/text.js`): short lines with exact times, slugs, links and the as-of time already in New York time (which also removes the UTC-reading mistake). JSON stays the default, so existing clients are unaffected.
+
+Opal prompt: plan with one `/v1/plan/day` call; add `format=text`; ask Get Webpage to return the page verbatim; at most two fetches per answer; reuse slugs from earlier in the chat. **Limits:** a single nested fetch can still hang or return nothing inside Opal; fewer calls makes that rarer, not impossible. The MCP connector and the ChatGPT Actions schema (`openapi.yaml`) do not yet expose `plan/day`.

@@ -9,6 +9,8 @@ import { policyFlags } from './core/policy.js';
 import { handleMcp } from './mcp.js';
 import { parseSpecs, resolveTickets, checkPlan, TICKET_BUFFER_MIN, DEFAULT_STAY_MIN, NEARBY_MIN_STAY_MIN } from './core/tickets.js';
 import { renderIndex, renderChanges } from './feed.js';
+import { planDay } from './core/plan.js';
+import { planText, nearbyText, searchText } from './text.js';
 import { landingHtml } from './landing.js';
 import { ICON_SVG } from './icon.js';
 import { STANDALONE } from './standalone-data.js';
@@ -34,6 +36,7 @@ const json = (body, status = 200, extra = {}) => new Response(JSON.stringify(bod
     ...extra,
   },
 });
+const asText = (body) => new Response(body, { headers: { 'content-type': 'text/plain; charset=utf-8', 'access-control-allow-origin': '*', 'cache-control': 'public, max-age=15', 'x-content-type-options': 'nosniff' } });
 const fail = (status, error, hint) => json({ error, hint }, status, { 'cache-control': 'no-store' });
 
 const num = (v) => (v == null || v === '' || Number.isNaN(Number(v)) ? undefined : Number(v));
@@ -203,9 +206,10 @@ export async function handle(request, deps) {
     const term = q.get('q');
     if (!term) return fail(400, 'Missing q.', 'e.g. /v1/search?q=grolier');
     const lineup = await getLineup(deps);
-    return json(envelope(lineup, now, search(lineup.sites.filter((s) => !s.removed), {
+    const body = envelope(lineup, now, search(lineup.sites.filter((s) => !s.removed), {
       q: term, nowAbs: now.abs, limit: clamp(num(q.get('limit')), 1, 10, 5),
-    })));
+    }));
+    return q.get('format') === 'text' ? asText(searchText(body)) : json(body);
   }
 
   const MODES = ['walk', 'transit', 'car'];
@@ -268,7 +272,27 @@ export async function handle(request, deps) {
       borough: q.get('borough') ?? undefined,
       exclude: (q.get('exclude') ?? '').split(',').filter(Boolean).concat(nearSlug ? [nearSlug] : []),
     });
-    return json(envelope(lineup, now, result));
+    const body = envelope(lineup, now, result);
+    return q.get('format') === 'text' ? asText(nearbyText(body)) : json(body);
+  }
+
+  if (path === '/v1/plan/day') {
+    if (!q.get('ticket')) {
+      return fail(400, 'ticket is required.', `ticket=<site slug or name>@YYYY-MM-DDTHH:MM (the session start, New York time; several separated by ";"), plus from=lat,lng (where the visitor starts) or near=<slug>. Optional: interests, mode=walk|transit|car, child_age, wheelchair=true, limit, format=text.`);
+    }
+    const lineup = await getLineup(deps);
+    const live = lineup.sites.filter((s) => !s.removed);
+    let from;
+    const fromParam = /^(-?\d+(?:\.\d+)?),(-?\d+(?:\.\d+)?)$/.exec(q.get('from') ?? '');
+    if (fromParam) from = { lat: Number(fromParam[1]), lng: Number(fromParam[2]) };
+    else if (num(q.get('lat')) != null && num(q.get('lng')) != null) from = { lat: num(q.get('lat')), lng: num(q.get('lng')) };
+    else if (q.get('near')) { const ref = findSite(live, q.get('near')); if (ref?.geo) from = { lat: ref.geo.lat, lng: ref.geo.lng }; }
+    const result = planDay(live, {
+      ticket: q.get('ticket'), from, nowAbs: now.abs, interests: q.get('interests') ?? '', mode: travelMode,
+      childAge: num(q.get('child_age')), wheelchair: q.get('wheelchair') === 'true', limit: clamp(num(q.get('limit')), 1, 5, 3),
+    });
+    const body = envelope(lineup, now, result);
+    return q.get('format') === 'text' ? asText(planText(body)) : json(body);
   }
 
   const siteMatch = /^\/v1\/site\/([^/]+)$/.exec(path);

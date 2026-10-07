@@ -150,3 +150,18 @@ test('chat rules from the memory re-test: recall at the start, offer only allowe
   assert.match(chat, /offer(ing)? to remember[^.]*only[^.]*interests/i);
   assert.match(chat, /unofficial[^.]*only in your first message/i);
 });
+
+test('planning uses the one-call /v1/plan/day, fetches ask for format=text and the page verbatim, at most two per answer', async () => {
+  const t = await buildOpalPrompt();
+  assert.match(t, /\/v1\/plan\/day/);
+  assert.match(t, /format=text/);
+  assert.match(t, /verbatim|word for word/i);
+  assert.match(t, /at most two (Get Webpage )?(calls|fetches)/i);
+  assert.match(t, /reuse[^.]*slug/i);
+});
+
+test('the API reference documents /v1/plan/day and format=text (single source for every route)', async () => {
+  const api = await (await import('node:fs/promises')).readFile(new URL('../skills/ohny/references/api.md', import.meta.url), 'utf8');
+  assert.match(api, /\/v1\/plan\/day\?ticket=/);
+  assert.match(api, /format=text/);
+});
