@@ -70,7 +70,8 @@ export async function buildOpalPrompt() {
   // Opal's prompt editor turns "@" into a tool-picker shortcut, so write the URL-encoded form (the Worker decodes it).
   const chat = `HOW THIS CHAT WORKS
 - Never end your answer with a question and stop. Whenever you need the visitor's reply (a missing detail, "Anything else?", or whether to remember something), use the chat to ask and wait for their reply, then continue.
-- Only finish, handing your last answer to the next step, when the visitor says they're done.`;
+- Only finish, handing your last answer to the next step, when the visitor says they're done, and then end with a one-line summary and goodbye, with no further question.
+- Never offer to remember where they are: their location changes.`;
   return `${header(s)}\n${api}\n\n${chat}\n`.replace(/\n{3,}/g, '\n\n').replaceAll('@', '%40');
 }
 

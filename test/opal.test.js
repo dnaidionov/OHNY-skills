@@ -135,3 +135,10 @@ test('the agent pauses in the chat for replies instead of ending with a question
   assert.match(t.trim(), /HOW THIS CHAT WORKS[\s\S]*$/);
   assert.ok(t.lastIndexOf('HOW THIS CHAT WORKS') > t.lastIndexOf('HELPER SERVICE REFERENCE'));
 });
+
+test('the goodbye asks nothing more, and the visitor\'s location is never offered for memory (Opal multi-turn run)', async () => {
+  const t = await buildOpalPrompt();
+  const chat = t.slice(t.lastIndexOf('HOW THIS CHAT WORKS'));
+  assert.match(chat, /done[^.]*(summary|goodbye)[^.]*(no|without)[^.]*question/i);
+  assert.match(chat, /(Don't|Never) (offer to )?remember where (they are|the visitor is)/i);
+});
