@@ -258,3 +258,19 @@ At the owner's request the Opal app "OHNY Explorer" was shared as **Anyone with 
 Update (2026-10-07, republished 1:52 AM): start-screen description changed to "Unofficial guide to Open House New York Weekend, Oct 16-18, 2026: what's open near you, details on any site, and plans around tickets you hold, live from ohny.org. Not affiliated with OHNY."; the Event Query input prompt changed to "Ask about OHNY Weekend: what's open near you, a specific site, or a plan around tickets you hold. Say where you are (a cross street or landmark), what you like, and the day and time if it isn't now." App name unchanged ("OHNY Explorer").
 
 Correction and update (2026-10-07, republished 1:57 AM): the description change recorded above for 1:52 AM had not actually saved (the dialog later showed the old text; only the input prompt change was live then). Both the description and the new name **"Ask OHNY (unofficial)"** were saved and confirmed by reopening the dialog, then republished. Same link.
+
+## 2026-10-07 — Opal app made conversational (chat + opt-in memory); republished 2:17 AM
+
+Prompt changes (tests first; `npm test` 161/161): CONVERSATION and MEMORY sections replace "answer in one go"; "unofficial" said once per chat; a final HOW THIS CHAT WORKS section tells the agent to ask through the chat and wait, finish only when the visitor is done, say goodbye without a question, and never offer to remember the visitor's location. Use Memory added as the third tool. Desktop editor Preview, not a phone.
+
+| Check | Result | Evidence |
+|---|---|---|
+| Run 1 (conversation rules, before HOW THIS CHAT WORKS): "What's open near Grand Central?" | PARTLY | Correct results (Cast Hall, General Society, Church of the Transfiguration, live), but it wrote "Want me to remember your interests for next time? Anything else?" into its final answer and the workflow ended with no reply box. |
+| Agent step modes | Note | The step's menu offers Agent or a fixed model (Gemini 3 Flash, 3.1 Pro, image/audio/video models); there is no separate interactive setting. |
+| Run 2 (with HOW THIS CHAT WORKS), turn 1: "What's open near me?" | PASS | Paused and asked in the chat: "To find spots nearby, where are you right now? (Like a cross street or landmark)", with a reply box. |
+| Turn 2: "Union Square. I like architecture." | PASS | Three architecture sites with walking times and closing times, two left-out sites with reasons, then in the chat: "Want me to remember these for next time? Anything else?" with choices (remember / search for something else / I'm all set) and the step still running. **Defect:** offered to remember the location (fixed in the prompt afterwards). |
+| Turn 3: "Search for something else", then "I also have tickets for the 20 Exchange Place tour Sunday at 10 AM. Say it's Sunday 9 AM: what can I see before it, starting from here?" | PASS | Used Union Square and architecture from earlier turns without asking; "Live from ohny.org (Sunday at 9:00 AM)"; nothing fits before the tour; leave Union Square by 9:19 AM by transit, or 8:44 AM walking (61 min); ended with "Anything else?" in the chat. API with the same inputs: transit leave_by 9:19 AM, walk 8:45 AM (60 min), 0 results. |
+| Turn 4: "No, I'm done, thanks." | PASS, one defect | Finished and handed a summary of the whole chat to the output step. **Defect:** the summary still ended "Enjoy your weekend! Anything else?" (fixed in the prompt afterwards). |
+| Goodbye and location-memory fixes in a live run | NOT RUN | Prompt updated, tested as text, and republished; not yet exercised in a chat. |
+| Memory across visits (yes / later visit / forget) | NOT RUN | |
+| Phone browser via the shared link | NOT RUN | |

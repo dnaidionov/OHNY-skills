@@ -97,3 +97,7 @@ Opal (Google Labs) steps cannot call MCP, but the agent step's Get Webpage tool 
 **Limits, stated plainly:** Opal and "Gems made by Labs" turn off on 2026-11-17 with no migration (Google FAQ), so this serves the 2026 festival only. Shared Opal apps are used in a phone's mobile browser, not inside the Gemini mobile app (Google help). Each run is one request and one answer, not a conversation. The first end-to-end scenario matched the API exactly; the other scenarios and the phone check are not yet run.
 
 **Alternatives:** the feed + Gem (Gem could not fetch pages on its own), a Drive-knowledge Gem (snapshot only), "skills in Gemini" (Opal's successor; capabilities unverified).
+
+## 2026-10-07 — Opal app is a chat inside one agent step
+
+Opal's agent step chats with the visitor (asks a question, shows a reply box or choice buttons, and continues) when its prompt says to ask through the chat and wait; a softer "ask Anything else?" instruction made it write the question into its final answer and end the workflow instead. So the conversation lives inside the "Retrieve events" agent step and ends when the visitor says they're done, after which the output step shows the summary. No "Go to" loop was needed. Memory (Opal's Use Memory) is opt-in: the agent must ask first, may keep only interests, Passport, held tickets, kids' ages and accessibility needs, never location, names, emails, zip codes, phone numbers, hours or status, and must support "forget". Each turn still takes roughly 30 seconds to 1.5 minutes.
