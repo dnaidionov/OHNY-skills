@@ -280,6 +280,7 @@ export function landingHtml() {
       <li>"We have four hours Sunday afternoon with a six-year-old. What should we do?"</li>
       <li>"I already have tickets for 2 PM at the Refinery. Build a day around that."</li>
       <li>"We have a 4 PM tour at the Morgan Library on Saturday. What can we fit in before it?"</li>
+      <li>"I have tickets for the Vertical Tour at St. John the Divine on Saturday afternoon. Plan my Saturday around it."</li>
       <li>"We're running late. Change the plan."</li>
     </ul>
     <p class="says">What it takes into account</p>
@@ -301,6 +302,7 @@ export function landingHtml() {
     <ul class="uses">
       <li><strong>Tell it which site, the date and start time, and how many of you.</strong> You can mention them at any point, in a plan or in a quick "what's near me" question.</li>
       <li><strong>It asks for the address or meeting point on your ticket.</strong> OHNY doesn't publish street addresses for ticketed sites, so without it, travel times are only rough.</li>
+      <li><strong>It plans around your ticket in one step.</strong> Tell it the site (the name is enough), the time and where you start, and it confirms the session, then suggests what fits before and after, when to leave, and the order, already checked.</li>
       <li><strong>It checks the ticket against OHNY's schedule.</strong> If the time you gave doesn't match a real session, or the site has been canceled, it tells you first, shows the listed times and asks to see your ticket before planning around it.</li>
       <li><strong>Your tour is an immovable block.</strong> The plan keeps the whole session, has you arrive 15 minutes early, and never puts two things in the same slot.</li>
       <li><strong>It tells you when to leave</strong> for each ticket ("to be at the tour by 3:45, leave here by 2:57"), and shows how long you have at each stop before you need to head off.</li>

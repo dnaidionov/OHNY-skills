@@ -176,10 +176,12 @@ export async function handle(request, deps) {
         'GET /v1/nearby?lat=&lng=&interests=&limit=3&offset=0': 'Closest sites that will be open when you arrive, matching interests (also near=<slug>, max_walk_min, radius_km, min_time_left_min, include_ticketed, borough, child_age, wheelchair=true, interests_mode=prefer|require, exclude=slug,slug)',
         'GET /v1/nearby ... &fixed=<slug>@<date-time>[;...][@lat,lng]': 'Tickets the visitor already holds are hard constraints: suggestions leave time to reach them; the reply has your_tickets with leave_by (also mode=walk|transit|car, min_stay_min, ticket_buffer_min)',
         'GET /v1/plan/check?stops=<slug>@<date-time>;...&held=<slug>,...': 'Validate an itinerary: open at arrival, session times exist, travel between stops, tickets held (also mode, stay_min, buffer_min)',
+        'GET /v1/plan/day?ticket=<slug or name>@<date-time>&from=lat,lng': 'Plan a day around held tickets in one call: confirms the session (or lists the real times), stops before and after with leave-by times, an order and a check (also near=<slug>, interests, mode, child_age, wheelchair=true, limit, format=text)',
         'GET /v1/search?q=': 'Find sites by name, partner, neighborhood or topic',
         'GET /v1/site/<slug>': 'Full, freshly fetched details for one site',
         'GET /v1/changes': 'What changed on ohny.org since the saved copy (cancellations, new times, new sites)',
         'POST /mcp': 'MCP connector endpoint (Streamable HTTP) for Claude, ChatGPT and other MCP clients',
+        'format=text': 'On plan/day, nearby and search: short plain lines instead of JSON, times in New York time',
         'any request': 'Add now=2026-10-17T14:30 (New York time) to test as if it were another moment',
       },
     });
