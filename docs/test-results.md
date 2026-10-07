@@ -208,3 +208,17 @@ Three runs: the Gem never read the gist from its own instructions, while the sam
 | Full 50 KB index as a Doc | NOT RUN | Only the 8 KB version was tested. |
 
 The test Doc was detached from the Gem and the Gem re-saved with no knowledge file. The Doc "OHNY feed knowledge test (can delete)" remains in the owner's Drive, and the public gist is unchanged.
+
+## 2026-10-07 — Opal "Get Webpage" reaches the Worker's JSON API
+
+Owner's Opal draft "OHNY Explorer" (`opal.google/edit/142E8lMaKEPqEynfE0zwIQgQS9v2fE5lL`), desktop Chrome, signed in as the owner. The original "Retrieve events" prompt was saved first to `docs/gemini/opal-draft-retrieve-events.md`, then replaced with a single instruction to open `https://naidionov.com/ohny/skills/v1/meta` with the **Get Webpage** tool (the only tool on the step) and report `total_sites`, `as_of` and `live` verbatim.
+
+| Check | Result | Evidence and limits |
+|---|---|---|
+| Agent step fetches `/v1/meta` with Get Webpage | PASS | Console trace: Agent Session 11.5 s, "Retrieving Data From The Specified URL" 6.0 s. Output: `total_sites: 314`, `as_of: 2026-10-07T04:15:04.182Z`, `live: true`. A direct `curl` a minute later returned 314, `2026-10-07T04:16:15.805Z`, live: the values are a real fetch, not invented. |
+| MCP endpoint (`/mcp`) from Opal | Not applicable | Opal step tools (Get Weather, Search Web, Get Webpage, Search Maps, Code Execution, Go to, Use Memory) cannot send MCP's JSON-RPC POSTs; the GET API is the route. |
+| Endpoints with query parameters (`/v1/nearby?...`, `/v1/plan/check?...`) | NOT RUN | Only `/v1/meta` was tried. |
+| Shared app on a phone's mobile browser | NOT RUN | Google's FAQ says shared Opal apps can be used on a phone; not tried. Not available inside the Gemini mobile app (Google help page). |
+| Creating a new Opal app from the home page | BLOCKED | "Create New" did nothing when clicked (2026-10-07); Opal turns off on 2026-11-17. |
+
+Note: unlike Gemini's chat reader, which refused naidionov.com in every test on 2026-10-06, Opal's Get Webpage tool read it.
