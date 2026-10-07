@@ -254,3 +254,5 @@ Same app and setup as the previous entry (editor Preview, desktop Chrome; not a 
 ## 2026-10-07 — Opal app published
 
 At the owner's request the Opal app "OHNY Explorer" was shared as **Anyone with the link** (not Public, so not listed in Google search), with "Allow access to editor view and remix" turned **off** so visitors can run it but not see or copy the prompt and workflow, then published (Opal: "Last Published: Oct 7, 2026, 1:47 AM"). Link: https://opal.google/app/1fMOIm-S5yvvrO6MHE57jlyZYIZRix5KU. Opening the link on a phone (mobile browser, sign-in requirement, readability of long links) is **NOT RUN**.
+
+Update (2026-10-07, republished 1:52 AM): start-screen description changed to "Unofficial guide to Open House New York Weekend, Oct 16-18, 2026: what's open near you, details on any site, and plans around tickets you hold, live from ohny.org. Not affiliated with OHNY."; the Event Query input prompt changed to "Ask about OHNY Weekend: what's open near you, a specific site, or a plan around tickets you hold. Say where you are (a cross street or landmark), what you like, and the day and time if it isn't now." App name unchanged ("OHNY Explorer").
