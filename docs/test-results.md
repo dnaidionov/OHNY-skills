@@ -182,3 +182,29 @@ Source: branch `gemini/shared-project-setup` at the commit that switches the Gem
 | Me, in the Gem, **without** a URL in the message: "what's open near Grand Central, architecture, Sat Oct 17 2 PM, on foot" | FAIL (safe) | The Gem said it could not access the feed data page, refused to recommend or list sites, and sent the visitor to ohny.org/festival/lineup. It did not mention check-in (the new rule held) and used no Google Maps data. One run. |
 
 Reading: Gemini reads the gist when the **user types the URL in the message**, but did not open the same URL when it appeared only in the Gem's instructions. This is a hypothesis from two comparisons, not an established rule. It also leaves open why naidionov.com failed even when typed in the message. If the hypothesis holds, a Gem cannot fetch a live page on its own, and the gist mirror alone does not give the Gem live data.
+
+## 2026-10-07 — Options 3 and 1: does the Gem fetch the gist itself, and can Drive knowledge carry the data?
+
+Branch `gemini/shared-project-setup`. Gemini on the web, desktop, Flash, signed in as the owner. Phone app not driven. Each Gem question was a fresh chat; the first message typed after a page load was dropped by the page several times and was retyped (not a Gem behavior).
+
+**Option 3: re-runs with no URL in the message (Gem instructions point at the gist page)**
+
+| Question | Result | Evidence and limits |
+|---|---|---|
+| "Which OHNY sites are canceled this year?" | Correct answer, but probably not from the gist | Named Monumental Labs and Murry Bergtraum with reasons ("electrical issue", "construction delays"). The reasons are on ohny.org/articles/updates-2026 (checked), not in our feed, and the reply gave no as-of time as the instructions require. It most likely used OHNY's own page. |
+| "How many sites are in your data, and what is the as-of time on it?" | FAIL (safe) | "I am unable to directly access or read the provided GitHub gist URL." It declined to give counts and pointed to ohny.org/festival/lineup. |
+| Grand Central question (earlier run, same setup) | FAIL (safe) | Said it could not access the feed data page; listed no sites. |
+
+Three runs: the Gem never read the gist from its own instructions, while the same gist page read fine when the owner typed the URL into the message. Consistent with the hypothesis that the app fetches user-typed URLs but not URLs that only appear in a Gem's instructions. Still a small sample.
+
+**Option 1: a Google Doc attached as Gem knowledge**
+
+| Check | Result | Evidence and limits |
+|---|---|---|
+| Created a private Google Doc (8 KB: marker "PURPLE-HERON-7421", changes, canceled list, 6 sites) with the Drive connector; attached it via Knowledge > Add from Drive (double-click a file in the picker confirms it); saved | PASS | The Gem listed it as knowledge and it persisted after a reload. |
+| Asked the Gem for the marker phrase and as-of time | PASS | "PURPLE-HERON-7421 ... 2026-10-07T03:10:50.975Z (Live from ohny.org)": it read the Drive file, exactly. |
+| Edited the Doc's marker to "GREEN-OTTER-9999", waited about a minute, asked in a new chat | Old value returned | The Gem still said PURPLE-HERON-7421. Suggests knowledge is a snapshot taken at attach time; only a minute or two elapsed, so not conclusive. |
+| Updating a Drive file's contents programmatically | BLOCKED with these tools | The Drive connector's `update_file` changes only the title and parent. A refresh job would need Google Docs/Drive API credentials, untested. |
+| Full 50 KB index as a Doc | NOT RUN | Only the 8 KB version was tested. |
+
+The test Doc was detached from the Gem and the Gem re-saved with no knowledge file. The Doc "OHNY feed knowledge test (can delete)" remains in the owner's Drive, and the public gist is unchanged.
