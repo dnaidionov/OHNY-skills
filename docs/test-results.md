@@ -304,3 +304,15 @@ Deployed 2026-10-07 (Worker version a16e8c86-b934-4532-b848-35e07b42d453) after 
 Tests first: `test/tagging.test.js` (verb/"on view" and passing park/farm mentions failed before the change; positive guards passed before and after; the real Original Maps record; saved tags match the rules; alias words not matched as raw words) and three new offline-parity scenarios (singular failed before the Python port). `npm test` 178/178. `npm run retag`: tag sets changed for 87 sites (71 lost views, 21 lost nature, none gained; 131 rewritten including order-only). Bundled lineup, Sat 2 PM: Union Square `rooftops,gardens` = `rooftop,garden` → New York Marble Cemetery (19 min), Stonewall National Monument (27 min), Brooklyn Navy Yard (73 min); Original Maps of Manhattan no longer listed. Grand Central `architecture` unchanged. Grand Central `views` → only views-tagged sites (no "on view" printshops). Production still has the old tags until deployed.
 
 Deployed 2026-10-07 (Worker version 3951ff90-dacf-4a75-927b-18f0a00def30) after `npm test` 178/178. Production: Original Maps of Manhattan tags = history, kids, hidden, residential; Union Square `rooftops,gardens` = `rooftop,garden` → New York Marble Cemetery (19 min), Stonewall National Monument (27 min), Brooklyn Navy Yard (73 min), live. `npm run smoke`: 17/17.
+
+## 2026-10-07 — Opal: owner's "plan my Saturday around a held ticket" script breaks
+
+Owner's report: "i have tickets for vertical tour of st john the divine for saturday afternoon. plan my saturday around that" → asked the time → "maybe 1:30pm" → "no 1:30 tour, maybe 2pm?" → agreed → long "thinking" → error. Reproduced in the editor Preview (desktop).
+
+| Finding | Evidence |
+|---|---|
+| Our API is not the bottleneck | `vertical-26` (Sold Out; Saturday sessions 12:00 and 2:00 PM). search, site, nearby with `fixed=vertical-26%402026-10-17T14:00`, plan/check: all HTTP 200 in 0.08-0.29 s, 0.7-8 KB. `/v1/search?q=divine` 0.26 s. |
+| Opal's Get Webpage is a nested model call | Console trace: each fetch is `generate_text` with `url_context: true`, `model: "flash"` and a summarising prompt (e.g. "Get the full site details … to find the slug and all session times"). One search took 58 s; a later one ("Verifying Site Slug", `/v1/search?q=divine`) hung for 206 s+ until stopped. |
+| Summaries lose or invent data | The agent told the visitor tours run "on the hour (like 1:00 or 2:00 PM)": there is no 1:00 session. After three turns it searched again for a slug it had already found, so the slug did not survive the summary. |
+| A plan needs many such calls | search → site → Search Maps → nearby (fixed) → verify slug (again) → plan/check: 4-6 nested model calls, each 10-200 s and each a chance of "no content in Gemini response". This matches the error appearing after the visitor confirms the time, when planning starts. |
+| Side incident (fixed) | During the reproduction the page layout changed and a click typed the test message into the app's start-screen description (editable in Preview). Corrected in "Edit title and description" and verified; it was never published. |
