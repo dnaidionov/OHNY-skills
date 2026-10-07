@@ -163,3 +163,9 @@ Source: working tree on `codex/shared-project-setup`. Local macOS, Node 24.
 | Script run against the real gist with the owner's local `gh` login | PASS | Two runs: "Updated: none", since only the as-of time differed. A real content change was only checked by the offline tests. |
 | Scheduled workflow runs on GitHub | NOT RUN | Needs the `GIST_TOKEN` secret and a merge to `main`. |
 | Gemini reads the 50 KB `index.md` on the gist, and the raw URLs | NOT RUN | `index.md` was added to the gist; my own Gemini test was blocked by the permission check, so the owner is asked to run it. |
+
+## 2026-10-06 — Gist raw URL of the 50 KB index, asked in the Gem
+
+The owner asked Gemini to read `https://gist.githubusercontent.com/dnaidionov/9a3ab441d37275bd105bb349ce87c697/raw/ohny-feed-index.md` and count the canceled sites (expected 2). The reply opened "I'm an unofficial guide and not affiliated with Open House New York", so it came from the **Gem**, not a plain chat. Result: **FAIL**: "I wasn't able to access the website you shared directly." The Gem followed its no-data rule (no sites listed, pointed to ohny.org/festival/lineup).
+
+Not established: whether the gist **page** URL works for the 50 KB file (the earlier pass was the page URL, 1.7 KB, in a plain chat); whether a plain chat can read the raw URL; whether a Gem fetches differently from a plain chat. The page-URL half of the test was not reported. Only one URL per kind was tried, once each.
