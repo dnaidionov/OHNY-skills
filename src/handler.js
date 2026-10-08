@@ -12,6 +12,8 @@ import { renderIndex, renderChanges } from './feed.js';
 import { planDay } from './core/plan.js';
 import { planText, nearbyText, searchText, changesText } from './text.js';
 import { landingHtml } from './landing.js';
+
+const PREVIEW_BOTS = /LinkedInBot|facebookexternalhit|Facebot|Twitterbot|Slackbot|WhatsApp|TelegramBot|Discordbot|Pinterestbot|SkypeUriPreview|Applebot|iMessage/i;
 import { ICON_SVG } from './icon.js';
 import { STANDALONE } from './standalone-data.js';
 import { ICON_PNG_512, ICON_PNG_48, FAVICON_ICO } from './icon-data.js';
@@ -156,7 +158,9 @@ export async function handle(request, deps) {
   }
 
   // Browsers get the human page at the root; scripts and API clients (and ?format=json) get JSON.
-  if (path === '/' && q.get('format') !== 'json' && (request.headers.get('accept') ?? '').includes('text/html')) {
+  // Link-preview crawlers (LinkedIn, Facebook, Slack...) send Accept: */*, so they are matched by user agent.
+  const wantsPage = (request.headers.get('accept') ?? '').includes('text/html') || PREVIEW_BOTS.test(request.headers.get('user-agent') ?? '');
+  if (path === '/' && q.get('format') !== 'json' && wantsPage) {
     return new Response(landingHtml(), {
       headers: { 'content-type': 'text/html; charset=utf-8', 'cache-control': 'public, max-age=300', 'x-content-type-options': 'nosniff' },
     });

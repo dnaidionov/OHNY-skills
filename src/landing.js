@@ -35,6 +35,13 @@ export function landingHtml() {
 <meta property="og:description" content="What's open near you right now, day planning, directions and the check-in link for OHNY Weekend, Oct 16-18, 2026. Works by voice in AI chat apps.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://naidionov.com/ohny/skills">
+<meta property="og:site_name" content="Ask OHNY (unofficial)">
+<meta property="og:image" content="https://naidionov.com/ohny/skills/icon.png">
+<meta property="og:image:width" content="512">
+<meta property="og:image:height" content="512">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Ask OHNY: an unofficial guide to Open House New York Weekend">
+<meta name="twitter:image" content="https://naidionov.com/ohny/skills/icon.png">
 <style>
   :root{--bg:#fafaf7;--card:#fff;--ink:#14141a;--muted:#585b64;--line:#e3e1d8;--accent:#14141a;--onaccent:#fff;--soft:#f0efe8}
   @media (prefers-color-scheme:dark){:root{--bg:#111114;--card:#1b1b20;--ink:#f1f0ea;--muted:#a6a8b0;--line:#2d2d34;--accent:#f1f0ea;--onaccent:#111114;--soft:#222228}}
