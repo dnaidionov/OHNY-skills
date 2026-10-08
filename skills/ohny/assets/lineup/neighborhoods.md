@@ -25,7 +25,7 @@ Neighborhoods:
 - Broad Channel (Queens): queens.md
 - Brooklyn Heights (Brooklyn): brooklyn-2.md
 - Bushwick (Brooklyn): brooklyn-2.md
-- Central Park (Manhattan): manhattan-3.md
+- Central Park (Manhattan): manhattan-3.md, manhattan-4.md
 - Chelsea (Manhattan): manhattan-2.md
 - Civic Center (Manhattan): manhattan-1.md
 - Clinton Hill (Brooklyn): brooklyn-2.md
@@ -70,7 +70,6 @@ Neighborhoods:
 - Lincoln Square (Manhattan): manhattan-3.md
 - Long Island City (Queens): queens.md
 - Lower East Side (Manhattan): manhattan-1.md, manhattan-2.md
-- Manhattan (Manhattan): manhattan-4.md
 - Manhattan (Other): other.md
 - Marine Park (Brooklyn): brooklyn-1.md
 - Mariners Harbor (Staten Island): staten-island.md

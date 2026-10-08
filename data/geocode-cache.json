@@ -1333,5 +1333,22 @@
   "lng": -74.0105065,
   "label": "Equitable Building, 120, Broadway, Financial District, Lower Manhattan, Manhattan, New York County, New York, 10271, United States"
  },
- "Monumental Labs, Brooklyn, New York": null
+ "Monumental Labs, Brooklyn, New York": null,
+ "Swedish Cottage Marionette Theatre, New York, NY, 10028": {
+  "lat": 40.7799611,
+  "lng": -73.9703474,
+  "label": "Swedish Cottage Marionette Theatre, 79th Street Transverse, Upper West Side, Manhattan, New York County, New York, 10024, United States"
+ },
+ "254 36th Street, Building 2, Floor 2, Suite C251, Brooklyn, NY, 11232": null,
+ "5th Avenue & East 74th Street, New York, NY, 10474": {
+  "lat": 40.7676986,
+  "lng": -73.9516672,
+  "label": "East 74th Street, Upper East Side, Manhattan Community Board 8, Manhattan, New York County, New York, 10162, United States"
+ },
+ "79-1 West Drive, New York, NY, 10028": {
+  "lat": 40.7842593,
+  "lng": -73.9673857,
+  "label": "West Drive, Upper West Side, Manhattan, New York County, New York, 11025, United States"
+ },
+ "Samaritan Daytop Village Highbridge Development Hard Hat Tour, Bronx, New York": null
 }
