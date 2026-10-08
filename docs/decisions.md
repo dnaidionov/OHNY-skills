@@ -168,6 +168,14 @@ The full re-run showed that "What does the Weekend Passport get me?" had no answ
 
 Changing a connector tool's description made Claude ask "Always allow" users to approve that tool again. During Oct 16-18, change tool descriptions only for a real fix, and prefer changes to replies or the guide.
 
+## 2026-10-08 — The Opal app is an experiment, not a supported platform
+
+Owner's decision: deprioritize the Google Opal app. It is an experiment, not a main platform, and it isn't in the visitor manual. The supported routes are Claude, ChatGPT and Gemini (connector or custom app). From now on:
+- Don't spend effort on Opal-specific fixes or speed work, or include it by default in cross-assistant test runs.
+- Keep `npm run build:opal` passing so the prompt doesn't break, but don't retype or republish the Opal app unless the owner asks.
+- Mention it only as an experimental fallback.
+
+Context: Opal is being wound down (its banner: "graduating out of Labs on November 17, 2026"). On 2026-10-08 the editor's Publish button was disabled ("You can't publish your Opal because it isn't shared yet") although the Drive file is shared with anyone with the link. So the Passport-facts edit stays in the draft, and the Oct 7 published version stays live.
 ## 2026-10-08 — Interim ChatGPT setup in the visitor manual
 
 Owner's decision: until Ask OHNY is approved for ChatGPT's plugin directory, the manual (landing page ChatGPT tab, README, `docs/chatgpt-mobile.md`) gives the current self-serve route. On chatgpt.com: Plugins, Add, Add custom MCP server; Server URL `https://naidionov.com/ohny/skills/mcp`; No authentication; "I understand and want to continue"; Create as a plugin. The owner will replace it with the listing link once it's approved.
