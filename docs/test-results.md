@@ -456,3 +456,7 @@ Worker 146b17ac. Same question as Q7 ("ohny: anything new or canceled in the OHN
 | Opal app (Agent / Flash) | 17.0 s | PASS on cancellations (both named). Error: "nineteen places like Temple Emanu-El and the Swedish Cottage are now sold out". 19 is all changed listings, and Swedish Cottage was an address change. |
 
 Before the fix (2026-10-07/08) Claude, Gemini and Opal said nothing was canceled. Phones: NOT RUN.
+
+## 2026-10-08 — Grouped changes and held-ticket note (tests)
+
+Tests first: `test/changes-summary.test.js` (3: JSON summary counts and note; text grouped with per-kind counts, no overall total; reminder sentence under 400 chars). All 3 failed before the change; one assertion of mine was too narrow for the wording and was loosened. `npm test` 215/215.

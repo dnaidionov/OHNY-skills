@@ -32,7 +32,7 @@ Rules that always apply:
 // So the rules that matter most live in both places.
 export const FORM_URL = 'https://ohny.fillout.com/26weekend';
 export const RULES_CORE = `Rules that matter most in OHNY conversations: (1) hours, status and tickets change up to the last minute: use the ohny_* tools, never memory. (2) Check-in: you cannot check anyone in; say so in one sentence and give the tappable link ${FORM_URL}, asking nothing first (no email, zip or group size), and never say they're checked in.`;
-export const REMINDER = `Check-in is link-only (${FORM_URL}), ask nothing first and never say they're checked in. Live data only from these tools. At most three options, voice-friendly. Name what you left out. Held tickets are hard constraints. Unofficial, not affiliated with OHNY.`;
+export const REMINDER = `Check-in is link-only (${FORM_URL}), ask nothing first and never say they're checked in. Live data only from these tools. At most three options, voice-friendly. Name what you left out. Held tickets are hard constraints. Sold out never affects a ticket they hold. Unofficial, not affiliated with OHNY.`;
 
 // After the festival only the questions-and-answers tools remain; "what's open now", plan checks and
 // "what changed" make no sense any more. Later still, the connector lists no tools at all.

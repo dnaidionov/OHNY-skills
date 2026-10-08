@@ -1,5 +1,5 @@
 import { normalizeRecord } from './core/normalize.js';
-import { mergeLive, canceledNow } from './core/lineup.js';
+import { mergeLive, canceledNow, groupChanges, HELD_TICKET_NOTE } from './core/lineup.js';
 import { resolveNow, FESTIVAL, isFestivalDay, fromWallMinutes, phaseAt } from './core/time.js';
 import { statusAt, statusLine } from './core/status.js';
 import { nearby, search, card } from './core/search.js';
@@ -201,7 +201,9 @@ export async function handle(request, deps) {
 
   if (path === '/v1/changes') {
     const lineup = await getLineup(deps);
-    const body = envelope(lineup, now, { canceled_now: canceledNow(lineup.sites, lineup.changes), changes: lineup.changes });
+    const canceled = canceledNow(lineup.sites, lineup.changes);
+    const { summary, groups } = groupChanges(lineup.changes, canceled);
+    const body = envelope(lineup, now, { summary, canceled_now: canceled, note: HELD_TICKET_NOTE, groups, changes: lineup.changes });
     return q.get('format') === 'text' ? asText(changesText(body)) : json(body);
   }
 

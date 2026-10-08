@@ -151,3 +151,13 @@ The model is the visitor's choice in their AI app (the helper service uses none)
 - **Opal:** fixed, nothing to choose.
 
 The wording is cautious (single runs, apps change). Claims are limited to what was measured: Claude effort levels and Gemini extended thinking weren't tested, so the advice says to leave effort as is rather than claiming effects. Shown in each landing-page tab and in a README "Choosing a model" section; `test/model-advice.test.js` keeps them present.
+
+## 2026-10-08 — Changes grouped by kind; sold out never affects held tickets
+
+In the cancellation re-run, Opal read the 19 changed listings as "nineteen places … now sold out", and Claude told ticket holders to "check" sold-out tours. Fixes:
+- `/v1/changes` adds `summary` (counts for `canceled_now`, `newly_sold_out`, `back_on_sale`, `times_changed`, `other_updates`, `added`, `removed`), `groups` (the sites in each), and a `note` that sold out doesn't affect tickets already held.
+- `format=text` lists each kind under its own heading and count, with no overall "N changed" total, and ends with the note.
+- The connector reminder on every tool reply adds "Sold out never affects a ticket they hold."
+- `api.md` says never to report the total of changed listings as sell-outs.
+
+The raw `changes` diff stays for compatibility.

@@ -80,10 +80,17 @@ export function searchText(b) {
 
 export function changesText(b) {
   const c = b.changes;
+  const g = b.groups;
   const lines = [...header('OHNY changes', b), `CANCELED NOW: ${b.canceled_now.length}${b.canceled_now.length ? '' : ' (nothing is canceled)'}`];
   for (const x of b.canceled_now) lines.push(`- ${x.name} (${x.slug})${x.days.length ? `: ${x.days.join(', ')}` : ''}${x.removed ? ', removed from the lineup' : ''}`);
-  lines.push(`CHANGED SINCE THE SAVED COPY: ${c.added.length} new, ${c.removed.length} removed, ${c.modified.length} changed.`);
-  for (const s of c.added) lines.push(`- NEW: ${s.name} (${s.slug})`);
-  for (const m of c.modified) lines.push(`- ${m.name} (${m.slug}): ${m.changes.map((x) => `${x.field} ${x.from} -> ${x.to}`).join('; ')}`);
+  lines.push('CHANGED SINCE THE SAVED COPY, by kind:');
+  const section = (title, list, fmt) => { if (list.length) lines.push(`${title} (${list.length}):`, ...list.map(fmt)); };
+  section('NEW SITES', c.added, (s) => `- ${s.name} (${s.slug})`);
+  section('NEWLY SOLD OUT', g.newly_sold_out, (s) => `- ${s.name} (${s.slug})`);
+  section('BACK ON SALE', g.back_on_sale, (s) => `- ${s.name} (${s.slug})`);
+  section('TIMES CHANGED', g.times_changed, (s) => `- ${s.name} (${s.slug}): ${s.changes.filter((x) => x.field === 'times').map((x) => `${x.from} -> ${x.to}`).join('; ')}`);
+  section('OTHER UPDATES', g.other_updates, (s) => `- ${s.name} (${s.slug}): ${s.changes.filter((x) => x.field !== 'times' && !/sold out|cancel/i.test(`${x.from} ${x.to}`)).map((x) => `${x.field} ${x.from} -> ${x.to}`).join('; ')}`);
+  if (!c.added.length && !c.modified.length && !c.removed.length) lines.push('Nothing else changed.');
+  lines.push(b.note);
   return `${lines.join('\n')}\n`;
 }

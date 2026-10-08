@@ -99,3 +99,26 @@ export function canceledNow(sites, changes) {
     ...(s.removed ? { removed: true } : {}),
   })).sort((a, b) => a.name.localeCompare(b.name));
 }
+
+const statusTo = (m, re) => m.changes.some((c) => c.field === 'status' && re.test(c.to));
+const statusFrom = (m, re) => m.changes.some((c) => c.field === 'status' && re.test(c.from));
+
+/** Split the since-snapshot diff by kind, so "19 changed" can't be read as "19 sold out". */
+export function groupChanges(changes, canceled) {
+  const m = changes.modified;
+  const groups = {
+    newly_sold_out: m.filter((x) => statusTo(x, /sold out/i)),
+    back_on_sale: m.filter((x) => statusFrom(x, /sold out/i) && !statusTo(x, /sold out|cancel/i)),
+    times_changed: m.filter((x) => x.changes.some((c) => c.field === 'times')),
+    other_updates: m.filter((x) => x.changes.some((c) => c.field === 'address' || c.field === 'name'
+      || (c.field === 'status' && !/sold out|cancel/i.test(`${c.from} ${c.to}`)))),
+  };
+  const summary = {
+    canceled_now: canceled.length,
+    ...Object.fromEntries(Object.entries(groups).map(([k, v]) => [k, v.length])),
+    added: changes.added.length, removed: changes.removed.length,
+  };
+  return { groups, summary };
+}
+
+export const HELD_TICKET_NOTE = "Sold out doesn't affect tickets already held: someone who holds a ticket for a sold-out tour still goes.";
