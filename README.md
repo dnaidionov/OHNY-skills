@@ -153,6 +153,17 @@ It checks the web page, live freshness from ohny.org, nearby, search, site detai
 | **ChatGPT mobile** | **Not verified for OHNY.** Check every advertised plan using a real phone. | Phone-only setup is required. No supported installation is ready yet; see [the mobile guide](docs/chatgpt-mobile.md). Local skill uploads and developer setup are not visitor instructions. |
 | **Gemini** | **Yes, with limits:** custom apps need age 18+, the US, a personal Google account, English and Keep Activity on. A paid plan wasn't needed in Google's help page; only a Pro account was tested. | Add the connector as a custom app on gemini.google.com (see above). Elsewhere, use the pasted guide (one chat, may not reach live information) or the Opal app. |
 
+## Choosing a model
+
+The model is the visitor's choice in their AI app. The helper service itself doesn't use an AI model: it looks up OHNY's data and works out times and routes in about 0.2 s. These tips come from single timed runs on gemini.google.com, claude.ai and chatgpt.com on 2026-10-07/08 (`docs/test-results.md`). The apps change often, so treat them as guidance, not guarantees.
+
+| App | Recommended | What the alternatives did |
+|---|---|---|
+| Claude | **Sonnet 5.5** (default), effort as is. If it answers from a web search instead of Ask OHNY, use **Opus 5.5**. | Opus 5.5 used Ask OHNY on the questions where Sonnet 5.5 searched the web, at about the same speed (13 s vs 7-14 s; day plan 45 s vs 40 s). Haiku 5.5 was a little faster but searched the web for a site question, matched a ticket to the wrong site, and gave wrong walking directions. Effort levels weren't compared. Setting Ask OHNY's tools to "Always allow" matters more than the model: it cut the day plan from about 82 s to 40 s. |
+| ChatGPT | **Instant** thinking effort (GPT-6) | Medium effort: day plan 78 s instead of 19 s, with the same facts and a little more detail. More effort costs time and doesn't make the answer more accurate. |
+| Gemini | **3.8 Flash** (default) | 3.1 Pro: same answer to "what's open near me", 308 s instead of 45 s. 3.5 Flash-Lite: day plan 146 s instead of 52 s, so not faster either. Gemini's delays come from its connector handling, not the model. Extended thinking wasn't tested. |
+| Opal app | Nothing to choose | The app's step is fixed to Opal's "Agent" setting (it uses Gemini Flash). Other models in Opal can't call the helper service. |
+
 ## The connector's season
 
 The connector retires itself on a schedule (New York time), so a forgotten connector doesn't clutter unrelated chats:

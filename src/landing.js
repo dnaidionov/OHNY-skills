@@ -175,6 +175,7 @@ export function landingHtml() {
   <p style="color:var(--muted);font-size:.95rem">It reads OHNY's public lineup live, so cancellations and last-minute changes show up. The guide service processes your requests without keeping a visitor profile; whatever your assistant remembers stays in your own AI account.</p>
 
   <h2 id="start">Get started</h2>
+  <p>Your AI app's model does the talking; the helper service doesn't use an AI model, it only looks up OHNY's data. The model tips below come from our own timed tests in October 2026 and may change as the apps change.</p>
   <div class="tabs" id="tabs">
     <div class="tablist" role="tablist" aria-label="Choose your AI app">
       <button class="tab" role="tab" id="tab-claude" aria-controls="panel-claude" aria-selected="true" type="button">Claude</button>
@@ -189,6 +190,7 @@ export function landingHtml() {
       <a class="btn" href="${esc(LINKS.claude)}" target="_blank" rel="noopener noreferrer">${CLAUDE_ICON_SVG}Add to Claude</a>
       <p>Then start a chat and say <em>"ohny, what's open near me?"</em> The first time, Claude asks to approve each tool: choose <strong>Always allow</strong>, since none of them change anything.</p>
       <p><strong>Location (phone, optional):</strong> the first time you ask what's open near you, Claude may ask to use your location. Allow it and it won't need to ask where you are. Change it later in Android Settings, Apps, Claude, Permissions, or iPhone Settings, Claude, Location. Not available on Team or Enterprise plans, or on claude.ai and the desktop app: there, name a cross street or landmark.</p>
+      <p><strong>Which model?</strong> Sonnet 5.5 (the default) is fine and quick. If it answers from a web search instead of Ask OHNY, or gets the festival date wrong, switch to Opus 5.5: in our tests it used Ask OHNY every time at about the same speed. Avoid Haiku: it's a little faster but mixed up sites and dates. Leave the effort setting as it is.</p>
       <p><strong>Prefer a skill?</strong> <span class="tag">paid plans</span> Download the zip (always the latest release) and add it in Claude under Customize, Skills.</p>
       <a class="btn ghost" href="${esc(LINKS.zip)}" rel="noopener">Download ohny-skill.zip</a>
     </section>
@@ -199,6 +201,7 @@ export function landingHtml() {
       <p><strong>One-chat trial:</strong> open a new chat in the ChatGPT app on your phone and paste this message. It needs access to web pages.</p>
       <code class="copybox" id="paste-chatgpt">${esc(PASTE_LINE)}</code>
       <button class="btn ghost" type="button" data-copy="paste-chatgpt">Copy trial message</button>
+      <p><strong>Which model?</strong> Keep thinking effort on Instant. More thinking made a day plan about four times slower (19 s to 78 s) with the same facts, just a little more detail.</p>
       <p>This only applies to the current chat; it does not install OHNY. If ChatGPT cannot open the guide or check live information, current hours and availability cannot be confirmed.</p>
     </section>
 
@@ -216,6 +219,7 @@ export function landingHtml() {
       </ol>
       <a class="btn" href="${esc(LINKS.geminiApps)}" target="_blank" rel="noopener noreferrer">Open Gemini Connected Apps</a>
       <p>Then start a chat and say <em>"ohny, what's open near me?"</em></p>
+      <p><strong>Which model?</strong> Keep 3.8 Flash (the default). 3.1 Pro gave the same answer but took about five minutes instead of under one, and 3.5 Flash-Lite was slower too, not faster.</p>
       <p>Google allows custom apps for people 18 or older in the US, signed in with a personal Google account (not work or school), with Gemini in English and Keep Activity on. Otherwise, paste this into a new chat instead; it works for that chat only and may not reach live information:</p>
       <code class="copybox" id="paste-gemini">${esc(PASTE_LINE)}</code>
       <button class="btn ghost" type="button" data-copy="paste-gemini">Copy</button>

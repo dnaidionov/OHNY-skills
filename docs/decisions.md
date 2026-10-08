@@ -141,3 +141,13 @@ Gemini now accepts remote MCP servers as "custom apps" (Settings, Connected Apps
 The cross-assistant test found that "anything canceled?" got "nothing canceled" from Gemini, Claude and Opal while two sites were canceled (Monumental Labs, Murry Bergtraum). `/v1/changes` only diffed live data against the snapshot, and both sites were already canceled when the snapshot was built. Each site's own record was right; only the changes view missed them.
 
 Fix: `/v1/changes` now leads with `canceled_now`, every currently canceled site (live status `Canceled`, or dropped from the live list), with its days, whether it changed since the snapshot, and `removed` when it vanished. The since-snapshot diff is unchanged. `format=text` for changes starts with "CANCELED NOW: n". `/feed/changes.md` gets a "Canceled now" section. The `ohny_changes` description says it lists all sites canceled now (still under the 8,000-character tool budget), and `api.md` says to answer cancellations from `canceled_now`. Rejected: rebuilding the snapshot. It would hide the two sites from the diff anyway and would only fix today's state. The Opal prompt text changed (the api.md row), but the Opal app works without retyping, because the JSON it fetches now carries `canceled_now`.
+
+## 2026-10-08 — Model and effort advice in the install instructions
+
+The model is the visitor's choice in their AI app (the helper service uses none), so model choice is advice, not configuration. Based on the 2026-10-07/08 timing runs:
+- **Claude:** Sonnet 5.5 (default), with Opus 5.5 as the fix when it skips Ask OHNY (Opus used the tools where Sonnet searched the web, at similar speed). Avoid Haiku 5.5, which made factual mistakes. "Always allow" is the bigger speed win.
+- **ChatGPT:** Instant (higher effort was about 4× slower with the same facts).
+- **Gemini:** 3.8 Flash (Pro about 5-7× slower with the same answer; Flash-Lite not faster).
+- **Opal:** fixed, nothing to choose.
+
+The wording is cautious (single runs, apps change). Claims are limited to what was measured: Claude effort levels and Gemini extended thinking weren't tested, so the advice says to leave effort as is rather than claiming effects. Shown in each landing-page tab and in a README "Choosing a model" section; `test/model-advice.test.js` keeps them present.
