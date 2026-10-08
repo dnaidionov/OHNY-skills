@@ -471,3 +471,27 @@ Deployed Worker 57950452-17a9-46b6-a79a-bdaa1e9bcce6. `npm run smoke`: naidionov
 | Opal app (Agent / Flash) | 23.0 s | PASS: both cancellations; "Fourteen other sites, including Bella Abzug Park, just sold out". The earlier "nineteen … sold out" error is gone. |
 
 ChatGPT and Gemini not re-run (both passed before this change). Phones: NOT RUN.
+
+## 2026-10-08 — Full re-run: 7 questions × 4 assistants (after the changes fixes)
+
+Worker 57950452 (live). Fresh chat per question, web apps in the Claude desktop built-in browser, default models: Claude Sonnet 5.5 (Ask OHNY "Always allow"), ChatGPT GPT-6 Instant, Gemini 3.8 Flash (custom app), Opal app (Agent / Flash, owner's draft).
+
+| Q | Claude | ChatGPT | Gemini | Opal |
+|---|---|---|---|---|
+| Q1 Nearby | 10.7 s PASS | 15.3 s PASS | 11.2 s PASS | 29.5 s PASS |
+| Q2 Site | 11.0 s PASS (now uses Ask OHNY; notes Oct 10 regular hours differ) | 10.8 s PASS (+ NPS regular hours) | 13.3 s PASS | 20.5 s PASS; chat ended (no reply box) |
+| Q3 Plan | 28.6 s PASS (approval prompt excluded, see note) | 19.2 s PASS | 50.9 s PASS | 38.0 s PASS, with leave-by |
+| Q4 Directions | 12.8 s PASS (Ask OHNY) | 7.3 s PASS (no OHNY hours) | 8.1 s PARTIAL (suggests the M4 bus, which doesn't fit; no OHNY hours) | 30.0 s PARTIAL (link only; chat ended) |
+| Q5 Check-in | 5.9 s PASS | 5.4 s PASS | 8.1 s PASS | 25.0 s PASS |
+| Q6 Passport | 10.3 s PASS (Claude asked to fetch ohny.org; Allow once) | 7.3 s PASS | 8.1 s PASS (omits concierge) | **266 s FAIL**: "a ticket … sites don't accept it" (3rd run in a row) |
+| Q7 Changes | 8.2 s PASS | 10.7 s PASS (14 sold out, held tickets valid) | 11.1 s PASS | 24.5 s PASS |
+
+Medians: Claude 10.7 s, ChatGPT 10.7 s, Gemini 11.1 s, Opal 29.5 s (excl. Q6).
+
+Notes:
+- **Regrade:** Gemini's "3 sold out" in Q1 (this run and 2026-10-07) is correct. Three sold-out tours are within the walk, and `in_range_breakdown` files one under `not_your_interests` because that filter runs first. Not an error.
+- **Claude permissions:** after the `ohny_changes` description changed, Claude asked again for that one tool ("Always allow" had reset). Changing a tool's description during the festival makes Always-allow visitors re-approve it.
+- **New issue, fixed:** the Passport facts weren't in our guide or the Opal prompt. Opal web-searched for over 4 minutes and answered wrongly, and Claude needed a web-fetch approval. Fix: the checked facts (ohny.org/festival/passport, 2026-10-08) are now in `about.md` (connector guide, standalone) and the Opal prompt; tests in `test/passport-facts.test.js`. The same line was typed into the Opal app's step prompt (draft). Opal Q6 re-run on the draft: **23.5 s PASS** ("you and a guest … over 150 drop-in sites … concierge … doesn't cover ticketed tours"; says "over 150" where OHNY says about 150). The Opal draft is not published.
+- Known, not new: Opal sometimes ends the chat after an answer (Q2, Q4, re-run Q6); Opal and Gemini give no route text for directions.
+
+Phones: NOT RUN.

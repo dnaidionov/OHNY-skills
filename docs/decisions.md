@@ -161,3 +161,9 @@ In the cancellation re-run, Opal read the 19 changed listings as "nineteen place
 - `api.md` says never to report the total of changed listings as sell-outs.
 
 The raw `changes` diff stays for compatibility.
+
+## 2026-10-08 — Passport facts ship with the guide; avoid tool-description churn during the festival
+
+The full re-run showed that "What does the Weekend Passport get me?" had no answer in our materials. Opal searched the web for over 4 minutes and got it wrong (three runs in a row), and Claude stopped to ask permission to fetch ohny.org. The facts checked on ohny.org/festival/passport (2026-10-08) are now in `about.md` and in the Opal prompt, with an instruction to answer from them without searching: you and a guest get expedited entry at about 150 drop-in sites, a concierge, no ticketed tours, tax-deductible and non-refundable. Prices stay a link, because the page doesn't state them. The mailing deadline (Oct 8) is left out because it's past.
+
+Changing a connector tool's description made Claude ask "Always allow" users to approve that tool again. During Oct 16-18, change tool descriptions only for a real fix, and prefer changes to replies or the guide.
