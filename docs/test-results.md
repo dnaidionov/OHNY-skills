@@ -495,3 +495,7 @@ Notes:
 - Known, not new: Opal sometimes ends the chat after an answer (Q2, Q4, re-run Q6); Opal and Gemini give no route text for directions.
 
 Phones: NOT RUN.
+
+## 2026-10-08 — PR #2 merged and deployed
+
+PR dnaidionov/OHNY-skills#2 merged into `main` (d3e6c73); CI `validate` passed, and `npm run package` and the ChatGPT plugin build also passed locally. Deployed Worker 4e511646-ad04-480f-aeea-9907e826b1f8 from the merged tree. `npm run smoke`: naidionov.com 19/19, workers.dev 17/17. Live checks: `ohny_guide` topic "about" contains the Passport facts; `/v1/changes` shows "CANCELED NOW: 2". The snapshot refreshed by main's scheduled job (2026-10-07T22:09Z) means 0 changes since the saved copy, so `canceled_now` is what reports the two cancellations. The Opal app's Passport line is in its draft; not published.
