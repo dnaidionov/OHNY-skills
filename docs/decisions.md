@@ -167,3 +167,12 @@ The raw `changes` diff stays for compatibility.
 The full re-run showed that "What does the Weekend Passport get me?" had no answer in our materials. Opal searched the web for over 4 minutes and got it wrong (three runs in a row), and Claude stopped to ask permission to fetch ohny.org. The facts checked on ohny.org/festival/passport (2026-10-08) are now in `about.md` and in the Opal prompt, with an instruction to answer from them without searching: you and a guest get expedited entry at about 150 drop-in sites, a concierge, no ticketed tours, tax-deductible and non-refundable. Prices stay a link, because the page doesn't state them. The mailing deadline (Oct 8) is left out because it's past.
 
 Changing a connector tool's description made Claude ask "Always allow" users to approve that tool again. During Oct 16-18, change tool descriptions only for a real fix, and prefer changes to replies or the guide.
+
+## 2026-10-08 — The Opal app is an experiment, not a supported platform
+
+Owner's decision: deprioritize the Google Opal app. It is an experiment, not a main platform, and it isn't in the visitor manual. The supported routes are Claude, ChatGPT and Gemini (connector or custom app). From now on:
+- Don't spend effort on Opal-specific fixes or speed work, or include it by default in cross-assistant test runs.
+- Keep `npm run build:opal` passing so the prompt doesn't break, but don't retype or republish the Opal app unless the owner asks.
+- Mention it only as an experimental fallback.
+
+Context: Opal is being wound down (its banner: "graduating out of Labs on November 17, 2026"). On 2026-10-08 the editor's Publish button was disabled ("You can't publish your Opal because it isn't shared yet") although the Drive file is shared with anyone with the link. So the Passport-facts edit stays in the draft, and the Oct 7 published version stays live.
