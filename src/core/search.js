@@ -1,6 +1,6 @@
 import { statusAt, statusLine, isCanceled } from './status.js';
 import { haversineKm, walkMinutes, mapsLinks } from './geo.js';
-import { interpretInterests } from './tags.js';
+import { interpretInterests, hasWord } from './tags.js';
 import { policyFlags } from './policy.js';
 import { nextTicket, ticketLeg, describeTickets, clock, NEARBY_MIN_STAY_MIN, TICKET_BUFFER_MIN } from './tickets.js';
 
@@ -36,7 +36,7 @@ function interestScore(site, interest) {
   if (!interest.tags.length && !interest.words.length) return 0;
   const tagHits = interest.tags.filter((t) => site.tags?.includes(t)).length;
   const hay = `${site.name} ${site.short ?? ''} ${site.description ?? ''} ${site.partner ?? ''}`.toLowerCase();
-  const wordHits = interest.words.filter((w) => hay.includes(w)).length;
+  const wordHits = interest.words.filter((w) => hasWord(hay, w)).length;
   return tagHits * 3 + wordHits;
 }
 
@@ -159,10 +159,12 @@ export function nearby(sites, o) {
     bump('open_on_arrival');
     const sug = suggestedSet.has(site.slug);
     const match = Math.min(score, 6) / 6;
-    const prox = 1 - Math.min(km / refKm, 1);
+    // Closeness fades smoothly (half at refKm) instead of hitting zero there, so a 20-minute walk still
+    // beats a 70-minute one; closeness outweighs how many interests match (2026-10-07 decision).
+    const prox = 1 / (1 + km / refKm);
     const kid = childAge != null && kidFriendly(site) ? 1 : 0;
     const rank = hasInterests
-      ? 0.45 * match + 0.35 * prox + 0.2 * Number(sug) + 0.1 * kid
+      ? 0.25 * match + 0.55 * prox + 0.2 * Number(sug) + 0.1 * kid
       : 0.75 * prox + 0.25 * Number(sug) + 0.1 * kid;
     rows.push({ site, st, km, walk, rank, sug, fit, score, kid, leg });
   }

@@ -10,6 +10,7 @@ export const LINKS = {
   mcp: 'https://naidionov.com/ohny/skills/mcp',
   claude: 'https://claude.ai/customize/connectors?modal=add-custom-connector&connectorName=Ask%20OHNY&connectorUrl=https%3A%2F%2Fnaidionov.com%2Fohny%2Fskills%2Fmcp',
   standalone: 'https://naidionov.com/ohny/skills/guide',
+  geminiApps: 'https://gemini.google.com/apps',
 };
 
 export const PASTE_LINE = `Use ${LINKS.standalone} as your guide to Open House New York Weekend for this chat. Then ask me what I'd like to do.`;
@@ -174,6 +175,7 @@ export function landingHtml() {
   <p style="color:var(--muted);font-size:.95rem">It reads OHNY's public lineup live, so cancellations and last-minute changes show up. The guide service processes your requests without keeping a visitor profile; whatever your assistant remembers stays in your own AI account.</p>
 
   <h2 id="start">Get started</h2>
+  <p>Your AI app's model does the talking; the helper service doesn't use an AI model, it only looks up OHNY's data. The model tips below come from our own timed tests in October 2026 and may change as the apps change.</p>
   <div class="tabs" id="tabs">
     <div class="tablist" role="tablist" aria-label="Choose your AI app">
       <button class="tab" role="tab" id="tab-claude" aria-controls="panel-claude" aria-selected="true" type="button">Claude</button>
@@ -188,6 +190,7 @@ export function landingHtml() {
       <a class="btn" href="${esc(LINKS.claude)}" target="_blank" rel="noopener noreferrer">${CLAUDE_ICON_SVG}Add to Claude</a>
       <p>Then start a chat and say <em>"ohny, what's open near me?"</em> The first time, Claude asks to approve each tool: choose <strong>Always allow</strong>, since none of them change anything.</p>
       <p><strong>Location (phone, optional):</strong> the first time you ask what's open near you, Claude may ask to use your location. Allow it and it won't need to ask where you are. Change it later in Android Settings, Apps, Claude, Permissions, or iPhone Settings, Claude, Location. Not available on Team or Enterprise plans, or on claude.ai and the desktop app: there, name a cross street or landmark.</p>
+      <p><strong>Which model?</strong> Sonnet 5.5 (the default) is fine and quick. If it answers from a web search instead of Ask OHNY, or gets the festival date wrong, switch to Opus 5.5: in our tests it used Ask OHNY every time at about the same speed. Avoid Haiku: it's a little faster but mixed up sites and dates. Leave the effort setting as it is.</p>
       <p><strong>Prefer a skill?</strong> <span class="tag">paid plans</span> Download the zip (always the latest release) and add it in Claude under Customize, Skills.</p>
       <a class="btn ghost" href="${esc(LINKS.zip)}" rel="noopener">Download ohny-skill.zip</a>
     </section>
@@ -198,15 +201,28 @@ export function landingHtml() {
       <p><strong>One-chat trial:</strong> open a new chat in the ChatGPT app on your phone and paste this message. It needs access to web pages.</p>
       <code class="copybox" id="paste-chatgpt">${esc(PASTE_LINE)}</code>
       <button class="btn ghost" type="button" data-copy="paste-chatgpt">Copy trial message</button>
+      <p><strong>Which model?</strong> Keep thinking effort on Instant. More thinking made a day plan about four times slower (19 s to 78 s) with the same facts, just a little more detail.</p>
       <p>This only applies to the current chat; it does not install OHNY. If ChatGPT cannot open the guide or check live information, current hours and availability cannot be confirmed.</p>
     </section>
 
     <section class="card panel" role="tabpanel" id="panel-gemini" aria-labelledby="tab-gemini" hidden>
-      <h3>Gemini</h3>
-      <p>Gemini can't add connectors like this yet, so use the no-install route. Paste this into a new chat. It works for that chat only.</p>
+      <h3>Gemini <span class="tag">US, 18+</span></h3>
+      <p>Add it once on gemini.google.com in a browser (a computer is easiest); it then works in the Gemini phone app too.</p>
+      <ol>
+        <li>Copy this address:</li>
+      </ol>
+      <code class="copybox" id="mcp-gemini">${esc(LINKS.mcp)}</code>
+      <button class="btn ghost" type="button" data-copy="mcp-gemini">Copy address</button>
+      <ol start="2">
+        <li>Open Gemini's Connected Apps page, scroll to <strong>Custom apps</strong> and choose <strong>Add a custom app</strong>.</li>
+        <li>Paste the address, then confirm. No sign-in is needed.</li>
+      </ol>
+      <a class="btn" href="${esc(LINKS.geminiApps)}" target="_blank" rel="noopener noreferrer">Open Gemini Connected Apps</a>
+      <p>Then start a chat and say <em>"ohny, what's open near me?"</em></p>
+      <p><strong>Which model?</strong> Keep 3.8 Flash (the default). 3.1 Pro gave the same answer but took about five minutes instead of under one, and 3.5 Flash-Lite was slower too, not faster.</p>
+      <p>Google allows custom apps for people 18 or older in the US, signed in with a personal Google account (not work or school), with Gemini in English and Keep Activity on. Otherwise, paste this into a new chat instead; it works for that chat only and may not reach live information:</p>
       <code class="copybox" id="paste-gemini">${esc(PASTE_LINE)}</code>
       <button class="btn ghost" type="button" data-copy="paste-gemini">Copy</button>
-      <p>It needs Gemini's web browsing to be on, and live "what's open now" checks may be limited.</p>
     </section>
 
     <section class="card panel" role="tabpanel" id="panel-others" aria-labelledby="tab-others" hidden>
@@ -280,6 +296,7 @@ export function landingHtml() {
       <li>"We have four hours Sunday afternoon with a six-year-old. What should we do?"</li>
       <li>"I already have tickets for 2 PM at the Refinery. Build a day around that."</li>
       <li>"We have a 4 PM tour at the Morgan Library on Saturday. What can we fit in before it?"</li>
+      <li>"I have tickets for the Vertical Tour at St. John the Divine on Saturday afternoon. Plan my Saturday around it."</li>
       <li>"We're running late. Change the plan."</li>
     </ul>
     <p class="says">What it takes into account</p>
@@ -301,6 +318,7 @@ export function landingHtml() {
     <ul class="uses">
       <li><strong>Tell it which site, the date and start time, and how many of you.</strong> You can mention them at any point, in a plan or in a quick "what's near me" question.</li>
       <li><strong>It asks for the address or meeting point on your ticket.</strong> OHNY doesn't publish street addresses for ticketed sites, so without it, travel times are only rough.</li>
+      <li><strong>It plans around your ticket in one step.</strong> Tell it the site (the name is enough), the time and where you start, and it confirms the session, then suggests what fits before and after, when to leave, and the order, already checked.</li>
       <li><strong>It checks the ticket against OHNY's schedule.</strong> If the time you gave doesn't match a real session, or the site has been canceled, it tells you first, shows the listed times and asks to see your ticket before planning around it.</li>
       <li><strong>Your tour is an immovable block.</strong> The plan keeps the whole session, has you arrive 15 minutes early, and never puts two things in the same slot.</li>
       <li><strong>It tells you when to leave</strong> for each ticket ("to be at the tour by 3:45, leave here by 2:57"), and shows how long you have at each stop before you need to head off.</li>
@@ -426,7 +444,7 @@ export function landingHtml() {
   </details>
   <details>
     <summary>It's not working in ChatGPT or Gemini</summary>
-    <p>ChatGPT mobile setup is still being verified. You can try the one-chat message under <a href="#chatgpt" data-tab="chatgpt">ChatGPT</a> if your account can open web pages. Gemini uses a pasted message too. If the guide or live information cannot be read, neither trial can confirm what is open now.</p>
+    <p>ChatGPT mobile setup is still being verified. You can try the one-chat message under <a href="#chatgpt" data-tab="chatgpt">ChatGPT</a> if your account can open web pages. In Gemini, check that Ask OHNY is switched on under Connected Apps (Custom apps) on gemini.google.com, and start your message with "ohny". If the guide or live information cannot be read, a pasted trial can't confirm what is open now.</p>
   </details>
   <details>
     <summary>It said something wrong, or something else isn't working</summary>

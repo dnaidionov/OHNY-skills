@@ -247,24 +247,51 @@ def maps_links(site):
 
 
 # ---------------------------------------------------------------- interests, suitability
+def singular(word):
+    """Rough English singular, as in src/core/tags.js: gardens/garden, galleries/gallery; leaves glass, campus, bus."""
+    w = word.lower()
+    if len(w) <= 3 or re.search(r"(ss|us|is)$", w):
+        return w
+    if w.endswith("ies") and len(w) > 4:
+        return w[:-3] + "y"
+    if re.search(r"(ches|shes|sses|xes|zes)$", w):
+        return w[:-2]
+    if w.endswith("s"):
+        return w[:-1]
+    return w
+
+
+def _norm(phrase):
+    return " ".join(singular(t) for t in re.split(r"[^a-z0-9]+", phrase.lower()) if t)
+
+
 def interpret_interests(text, aliases):
     items = [p.strip().lower() for p in re.split(r"[,;]|\sand\s", str(text or ""), flags=re.I) if p.strip()]
+    norm_aliases = [(tag, [_norm(a) for a in names]) for tag, names in aliases.items()]
+    alias_words = {a for _, names in norm_aliases for a in names if " " not in a}
     tags, words = [], []
     for phrase in items:
-        for tag, names in aliases.items():
-            if any(phrase == a or a in phrase for a in names) and tag not in tags:
+        p = " %s " % _norm(phrase)
+        for tag, names in norm_aliases:
+            if any((" %s " % a) in p for a in names) and tag not in tags:
                 tags.append(tag)
         for w in phrase.split():
-            if len(w) > 3 and w not in words:
-                words.append(w)
+            stem = singular(w)
+            if len(w) > 3 and stem not in alias_words and stem not in words:
+                words.append(stem)
     return tags, words
+
+
+def has_word(text, stem):
+    lower = text.lower()
+    return stem in lower or any(t and singular(t) == stem for t in re.split(r"[^a-z0-9]+", lower))
 
 
 def interest_score(site, tags, words):
     if not tags and not words:
         return 0
     hay = ("%s %s %s" % (site.get("name", ""), site.get("short") or "", site.get("partner") or "")).lower()
-    return sum(1 for t in tags if t in site.get("tags", [])) * 3 + sum(1 for w in words if w in hay)
+    return sum(1 for t in tags if t in site.get("tags", [])) * 3 + sum(1 for w in words if has_word(hay, w))
 
 
 def suitability(site, child_age, wheelchair):
@@ -398,9 +425,9 @@ def nearby(sites, a, aliases, now_abs):
         bump("open_on_arrival")
         sug = s["slug"] in suggested
         match = min(score, 6) / 6.0
-        prox = 1 - min(km / ref_km, 1)
+        prox = 1 / (1 + km / ref_km)  # fades smoothly, as in src/core/search.js
         kid = 1 if (a.child_age is not None and (s.get("family") or "kids" in s.get("tags", []))) else 0
-        rank = (0.45 * match + 0.35 * prox + 0.2 * sug + 0.1 * kid) if has_interests else (0.75 * prox + 0.25 * sug + 0.1 * kid)
+        rank = (0.25 * match + 0.55 * prox + 0.2 * sug + 0.1 * kid) if has_interests else (0.75 * prox + 0.25 * sug + 0.1 * kid)
         rows.append({"s": s, "st": st, "km": km, "walk": walk, "rank": rank, "sug": sug, "flags": flags, "kid": kid})
     rows.sort(key=lambda r: (-r["rank"], r["km"]))
     skipped.sort(key=lambda r: r[0])

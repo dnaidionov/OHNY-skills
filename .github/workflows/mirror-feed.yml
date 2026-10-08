@@ -1,0 +1,44 @@
+name: Mirror Gemini feed
+
+# The Gemini app can read a public gist but not our own hosts, so copy the Worker's live markdown feed
+# into a gist every 30 minutes around the festival. Needs a repository secret GIST_TOKEN: a GitHub
+# personal access token with only the "gist" scope. Fails visibly (and leaves the gist alone) if the feed is down.
+on:
+  schedule:
+    - cron: '*/30 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: mirror-feed
+  cancel-in-progress: false
+
+env:
+  GIST_ID: 9a3ab441d37275bd105bb349ce87c697
+
+jobs:
+  mirror:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Only run around the festival (Oct 1-20, 2026), or when started by hand
+        id: window
+        run: |
+          today=$(date -u +%F)
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] || { [ "$today" \> "2026-09-30" ] && [ "$today" \< "2026-10-21" ]; }; then
+            echo "active=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "active=false" >> "$GITHUB_OUTPUT"
+          fi
+      - uses: actions/checkout@v4
+        if: steps.window.outputs.active == 'true'
+      - uses: actions/setup-node@v4
+        if: steps.window.outputs.active == 'true'
+        with:
+          node-version: 24
+      - name: Copy the feed into the gist
+        if: steps.window.outputs.active == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GIST_TOKEN }}
+        run: node scripts/mirror-feed.mjs

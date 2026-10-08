@@ -134,6 +134,10 @@ export async function runSmoke(base, opts = {}) {
     must(!nearby.results.some((c) => c.slug === tour.slug), 'the ticket site itself was suggested');
     const bad = json(await http(`/v1/plan/check?stops=${encodeURIComponent(`${tour.slug}@${session.date}T03:07`)}&held=${tour.slug}`));
     must(bad.ok === false && bad.stops[0].issues.some((i) => i.code === 'no_session_at_that_time'), 'plan check missed a ticket time that does not exist');
+    const plan = json(await http(`/v1/plan/day?ticket=${encodeURIComponent(`${tour.slug}@${start}`)}&from=40.7308,-73.9973&now=${session.date}T${hhmm(Math.max(0, session.start - 180))}`));
+    must(plan.ok === true && plan.tickets[0].ticket_ok === true && Array.isArray(plan.itinerary), 'plan/day did not confirm a real session');
+    const noPlan = json(await http(`/v1/plan/day?ticket=${encodeURIComponent(`${tour.slug}@${session.date}T03:07`)}`));
+    must(noPlan.ok === false && !noPlan.itinerary, 'plan/day planned around a ticket time that does not exist');
     return `${site.name}: ${start}`;
   });
 
@@ -162,8 +166,9 @@ export async function runSmoke(base, opts = {}) {
     if (ctx.phase === 'ended') { must(tools.length === 0, `${tools.length} tools after the season`); return 'no tools (season ended)'; }
     if (ctx.phase === 'after') must(tools.map((t) => t.name).join() === 'ohny_search,ohny_site,ohny_guide', `after-festival tools: ${tools.map((t) => t.name)}`);
     else {
-      must(tools.length === 6, `${tools.length} tools`);
+      must(tools.length === 7, `${tools.length} tools`);
       must(tools.some((t) => t.name === 'ohny_check_plan'), 'plan checker missing');
+      must(tools.some((t) => t.name === 'ohny_plan_day'), 'day planner missing');
     }
     must(tools.every((t) => /Only for (the )?Open House New York \(OHNY\)/.test(t.description.slice(0, 140))), 'a tool description is not scoped to OHNY (it could capture unrelated questions)');
     const guide = tools.find((t) => t.name === 'ohny_guide');

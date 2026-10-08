@@ -86,3 +86,412 @@ Source: base commit `0fd7291` plus uncommitted working-tree changes on `codex/sh
 | Final `npm test` | PASS | 114 tests, 0 failures. |
 | Gemini (iOS/Android) reads `https://naidionov.com/ohny/skills/guide` | NOT RUN | The original failure was on the GitHub raw link; the route is not deployed and no phone test has been done. |
 | Deployment and live check of `/guide` | NOT RUN | Local branch only. |
+
+## 2026-10-06 — Gemini markdown feed (`/feed/index.md`, `/feed/changes.md`)
+
+Source: base commit `db0c031` plus uncommitted working-tree changes on `codex/shared-project-setup`. Local macOS, Node 24.
+
+| Check | Result | Evidence and limits |
+|---|---|---|
+| Tests before implementation | Expected failure | `test/feed.test.js`: 9 of 12 failed with 404 (routes, freshness labels, table rows, canceled-first, pipe escaping, changes page, saved-copy label); the 3 negative checks passed vacuously and were strengthened to require a 200 first. |
+| Final `npm test` | PASS | 126 tests, 0 failures. |
+| Real-data size | Measured | `index.md` from the bundled snapshot is about 52 KB before rounding coordinates to 4 decimals. |
+| Gemini (iOS/Android) fetches and uses the feed | NOT RUN | No Gem instructions, install flow or phone test exist yet. |
+| Deployment and live check | NOT RUN | Local branch only. |
+
+## 2026-10-06 — Gemini Gem instructions (draft)
+
+Source: base commit `db0c031` plus uncommitted working-tree changes on `codex/shared-project-setup`. Local macOS, Node 24.
+
+| Check | Result | Evidence and limits |
+|---|---|---|
+| Tests before the file existed | Expected failure | `test/gemini.test.js`: 7 of 7 failed (instructions file missing). |
+| Final `npm test` | PASS | See the run recorded with this change; instructions are 2,488 characters against the 3,900 cap. |
+| Gem instruction field accepts the text; real character limit | NOT RUN | The ~4,000 limit comes from a secondary web source, not the Gemini app. |
+| Gem reads both feed pages, works out "open at arrival", honors held tickets and the check-in rule | NOT RUN | Needs the deployed Worker and a phone test in the Gemini app. |
+| Shared Gem opens on a visitor's phone with no setup step | NOT RUN | Unverified. |
+
+## 2026-10-06 — Gemini feed deployed; Gem created; Gemini web reads (NOT the phone app)
+
+Source: commits `82503fd` and the HEAD fix, deployed to `naidionov.com/ohny/skills*` (Worker version `ab21c8ff`). Gemini in Chrome on desktop, signed in to the owner's Google account (Pro), Flash. **This is desktop web evidence only; the native Gemini phone app was not driven, so every phone check below is NOT RUN.**
+
+| Check | Result | Evidence and limits |
+|---|---|---|
+| Production feed | PASS | `/feed/changes.md` and `/feed/index.md` return 200, `text/markdown`, 49.9 KB index labeled "Live from ohny.org"; the origin answers 200 to curl and to Googlebot/Google-Extended/GoogleOther user agents. |
+| Gem "Ask OHNY (unofficial)" created and saved (private) | PASS | Instruction field accepted the full 2.5 KB text with no length error (the real limit is still unconfirmed). |
+| Gem scenario 1: "what's open near Grand Central, architecture, Sat Oct 17 2 PM" | FAIL | The Gem said it could not read the live feed pages, then listed three places with hours and ratings that look like Google Maps data, not the OHNY lineup. It did give the check-in link and the unofficial line. The instructions then lacked a rule against recommending when the feed is unreadable; fixed in the repo (test first), applied to the saved Gem the same day (reloaded the editor and confirmed the new text persisted; the changed behavior itself was not re-tested). |
+| Plain Gemini reads `naidionov.com/ohny/skills/feed/changes.md` | FAIL | "I wasn't able to access the website you shared." |
+| Same page after adding HEAD support (deployed) | FAIL | Same message. HEAD was not the cause. |
+| Plain Gemini reads `naidionov.com/ohny/skills/guide` (text/plain) | FAIL | Not a content-type problem. |
+| Plain Gemini reads the feed on `ohny-skills.dnaidionov.workers.dev` | FAIL | Not specific to the custom domain. |
+| Plain Gemini reads `https://naidionov.com/` (the main Next.js site, not the Worker) | FAIL | Not specific to the Worker. |
+| Control: `example.com` and `developers.cloudflare.com/workers/` | PASS | Gemini's reader works for large, well-known sites, including one behind Cloudflare. |
+| Control: `github.com/dnaidionov/OHNY-skills` | FAIL | Same as the earlier raw-GitHub report. |
+| Gemini phone app reads the feed / Gem works on iOS or Android | NOT RUN | Phone app not driven. |
+| Shared Gem opens on a visitor's phone with no setup | NOT RUN | Not tried. |
+
+Conclusion for now: Gemini's reader in this account reads well-known sites but not any of the project's hosts (two domains and GitHub), regardless of content type or HEAD support. The cause is not established. Candidates, none confirmed: the reader only serves pages it already has indexed or cached; a zone or account bot setting at Cloudflare; robots rules. The feed approach is therefore **not working** as designed, and the Gem cannot yet get OHNY data.
+
+## 2026-10-06 — Gem re-test after the "don't recommend when the feed is unreadable" rule
+
+Same setup as the earlier Gemini web run (desktop Chrome, Flash, Gem "Ask OHNY (unofficial)" with the updated instructions). Phone app not driven.
+
+| Check | Result | Evidence and limits |
+|---|---|---|
+| Scenario 1 again: "what's open near Grand Central, architecture, Sat Oct 17 2 PM, on foot" | PASS for the safety rule, still no OHNY data | The Gem said it is unofficial, said it could not access `changes.md` and `index.md`, declined to look up or recommend sites, hours or ticket status, and pointed to ohny.org/festival/lineup. It did not use Google Maps data this time (the earlier run did). |
+| Minor wording | Note | It volunteered the check-in link unasked ("To self-check in..."), which the instructions do not call for. Not a rule violation; consider tightening. |
+| Whether the Gem can get live OHNY data | Still FAIL | Gemini's reader still cannot read the feed (see the earlier entry). One run; model output varies. |
+
+## 2026-10-06 — Format check: JSON endpoint in Gemini web
+
+Plain Gemini (desktop web, Flash) asked to read `https://naidionov.com/ohny/skills/v1/meta` (JSON) and report `total_sites`: **FAIL**. The conversation was titled "Failed Website Data Retrieval". Together with the earlier markdown, plain-text and HTML failures, no format of ours has been readable; the block appears to be at the host level. Not yet tried: the same content on a different host (would need publishing it somewhere public, which needs the owner's go-ahead). Phone app not driven.
+
+## 2026-10-06 — Same feed content on a different host: gist read test
+
+The owner pasted into a plain Gemini chat (their own run, not driven by me) a request to read the public gist `https://gist.github.com/dnaidionov/9a3ab441d37275bd105bb349ce87c697` (a copy of `/feed/changes.md`) and give its first heading. Gemini answered "OHNY Weekend 2026: what changed": **PASS**. Limits: this was the gist page, not the raw-file URL; only `changes.md` (1.7 KB), not the 50 KB `index.md`; desktop or unspecified client, not confirmed on the phone app; one run.
+
+Conclusion: the feed's content and markdown format are readable by Gemini. The earlier failures were specific to naidionov.com and the workers.dev address (reason still unknown). The public gist is a temporary test artifact and is not kept up to date.
+
+## 2026-10-06 — Gist mirror script and workflow
+
+Source: working tree on `codex/shared-project-setup`. Local macOS, Node 24.
+
+| Check | Result | Evidence and limits |
+|---|---|---|
+| Tests before implementation | Expected failure | `test/mirror-feed.test.js` failed to load (`scripts/mirror-feed.mjs` missing). |
+| Final `npm test` | PASS | 143 tests, 0 failures (8 new: copy, skip when only as-of differs, partial update, fetch failure, error page, missing label, saved-copy label, workflow contents). |
+| Script run against the real gist with the owner's local `gh` login | PASS | Two runs: "Updated: none", since only the as-of time differed. A real content change was only checked by the offline tests. |
+| Scheduled workflow runs on GitHub | NOT RUN | Needs the `GIST_TOKEN` secret and a merge to `main`. |
+| Gemini reads the 50 KB `index.md` on the gist, and the raw URLs | NOT RUN | `index.md` was added to the gist; my own Gemini test was blocked by the permission check, so the owner is asked to run it. |
+
+## 2026-10-06 — Gist raw URL of the 50 KB index, asked in the Gem
+
+The owner asked Gemini to read `https://gist.githubusercontent.com/dnaidionov/9a3ab441d37275bd105bb349ce87c697/raw/ohny-feed-index.md` and count the canceled sites (expected 2). The reply opened "I'm an unofficial guide and not affiliated with Open House New York", so it came from the **Gem**, not a plain chat. Result: **FAIL**: "I wasn't able to access the website you shared directly." The Gem followed its no-data rule (no sites listed, pointed to ohny.org/festival/lineup).
+
+Not established: whether the gist **page** URL works for the 50 KB file (the earlier pass was the page URL, 1.7 KB, in a plain chat); whether a plain chat can read the raw URL; whether a Gem fetches differently from a plain chat. The page-URL half of the test was not reported. Only one URL per kind was tried, once each.
+
+## 2026-10-06 — Gist page URL: owner's reads pass, but the Gem does not fetch it by itself
+
+Source: branch `gemini/shared-project-setup` at the commit that switches the Gem to the gist page URL. Gemini on the web, desktop. Phone app not driven.
+
+| Check | Result | Evidence and limits |
+|---|---|---|
+| Owner, plain chat: asked to read `https://gist.github.com/dnaidionov/9a3ab441d37275bd105bb349ce87c697` and count canceled sites | PASS | Answered 2 and named Monumental Labs and Murry Bergtraum (the 50 KB index file). The URL was **typed in the message**. |
+| Owner, same question in the Gem (URL typed in the message) | PASS | Same correct answer. |
+| Gem instructions switched to the gist URL; saved Gem reloaded | PASS | New text persisted (2,868 characters). |
+| Me, in the Gem, **without** a URL in the message: "what's open near Grand Central, architecture, Sat Oct 17 2 PM, on foot" | FAIL (safe) | The Gem said it could not access the feed data page, refused to recommend or list sites, and sent the visitor to ohny.org/festival/lineup. It did not mention check-in (the new rule held) and used no Google Maps data. One run. |
+
+Reading: Gemini reads the gist when the **user types the URL in the message**, but did not open the same URL when it appeared only in the Gem's instructions. This is a hypothesis from two comparisons, not an established rule. It also leaves open why naidionov.com failed even when typed in the message. If the hypothesis holds, a Gem cannot fetch a live page on its own, and the gist mirror alone does not give the Gem live data.
+
+## 2026-10-07 — Options 3 and 1: does the Gem fetch the gist itself, and can Drive knowledge carry the data?
+
+Branch `gemini/shared-project-setup`. Gemini on the web, desktop, Flash, signed in as the owner. Phone app not driven. Each Gem question was a fresh chat; the first message typed after a page load was dropped by the page several times and was retyped (not a Gem behavior).
+
+**Option 3: re-runs with no URL in the message (Gem instructions point at the gist page)**
+
+| Question | Result | Evidence and limits |
+|---|---|---|
+| "Which OHNY sites are canceled this year?" | Correct answer, but probably not from the gist | Named Monumental Labs and Murry Bergtraum with reasons ("electrical issue", "construction delays"). The reasons are on ohny.org/articles/updates-2026 (checked), not in our feed, and the reply gave no as-of time as the instructions require. It most likely used OHNY's own page. |
+| "How many sites are in your data, and what is the as-of time on it?" | FAIL (safe) | "I am unable to directly access or read the provided GitHub gist URL." It declined to give counts and pointed to ohny.org/festival/lineup. |
+| Grand Central question (earlier run, same setup) | FAIL (safe) | Said it could not access the feed data page; listed no sites. |
+
+Three runs: the Gem never read the gist from its own instructions, while the same gist page read fine when the owner typed the URL into the message. Consistent with the hypothesis that the app fetches user-typed URLs but not URLs that only appear in a Gem's instructions. Still a small sample.
+
+**Option 1: a Google Doc attached as Gem knowledge**
+
+| Check | Result | Evidence and limits |
+|---|---|---|
+| Created a private Google Doc (8 KB: marker "PURPLE-HERON-7421", changes, canceled list, 6 sites) with the Drive connector; attached it via Knowledge > Add from Drive (double-click a file in the picker confirms it); saved | PASS | The Gem listed it as knowledge and it persisted after a reload. |
+| Asked the Gem for the marker phrase and as-of time | PASS | "PURPLE-HERON-7421 ... 2026-10-07T03:10:50.975Z (Live from ohny.org)": it read the Drive file, exactly. |
+| Edited the Doc's marker to "GREEN-OTTER-9999", waited about a minute, asked in a new chat | Old value returned | The Gem still said PURPLE-HERON-7421. Suggests knowledge is a snapshot taken at attach time; only a minute or two elapsed, so not conclusive. |
+| Updating a Drive file's contents programmatically | BLOCKED with these tools | The Drive connector's `update_file` changes only the title and parent. A refresh job would need Google Docs/Drive API credentials, untested. |
+| Full 50 KB index as a Doc | NOT RUN | Only the 8 KB version was tested. |
+
+The test Doc was detached from the Gem and the Gem re-saved with no knowledge file. The Doc "OHNY feed knowledge test (can delete)" remains in the owner's Drive, and the public gist is unchanged.
+
+## 2026-10-07 — Opal "Get Webpage" reaches the Worker's JSON API
+
+Owner's Opal draft "OHNY Explorer" (`opal.google/edit/142E8lMaKEPqEynfE0zwIQgQS9v2fE5lL`), desktop Chrome, signed in as the owner. The original "Retrieve events" prompt was saved first to `docs/gemini/opal-draft-retrieve-events.md`, then replaced with a single instruction to open `https://naidionov.com/ohny/skills/v1/meta` with the **Get Webpage** tool (the only tool on the step) and report `total_sites`, `as_of` and `live` verbatim.
+
+| Check | Result | Evidence and limits |
+|---|---|---|
+| Agent step fetches `/v1/meta` with Get Webpage | PASS | Console trace: Agent Session 11.5 s, "Retrieving Data From The Specified URL" 6.0 s. Output: `total_sites: 314`, `as_of: 2026-10-07T04:15:04.182Z`, `live: true`. A direct `curl` a minute later returned 314, `2026-10-07T04:16:15.805Z`, live: the values are a real fetch, not invented. |
+| MCP endpoint (`/mcp`) from Opal | Not applicable | Opal step tools (Get Weather, Search Web, Get Webpage, Search Maps, Code Execution, Go to, Use Memory) cannot send MCP's JSON-RPC POSTs; the GET API is the route. |
+| Endpoints with query parameters (`/v1/nearby?...`, `/v1/plan/check?...`) | NOT RUN | Only `/v1/meta` was tried. |
+| Shared app on a phone's mobile browser | NOT RUN | Google's FAQ says shared Opal apps can be used on a phone; not tried. Not available inside the Gemini mobile app (Google help page). |
+| Creating a new Opal app from the home page | BLOCKED | "Create New" did nothing when clicked (2026-10-07); Opal turns off on 2026-11-17. |
+
+Note: unlike Gemini's chat reader, which refused naidionov.com in every test on 2026-10-06, Opal's Get Webpage tool read it.
+
+## 2026-10-07 — Opal app built on the Worker API; first end-to-end scenario
+
+Owner's Opal draft "OHNY Explorer" (`opal.google/edit/142E8lMaKEPqEynfE0zwIQgQS9v2fE5lL`), editor Preview, desktop Chrome. Steps: Event Query (user input) → "Retrieve events" (Agent; prompt = `docs/gemini/opal-prompt.md`, tools Get Webpage and Search Maps, then the Event Query input) → "Render Event Webpage" (switched to Manual layout showing the agent's answer as-is). Original prompts saved in `docs/gemini/opal-draft-retrieve-events.md`.
+
+| Check | Result | Evidence and limits |
+|---|---|---|
+| Prompt build and tests | PASS | `npm run build:opal`; `npm test` 155/155, including: generated file up to date, URLs from SKILL.md settings, every named endpoint is a real route, all product rules present, no MCP tool names, no "@" (Opal's editor turns "@" into a tool shortcut, which scrambled the first paste; the prompt writes `%40`, which the Worker decodes to "@", verified by test). |
+| Scenario "What's open near Grand Central? I like architecture. Saturday Oct 17 at 2 PM, on foot." | PASS | Answer opened with the unofficial line and "as of Oct 7"; top three = Cast Hall at the Institute of Classical Architecture & Art (7 min, open until 4:30 PM, ages 10+ recommended, bag limits), General Society of Mechanics and Tradesmen (7 min, until 4:30 PM, ages 12+, stairs), National Academy of Design (36 min, until 6:00 PM), each with a Google Maps link; named Heliocentric Studios, Weeksville and the Sign Museum as left out because they'd close before arrival. A direct `/v1/nearby?lat=40.7527&lng=-73.9772&interests=architecture&now=2026-10-17T14:00` call returned the same three sites, walking times, closing times, heads-up items and skipped places (live: true). |
+| Minor | Note | "Over 200 other nearby sites were excluded" loosely paraphrases `in_range_breakdown` (city-wide counts). The preview pane cut long map links off at the right edge. |
+| Held-ticket, canceled-site, check-in, unknown-site and API-down scenarios | NOT RUN | Next. |
+| Shared link on a phone browser | NOT RUN | Not published or shared yet (publishing makes it reachable by others; owner's call). |
+
+## 2026-10-07 — Opal app: remaining scenarios, two prompt fixes, re-test
+
+Same app and setup as the previous entry (editor Preview, desktop Chrome; not a phone). Each expected answer was taken from the live API first.
+
+| Scenario | Result | Evidence |
+|---|---|---|
+| Held ticket: "tickets for 20 Exchange Place Sat Oct 17 10:00 AM, 2 of us; 9:00 AM at Fulton St and Broadway; architecture" | PASS, one defect | API: `ticket_ok` true, `leave_by` 9:37 AM, `ticket_address_needed`, no results, skipped = ticket conflicts. Opal: no sites fit before the tour; leave by 9:36 AM for the 9-minute walk; age 16+ heads-up; skipped list with reasons; asked for the address on the ticket; did not mention "Sold Out" (correct for a holder). **Defect:** said "As of 5:24 AM today": `as_of` is UTC (1:24 AM New York). |
+| Canceled: "Is Monumental Labs open on Sunday? Around noon." | PASS | Said it is canceled first (reason "construction delays", which is in the site record), then offered OneButton HQ (9 min, until 6:00 PM), Pissarro Allaux Studio (9 min, until 4:00 PM), Kingsland Wildflowers (17 min, until 4:00 PM, stairs): identical to `/v1/nearby?near=monumental-labs-26&now=2026-10-18T12:00`, including the skipped Brooklyn SolarWorks and Lotus Garden. |
+| Check-in: "Check me in at Cast Hall, please." | FAIL (then fixed) | Check-in handling was right (can't check in; gave https://ohny.fillout.com/26weekend; asked nothing). But it described "Cast Hall at the Art Students League, 215 West 57th, open until 6:00 PM": not an OHNY site; the lineup's only Cast Hall is at 20 West 44th, open until 4:30 PM. Information came from outside the API. |
+| Unknown site: "When is the Empire State Building open for OHNY this year?" | PASS | "No site by the name Empire State Building is listed in the Open House New York lineup", pointed to ohny.org/festival/lineup. (The API returns two sites whose descriptions mention the building; the agent did not pass them off as it.) |
+| Fixes (tests first, 2 new tests failed then passed; `npm test` 157/157) | Done | Prompt now says `as_of` is UTC and must be converted or replaced by "live from ohny.org", and that every site name, address, hour and status must come from the service, with named places found via `/v1/search` first and Search Maps used only for the visitor's own location. Opal step retyped from `docs/gemini/opal-prompt.md`. |
+| Re-test: "Check me in at Cast Hall, please. Is it open Saturday afternoon?" | PASS | Can't check in + form link; "Cast Hall at the Institute of Classical Architecture & Art is open this Saturday from 10:00 AM to 4:30 PM, live from ohny.org", drop-in, 3:30 PM talk, ages 10+ and bag limits, directions to 20 West 44th Street. All match `/v1/site/cast-hall-26`. The first re-test attempt ended with Opal's generic "Something went wrong" before any output; the retry ran normally. |
+| Service unreachable (backup URL, then "can't see live information", list nothing) | NOT RUN | Would need production down or a deliberately broken URL in the Opal step. The rule is in the prompt and covered by a text test only. |
+| Held-ticket re-test after the UTC fix | NOT RUN | The Cast Hall re-test showed the new wording ("live from ohny.org"). |
+| Phone browser via a shared link | NOT RUN | App not published or shared. |
+
+## 2026-10-07 — Opal app published
+
+At the owner's request the Opal app "OHNY Explorer" was shared as **Anyone with the link** (not Public, so not listed in Google search), with "Allow access to editor view and remix" turned **off** so visitors can run it but not see or copy the prompt and workflow, then published (Opal: "Last Published: Oct 7, 2026, 1:47 AM"). Link: https://opal.google/app/1fMOIm-S5yvvrO6MHE57jlyZYIZRix5KU. Opening the link on a phone (mobile browser, sign-in requirement, readability of long links) is **NOT RUN**.
+
+Update (2026-10-07, republished 1:52 AM): start-screen description changed to "Unofficial guide to Open House New York Weekend, Oct 16-18, 2026: what's open near you, details on any site, and plans around tickets you hold, live from ohny.org. Not affiliated with OHNY."; the Event Query input prompt changed to "Ask about OHNY Weekend: what's open near you, a specific site, or a plan around tickets you hold. Say where you are (a cross street or landmark), what you like, and the day and time if it isn't now." App name unchanged ("OHNY Explorer").
+
+Correction and update (2026-10-07, republished 1:57 AM): the description change recorded above for 1:52 AM had not actually saved (the dialog later showed the old text; only the input prompt change was live then). Both the description and the new name **"Ask OHNY (unofficial)"** were saved and confirmed by reopening the dialog, then republished. Same link.
+
+## 2026-10-07 — Opal app made conversational (chat + opt-in memory); republished 2:17 AM
+
+Prompt changes (tests first; `npm test` 161/161): CONVERSATION and MEMORY sections replace "answer in one go"; "unofficial" said once per chat; a final HOW THIS CHAT WORKS section tells the agent to ask through the chat and wait, finish only when the visitor is done, say goodbye without a question, and never offer to remember the visitor's location. Use Memory added as the third tool. Desktop editor Preview, not a phone.
+
+| Check | Result | Evidence |
+|---|---|---|
+| Run 1 (conversation rules, before HOW THIS CHAT WORKS): "What's open near Grand Central?" | PARTLY | Correct results (Cast Hall, General Society, Church of the Transfiguration, live), but it wrote "Want me to remember your interests for next time? Anything else?" into its final answer and the workflow ended with no reply box. |
+| Agent step modes | Note | The step's menu offers Agent or a fixed model (Gemini 3 Flash, 3.1 Pro, image/audio/video models); there is no separate interactive setting. |
+| Run 2 (with HOW THIS CHAT WORKS), turn 1: "What's open near me?" | PASS | Paused and asked in the chat: "To find spots nearby, where are you right now? (Like a cross street or landmark)", with a reply box. |
+| Turn 2: "Union Square. I like architecture." | PASS | Three architecture sites with walking times and closing times, two left-out sites with reasons, then in the chat: "Want me to remember these for next time? Anything else?" with choices (remember / search for something else / I'm all set) and the step still running. **Defect:** offered to remember the location (fixed in the prompt afterwards). |
+| Turn 3: "Search for something else", then "I also have tickets for the 20 Exchange Place tour Sunday at 10 AM. Say it's Sunday 9 AM: what can I see before it, starting from here?" | PASS | Used Union Square and architecture from earlier turns without asking; "Live from ohny.org (Sunday at 9:00 AM)"; nothing fits before the tour; leave Union Square by 9:19 AM by transit, or 8:44 AM walking (61 min); ended with "Anything else?" in the chat. API with the same inputs: transit leave_by 9:19 AM, walk 8:45 AM (60 min), 0 results. |
+| Turn 4: "No, I'm done, thanks." | PASS, one defect | Finished and handed a summary of the whole chat to the output step. **Defect:** the summary still ended "Enjoy your weekend! Anything else?" (fixed in the prompt afterwards). |
+| Goodbye and location-memory fixes in a live run | NOT RUN | Prompt updated, tested as text, and republished; not yet exercised in a chat. |
+| Memory across visits (yes / later visit / forget) | NOT RUN | |
+| Phone browser via the shared link | NOT RUN | |
+
+## 2026-10-07 — Opal re-test: goodbye and memory; republished 2:46 AM
+
+Desktop editor Preview, owner's account (memory is per Google account). Each chat is a fresh run.
+
+| Check | Result | Evidence |
+|---|---|---|
+| Opal reliability | Note | "Agent unable to proceed: no content in Gemini response" on 2 first attempts in this session (plus one "Something went wrong" earlier today); each retry ran. About 3 failures in ~17 runs today. |
+| Chat 1: "Union Square, Saturday 2 PM, rooftops and gardens" | PASS | Asked "do you hold any tickets?" in the chat first; three results; offered to remember **interests only** (location-offer fix held); "Yes" → "Saved! I'll remember the rooftops and gardens"; "No, that's all" → "Provided three OHNY sites … saved your interests to memory. Enjoy the weekend and goodbye!" (**goodbye fix held**: no question). |
+| Results quality, chat 1 | Note (Worker issue) | Results were 45-73 minutes' walk away. The API gives these for `interests=rooftops,gardens` but different, nearer ones for `rooftop,garden` (Church of the Transfiguration 18 min, Meatpacking tour, Westbeth): `src/core/tags.js` aliases are inconsistent for singular/plural ("gardens" → nature, "garden" not). Affects every route; needs its own fix. |
+| Chat 2 (before the start-of-chat recall rule): Grand Central, no interests given | FAIL, then fixed | Did not use saved interests (same results as no interests), offered to remember "your location or any interests", repeated the unofficial line on a later turn. "What do you remember?" → "rooftops and gardens" (memory had saved). "Forget everything" → trace "Deleting Your Saved Memory" → "I've forgotten everything". |
+| Chat 3: "What do you remember about me?" | PASS | "I don't remember anything about your interests or tickets yet." |
+| Fixes (tests first; `npm test` 162/162) | Done | Chat section now: check Use Memory at the start of each chat and say so; when offering, name only interests, Passport, tickets, kids' ages, accessibility, never location; unofficial line only in the first message. Inserted in Opal. |
+| Chat A: "Please remember that I love rooftops" | PASS | Confirmed with choices, saved, follow-up without the unofficial line. |
+| Chat B: Grand Central, interests not mentioned | PARTLY | Opened "Still into rooftops?" (**recall fixed**), result 3 said "fits your interest in views", no location offer. **But** the workflow ended with "Anything else? Want me to remember your interest in rooftops for next time?" written into the final answer instead of waiting in the chat (the earlier failure, now intermittent), and it re-offered to save an interest already saved. |
+| Cleanup | Done | "Forget everything" → trace "Forgetting Your Information As Requested"; run stopped; prompt republished. |
+
+Conclusion: memory save, recall, list and forget work through Opal's tool. Staying in the chat after an answer works in most runs but not all; when it fails the visitor sees the final answer and must restart to continue.
+
+## 2026-10-07 — Plural interests and nearby ranking (Worker)
+
+Tests first: `test/interests.test.js` (6 tests; 3 failed before the singular fix, 1 more before the ranking fix, all with the bug's symptoms); `npm test` 168/168. On the bundled lineup from Union Square, Sat 2 PM: before, `rooftops,gardens` → 45/53/73-minute sites and `rooftop,garden` → 18/25/25; after, both → New York Marble Cemetery (19 min), Original Maps of Manhattan (45 min, coarse tags), Church of the Transfiguration (18 min). Grand Central architecture and no-interest results unchanged (Cast Hall, General Society first). Not deployed: production still runs the old ranking.
+
+Deployed 2026-10-07 (Worker version a16e8c86-b934-4532-b848-35e07b42d453) after `npm test` 168/168. Production `nearby` from Union Square, Sat 2 PM: `rooftops,gardens` and `rooftop,garden` both return New York Marble Cemetery (19 min), Original Maps of Manhattan (45 min), Church of the Transfiguration (18 min), live. `npm run smoke`: 17/17 checks passed (ohny-skills.dnaidionov.workers.dev).
+
+## 2026-10-07 — Tag rules, re-tagged lineup, offline tool parity (not yet deployed)
+
+Tests first: `test/tagging.test.js` (verb/"on view" and passing park/farm mentions failed before the change; positive guards passed before and after; the real Original Maps record; saved tags match the rules; alias words not matched as raw words) and three new offline-parity scenarios (singular failed before the Python port). `npm test` 178/178. `npm run retag`: tag sets changed for 87 sites (71 lost views, 21 lost nature, none gained; 131 rewritten including order-only). Bundled lineup, Sat 2 PM: Union Square `rooftops,gardens` = `rooftop,garden` → New York Marble Cemetery (19 min), Stonewall National Monument (27 min), Brooklyn Navy Yard (73 min); Original Maps of Manhattan no longer listed. Grand Central `architecture` unchanged. Grand Central `views` → only views-tagged sites (no "on view" printshops). Production still has the old tags until deployed.
+
+Deployed 2026-10-07 (Worker version 3951ff90-dacf-4a75-927b-18f0a00def30) after `npm test` 178/178. Production: Original Maps of Manhattan tags = history, kids, hidden, residential; Union Square `rooftops,gardens` = `rooftop,garden` → New York Marble Cemetery (19 min), Stonewall National Monument (27 min), Brooklyn Navy Yard (73 min), live. `npm run smoke`: 17/17.
+
+## 2026-10-07 — Opal: owner's "plan my Saturday around a held ticket" script breaks
+
+Owner's report: "i have tickets for vertical tour of st john the divine for saturday afternoon. plan my saturday around that" → asked the time → "maybe 1:30pm" → "no 1:30 tour, maybe 2pm?" → agreed → long "thinking" → error. Reproduced in the editor Preview (desktop).
+
+| Finding | Evidence |
+|---|---|
+| Our API is not the bottleneck | `vertical-26` (Sold Out; Saturday sessions 12:00 and 2:00 PM). search, site, nearby with `fixed=vertical-26%402026-10-17T14:00`, plan/check: all HTTP 200 in 0.08-0.29 s, 0.7-8 KB. `/v1/search?q=divine` 0.26 s. |
+| Opal's Get Webpage is a nested model call | Console trace: each fetch is `generate_text` with `url_context: true`, `model: "flash"` and a summarising prompt (e.g. "Get the full site details … to find the slug and all session times"). One search took 58 s; a later one ("Verifying Site Slug", `/v1/search?q=divine`) hung for 206 s+ until stopped. |
+| Summaries lose or invent data | The agent told the visitor tours run "on the hour (like 1:00 or 2:00 PM)": there is no 1:00 session. After three turns it searched again for a slug it had already found, so the slug did not survive the summary. |
+| A plan needs many such calls | search → site → Search Maps → nearby (fixed) → verify slug (again) → plan/check: 4-6 nested model calls, each 10-200 s and each a chance of "no content in Gemini response". This matches the error appearing after the visitor confirms the time, when planning starts. |
+| Side incident (fixed) | During the reproduction the page layout changed and a click typed the test message into the app's start-screen description (editable in Preview). Corrected in "Edit title and description" and verified; it was never published. |
+
+## 2026-10-07 — `/v1/plan/day` + `format=text`: deployed, Opal prompt updated, owner's script re-run; republished 3:59 PM
+
+Tests first: `test/plan-day.test.js` (10; all failed with 404 before; a fixture expectation was corrected when the planner rightly skipped a site that opens after arrival), new Opal prompt tests; `npm test` 190/190. Deployed Worker d16e6b32-5cd8-4ab1-853b-cc48aba4c38c; `npm run smoke` 17/17. Live `plan/day` for `vertical-26` at 2:00 PM from Columbus Circle returns a confirmed session, before/after stops, order and check in ~3.6 KB of text; a 1:30 PM ticket returns "no tour … starting Sat 1:30 PM. Listed times: Sat 2:00 PM, Sat 12:00 PM" and no plan.
+
+Owner's script in the Opal editor Preview (desktop), same wording:
+
+| Turn | Result |
+|---|---|
+| "i have tickets for vertical tour of st john the divine for saturday afternoon. plan my saturday around that" | PASS: unofficial line, "Pretending it's Saturday at noon", asked the session time (~25 s). |
+| "i don't remember, maybe 1:30pm" | PASS: "The tour isn't listed for 1:30 PM. On Saturday, sessions are at 12:00 PM and 2:00 PM. Which one is on your ticket?" (correct times; the earlier run invented a 1:00 session). |
+| "2pm then. I'll start from Columbus Circle around 10am. I like architecture and history." | PASS: "Live from ohny.org. Here's a plan for your Saturday: 10:23 AM Cast Hall at the Institute of Classical Architecture & Art … 2:00 PM your Vertical Tour … 3:01 PM Synod Hall, right there at the Cathedral, open until 4:00 PM. Travel times are rough. Does your ticket list a specific street address for the tour? Anything else?" Identical to the API's plan. Trace: Search Maps 5.5 s + two fetches (14.5 s, 12.0 s), about 36 s for the turn (previously single fetches took 58 s and 206 s+). No error. |
+| Gaps | Did not say the leave-by time (12:13 PM from Cast Hall) unprompted. Search Maps chip sits after the Event Query chip in the Opal editor (cosmetic). Phone not tested. |
+
+## 2026-10-07 — `ohny_plan_day` connector tool (local only, not deployed)
+
+Tests first: `test/connectors-plan-day.test.js` (8: tool schema and read-only annotations, call maps to `/v1/plan/day`, missing-ticket error, instructions point to it, hidden after the festival, OpenAPI `planDay` with ticket required, API index entry, landing-page manual example) failed before the change. `test/mcp.test.js` and `test/phases.test.js` were updated to seven tools. `npm test` 198/198. The smoke script now expects 7 tools and checks plan/day. It has not been run against production because the Worker isn't deployed. Claude and ChatGPT apps: NOT RUN.
+
+## 2026-10-07 — `ohny_plan_day` deployed
+
+Deployed Worker c2178986-c6fd-477f-9bab-50e6a94291be. The first `npm run smoke` passed on naidionov.com (19/19), but workers.dev still listed 6 tools for a moment while the deploy reached it. Both lists showed 7 tools a minute later, and the re-run passed: naidionov.com 19/19, workers.dev 17/17. Live connector call `ohny_plan_day` (ticket "vertical tour st john the divine@2026-10-17T14:00", from Columbus Circle, pretend 10:00): no error, the name resolved, itinerary 10:09 AM Prime Produce → 2:00 PM Vertical Tour → 3:01 PM Synod Hall, check ok. Claude and ChatGPT apps: NOT RUN.
+
+## 2026-10-07 — Gemini custom app (connector) on gemini.google.com, web
+
+Product: Gemini web app (gemini.google.com), Gemini Flash, owner's personal account (Pro plan), run in the Claude desktop built-in browser. The custom app "Ask OHNY Unofficial" (`https://naidionov.com/ohny/skills/mcp`) had already been added by the owner; its details listed 7 actions including `ohny_plan_day` (last synced 9:30 PM). Worker c2178986.
+
+| Turn | Result |
+|---|---|
+| "ohny: i have tickets for vertical tour of st john the divine for saturday afternoon. plan my saturday around that" | PASS (~25 s, "Connecting to Ask OHNY Unofficial"): asked which session, listing the real Saturday times 12:00 PM and 2:00 PM; entry rules (security, bags, age 12+); Synod Hall 10-4 next door; unofficial note. |
+| "2pm. I'll start from Columbus Circle around 10am. I like architecture and history." | PASS (~25 s): two options. Every site named is an OHNY site (Cast Hall, Synod Hall, General Grant National Memorial (12-4, matches live), Sotheby's Breuer, Second Presbyterian), and it noted places skipped for time. |
+| Gaps | Gave "arrive by 1:45" but no leave-by time from the first stop. Called Cast Hall (W 44th St) "just south" of Columbus Circle (~1.5 mi). Ended with a question and suggestion chips. Did not confirm which tools were called (Gemini shows only "Connecting to"). |
+
+Phone (Gemini app): NOT RUN. Accounts outside the US or work/school accounts: NOT RUN. Landing-page Gemini tab: tests `test/gemini-connector.test.js` (4, failed before the change), `npm test` 202/202; not deployed.
+
+Deployed Worker 3346d0b6-93d2-433b-af1f-33e770ebd364; `npm run smoke` naidionov.com 19/19, workers.dev 17/17. The landing page on both hosts serves the new Gemini tab (`Open Gemini Connected Apps` → https://gemini.google.com/apps); checked visually in the desktop browser pane. Phone: NOT RUN.
+
+## 2026-10-07 — Function-by-function timing, Gemini (custom app), web
+
+Method: one fresh chat per question, Gemini web (Flash, owner's Pro account) in the Claude desktop built-in browser, Worker 3346d0b6. Each question carries a pretend time where it matters. Duration = from the script clicking Send to the last change on the page, measured by a MutationObserver (a stop button still present means not finished). Each answer was graded against the live API.
+
+| Q | Function | Question | Time | Result |
+|---|---|---|---|---|
+| Q1 | Nearby | Washington Sq Park, pretend Sat 2:30 PM, history, 15 min walk | 44.6 s | PASS: same three sites and hours as `/v1/nearby`, left-out list. Small slip: "three sold-out tours" (API: 2). |
+| Q2 | About a site | General Grant National Memorial, Saturday hours, ticket? | 12.9 s | PASS: 12-4 drop-in, no ticket, 1 PM tour, access notes, check-in link. |
+| Q3 | Plan around a ticket | Vertical Tour 2 PM, start Columbus Circle 10 AM, architecture | 52.0 s | PASS: Prime Produce → 1 train → tour (arrive 1:45) → Synod Hall; matches `/v1/plan/day`. No leave-by time. |
+| Q4 | Directions | Columbus Circle → Synod Hall | 33.9 s | PASS: 1 train 7 stops, B/C and M11 options, Synod hours and talk times correct. |
+| Q5 | Check-in | "I'm at Synod Hall. Check me in." | 6.2 s | PASS: fillout link, no questions, doesn't claim check-in. |
+| Q6 | Festival question | Weekend Passport | 9.7 s | PASS: front of line at drop-in sites, not for tickets, ohny.org link. "Plus one guest" and "concierge services" are not in our guide but are on OHNY's Passport page (confirmed by the Claude and ChatGPT runs below). |
+| Q7 | Changes | New or canceled? | HANG, then 7.6 s | 1st try: stuck at "Connecting to Ask OHNY Unofficial" for over 165 s (our server answers `ohny_changes` in 0.2 s), FAIL. Retry: matches `/v1/changes`, but says nothing was canceled while 2 sites are canceled (see the cross-assistant entry below), so PARTIAL. |
+
+Summary: 7/7 functions answered, 6 PASS, 1 PARTIAL (regraded after the cross-assistant run); 1 hang in 8 attempts. Completed answers: median 12.9 s, mean 23.8 s, range 6.2–52.0 s. Opal, Claude and ChatGPT: NOT RUN in this pass (Opal needs a Google sign-in for the app in this browser; claude.ai and chatgpt.com are signed out). Phone: NOT RUN.
+
+## 2026-10-07 — Function-by-function timing: Claude and ChatGPT (web), cross-assistant comparison
+
+Same seven questions and method as the Gemini entry above (fresh chat each, Worker 3346d0b6, built-in browser of the Claude desktop app, owner's accounts). Claude: claude.ai, Sonnet 5.5, Ask OHNY connector. ChatGPT: chatgpt.com, Instant, Ask OHNY connector on the owner's account. On Claude, tool approvals ("Allow once") were clicked by the tester, and the time spent waiting on them is excluded. The Q3 figure is approximate because approvals were frequent (about 11).
+
+| Q | Claude | ChatGPT |
+|---|---|---|
+| Q1 Nearby | 20.5 s, PASS (connector; same 3 sites; unofficial note) | 17.4 s, PASS (connector; same 3 sites + 4th named; no unofficial note) |
+| Q2 Site | 14.0 s, PARTIAL: web search, not the connector; read "Saturday" as Oct 10 and gave the regular NPS hours; noted OHNY is Oct 16-18 | 14.9 s, PASS (connector; 12-4, no ticket, 1 PM tour, access) |
+| Q3 Plan around ticket | ~82 s, PASS (search, `ohny_plan_day`, site lookups, check; 7 stops; left-out list). Minor contradiction about the leave-by time | 18.8 s, PASS (session confirmed, "sold out doesn't affect your ticket", Swedish Cottage → Synod → tour, plan check, asked for the ticket's meeting address) |
+| Q4 Directions | 7.4 s, PARTIAL: no connector; 1 train/M104 from general knowledge; no OHNY hours | 7.9 s, PASS (1 train; Synod entrance at NE corner of 110th & Amsterdam from the cathedral site) |
+| Q5 Check-in | 5.6 s, PASS (fillout link only) | 5.2 s, PASS ("can't submit on your behalf" + form link; link inside a widget frame, target not inspectable) |
+| Q6 Passport | 10.6 s, PASS (connector + ohny.org page: guest, concierge, tax-deductible, order by Oct 8 for mail) | 6.7 s, PASS (same facts, cites OHNY) |
+| Q7 Changes | 8.8 s, PARTIAL: matched `/v1/changes` but said nothing canceled; told sold-out ticket holders to "check still valid" (against the held-ticket rule) | 9.7 s, PASS: `/v1/changes` + OHNY's updates page, which lists Monumental Labs (Sun) and Murry Bergtraum (Fri) as canceled; said 15 sold out (API: 14) |
+
+**Finding (service bug):** `/v1/changes` / `ohny_changes` compares against the snapshot, so sites already canceled when the snapshot was taken (Monumental Labs, Murry Bergtraum; both `Canceled` in live festival.json and `canceled` in `/v1/site`) never appear. Visitors asking "anything canceled?" get "nothing canceled" from Gemini and Claude. Not fixed in this entry.
+
+| Assistant | PASS / 7 | Median | Mean | Range | Failures |
+|---|---|---|---|---|---|
+| ChatGPT (web, connector) | 7 | 9.7 s | 11.5 s | 5.2–18.8 s | none |
+| Gemini (web, custom app) | 6 | 12.9 s | 23.8 s | 6.2–52.0 s | 1 hang (>165 s) in 8 attempts |
+| Claude (web, connector) | 4 | 10.6 s | 21.3 s | 5.6–~82 s | 2 answers without the connector (Q2, Q4); approval prompts on most tools |
+| Opal app | BLOCKED | | | | First send shows "This Opal may access external sites" (Cancel / Always Allow); not clicked without owner approval. Every visitor will see it. |
+
+Phones: NOT RUN for all four.
+
+## 2026-10-08 — Models used, Opal run, Claude with Always allow, and model comparison
+
+**Models in the 2026-10-07 runs (read from each app's picker):** Claude: Sonnet 5.5, effort Medium (Pro plan). ChatGPT: GPT-6, thinking effort "Instant" (Plus plan). Gemini: 3.8 Flash (Pro plan). Opal: the "Retrieve events" step is set to "Agent" ("can use any models"); its console shows `Calling model: alias-text-flash`. The step's other choices, Gemini 3 Flash and Gemini 3.1 Pro, are plain generate steps without the agent tools.
+
+### Opal app (owner's account, app view of the current draft; the header reads "Draft", meaning unpublished edits exist)
+
+"This Opal may access external sites" did not appear again in this session. Timing: from Enter until Opal's "Thinking…" screen goes away.
+
+| Q | Time | Result |
+|---|---|---|
+| Q1 Nearby | 33.5 s | PASS: same 3 sites/hours as the API, left-out note |
+| Q2 Site | 103.5 s | PASS on facts (12-4, no ticket); slow; ended the chat on a question (no reply box) |
+| Q3 Plan | 75.0 s | PASS: Prime Produce 10:09 → tour 2:00 → Synod 3:01 (= `/v1/plan/day`); says "walk uptown is about 70 minutes" (walk mode default) |
+| Q4 Directions | 31.5 s | PARTIAL: Synod hours, entrance and access notes, but only a raw Google Maps URL, no route; chat ended |
+| Q5 Check-in | 17.0 s | PASS: "cannot check you in", fillout link |
+| Q6 Passport | HANG ×2 (>235 s, >194 s) | FAIL: stuck at "Searching for Passport information: 99–100%" (nested Get Webpage) |
+| Q7 Changes | 20.5 s | PARTIAL: "Nothing is canceled" (the changes bug) |
+
+### Claude with Ask OHNY set to "Always allow" (all 7 tools, set in Customize, Connectors)
+
+| Model | Q2 Site | Q3 Plan | Q4 Directions |
+|---|---|---|---|
+| Sonnet 5.5 (default) | 14.0 s, web search, wrong date frame (2026-10-07 run) | **39.7 s**, PASS (connector; 7 stops; check ran) — was ~82 s with approvals | 7.4 s, no connector (2026-10-07 run) |
+| Opus 5.5 | **12.8 s, PASS (connector)** | 45.2 s, PASS (CCNY → Synod → tour → Grant → Second Presbyterian; check passed) | **13.1 s, PASS (connector; hours, entrance, access)** |
+| Haiku 5.5 | 8.0 s, web search, Oct 10, unverified "Recreation.gov reservations", FAIL | 28.0 s, FAIL: sent ticket as "St. John the Divine" → resolved to Synod Hall, said "no 2 PM tour" | 6.3 s, no connector; wrong walking direction |
+
+### Gemini other models (Pro plan)
+
+| Model | Q1 Nearby | Q3 Plan |
+|---|---|---|
+| 3.8 Flash (default) | 44.6 s | 52.0 s |
+| 3.1 Pro | 308.0 s, PASS (same 3 sites) | not run |
+| 3.5 Flash-Lite | not run | 146.3 s, PASS (= `/v1/plan/day`) |
+
+### ChatGPT thinking effort (GPT-6)
+
+| Effort | Q3 Plan |
+|---|---|
+| Instant (default) | 18.8 s, PASS |
+| Medium | 77.9 s ("Worked for 57s"), PASS, richer (5 stops, talk time, 8-min slack) |
+
+Each app was set back to its original model afterwards (Claude Sonnet 5.5, Gemini 3.8 Flash, ChatGPT Instant). Single runs; times vary run to run (see Gemini Q1 44.6 s vs Flash-Lite Q3 146 s). Phones: NOT RUN.
+
+## 2026-10-08 — `canceled_now` in `/v1/changes` (local, not deployed)
+
+Tests first: `test/changes-canceled.test.js` (5: canceled-in-snapshot, newly canceled and dropped sites all listed with days/flags; diff unchanged; feed section; `format=text`; tool description) — 4 failed before the change. Tool-budget test caught the longer description; shortened. `npm test` 207/207. Not deployed; the live service still omits the two canceled sites from `/v1/changes`.
+
+## 2026-10-08 — `canceled_now` and model advice deployed
+
+Deployed Worker 146b17ac-d39d-42d0-b4a5-17eccc7b13b4. `npm run smoke`: naidionov.com 19/19, workers.dev 17/17. Live `/v1/changes?format=text` on both hosts: "CANCELED NOW: 2" (Monumental Labs, Sun Oct 18; Murry Bergtraum, Fri Oct 16). The landing page on both hosts shows the three "Which model?" notes. Assistant re-runs of "anything canceled?": NOT RUN.
+
+## 2026-10-08 — "Anything new or canceled?" re-run after the `canceled_now` deploy
+
+Worker 146b17ac. Same question as Q7 ("ohny: anything new or canceled in the OHNY lineup?"), fresh chat each, web apps in the Claude desktop built-in browser, default models.
+
+| Assistant (model) | Time | Result |
+|---|---|---|
+| Claude (Sonnet 5.5, Ask OHNY always allowed) | 10.2 s | PASS: "Two cancellations": Monumental Labs (Sun Oct 18) and Murry Bergtraum (Fri Oct 16). Also Park Haven back on, all 14 sell-outs, address updates. Still says "if you hold tickets to any of these, check that one first" (sell-outs don't affect held tickets). |
+| ChatGPT (GPT-6, Instant) | 12.0 s | PASS: both cancellations with days, and noted both "were already in the saved lineup". Said 13 sell-outs (API: 14). Correctly says held tickets for sold-out tours stay valid. |
+| Gemini (3.8 Flash, custom app) | 18.7 s | PASS: both cancellations with days; reopened Park Haven; sell-outs and address updates. |
+| Opal app (Agent / Flash) | 17.0 s | PASS on cancellations (both named). Error: "nineteen places like Temple Emanu-El and the Swedish Cottage are now sold out". 19 is all changed listings, and Swedish Cottage was an address change. |
+
+Before the fix (2026-10-07/08) Claude, Gemini and Opal said nothing was canceled. Phones: NOT RUN.
+
+## 2026-10-08 — Grouped changes and held-ticket note (tests)
+
+Tests first: `test/changes-summary.test.js` (3: JSON summary counts and note; text grouped with per-kind counts, no overall total; reminder sentence under 400 chars). All 3 failed before the change; one assertion of mine was too narrow for the wording and was loosened. `npm test` 215/215.
+
+## 2026-10-08 — Grouped changes deployed; Claude and Opal re-run
+
+Deployed Worker 57950452-17a9-46b6-a79a-bdaa1e9bcce6. `npm run smoke`: naidionov.com 19/19, workers.dev 17/17. Live `summary` on both hosts: canceled_now 2, newly_sold_out 14, back_on_sale 1, times_changed 0, other_updates 4. The text format groups by kind and ends with the held-ticket note.
+
+| Assistant | Time | Result |
+|---|---|---|
+| Claude (Sonnet 5.5) | 8.4 s | PASS: 2 canceled, 14 sold out "(this doesn't affect anyone who already holds a ticket)", 1 back on sale, 4 name/address updates. The earlier "check your tickets" advice is gone. |
+| Opal app (Agent / Flash) | 23.0 s | PASS: both cancellations; "Fourteen other sites, including Bella Abzug Park, just sold out". The earlier "nineteen … sold out" error is gone. |
+
+ChatGPT and Gemini not re-run (both passed before this change). Phones: NOT RUN.
+
+## 2026-10-08 — Full re-run: 7 questions × 4 assistants (after the changes fixes)
+
+Worker 57950452 (live). Fresh chat per question, web apps in the Claude desktop built-in browser, default models: Claude Sonnet 5.5 (Ask OHNY "Always allow"), ChatGPT GPT-6 Instant, Gemini 3.8 Flash (custom app), Opal app (Agent / Flash, owner's draft).
+
+| Q | Claude | ChatGPT | Gemini | Opal |
+|---|---|---|---|---|
+| Q1 Nearby | 10.7 s PASS | 15.3 s PASS | 11.2 s PASS | 29.5 s PASS |
+| Q2 Site | 11.0 s PASS (now uses Ask OHNY; notes Oct 10 regular hours differ) | 10.8 s PASS (+ NPS regular hours) | 13.3 s PASS | 20.5 s PASS; chat ended (no reply box) |
+| Q3 Plan | 28.6 s PASS (approval prompt excluded, see note) | 19.2 s PASS | 50.9 s PASS | 38.0 s PASS, with leave-by |
+| Q4 Directions | 12.8 s PASS (Ask OHNY) | 7.3 s PASS (no OHNY hours) | 8.1 s PARTIAL (suggests the M4 bus, which doesn't fit; no OHNY hours) | 30.0 s PARTIAL (link only; chat ended) |
+| Q5 Check-in | 5.9 s PASS | 5.4 s PASS | 8.1 s PASS | 25.0 s PASS |
+| Q6 Passport | 10.3 s PASS (Claude asked to fetch ohny.org; Allow once) | 7.3 s PASS | 8.1 s PASS (omits concierge) | **266 s FAIL**: "a ticket … sites don't accept it" (3rd run in a row) |
+| Q7 Changes | 8.2 s PASS | 10.7 s PASS (14 sold out, held tickets valid) | 11.1 s PASS | 24.5 s PASS |
+
+Medians: Claude 10.7 s, ChatGPT 10.7 s, Gemini 11.1 s, Opal 29.5 s (excl. Q6).
+
+Notes:
+- **Regrade:** Gemini's "3 sold out" in Q1 (this run and 2026-10-07) is correct. Three sold-out tours are within the walk, and `in_range_breakdown` files one under `not_your_interests` because that filter runs first. Not an error.
+- **Claude permissions:** after the `ohny_changes` description changed, Claude asked again for that one tool ("Always allow" had reset). Changing a tool's description during the festival makes Always-allow visitors re-approve it.
+- **New issue, fixed:** the Passport facts weren't in our guide or the Opal prompt. Opal web-searched for over 4 minutes and answered wrongly, and Claude needed a web-fetch approval. Fix: the checked facts (ohny.org/festival/passport, 2026-10-08) are now in `about.md` (connector guide, standalone) and the Opal prompt; tests in `test/passport-facts.test.js`. The same line was typed into the Opal app's step prompt (draft). Opal Q6 re-run on the draft: **23.5 s PASS** ("you and a guest … over 150 drop-in sites … concierge … doesn't cover ticketed tours"; says "over 150" where OHNY says about 150). The Opal draft is not published.
+- Known, not new: Opal sometimes ends the chat after an answer (Q2, Q4, re-run Q6); Opal and Gemini give no route text for directions.
+
+Phones: NOT RUN.

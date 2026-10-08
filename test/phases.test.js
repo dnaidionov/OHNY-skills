@@ -25,9 +25,9 @@ const rpc = async (iso, method, params) => (await (await handle(new Request('htt
 const FEST = '2026-10-17T18:30:00Z', AFTER = '2026-10-25T18:30:00Z', ENDED = '2026-12-01T18:30:00Z';
 beforeEach(() => { _resetCacheForTests(); _resetEnrichMemoForTests(); });
 
-test('connector tool list by season: all six, then only the Q&A tools, then none', async () => {
+test('connector tool list by season: all seven, then only the Q&A tools, then none', async () => {
   const names = async (iso) => (await rpc(iso, 'tools/list')).result.tools.map((t) => t.name);
-  assert.deepEqual(await names(FEST), ['ohny_nearby', 'ohny_search', 'ohny_site', 'ohny_check_plan', 'ohny_changes', 'ohny_guide']);
+  assert.deepEqual(await names(FEST), ['ohny_nearby', 'ohny_search', 'ohny_site', 'ohny_check_plan', 'ohny_plan_day', 'ohny_changes', 'ohny_guide']);
   assert.deepEqual(await names(AFTER), ['ohny_search', 'ohny_site', 'ohny_guide']);
   assert.deepEqual(await names(ENDED), []);
 });

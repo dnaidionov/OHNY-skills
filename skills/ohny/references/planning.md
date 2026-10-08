@@ -54,6 +54,8 @@ Offer a stop around 12-2 PM (lunch) and/or 6-8 PM, placed **near the surrounding
 
 ## 5. Save and deliver the itinerary
 
+**For a day built around tickets, start with `/v1/plan/day` (tool `ohny_plan_day`)**: it confirms each session, suggests what fits before and after, and returns an order already checked. Re-check any plan you change.
+
 **Before you present the plan, validate it with `/v1/plan/check` (tool `ohny_check_plan`)** (list the stops in time order as `slug@YYYY-MM-DDTHH:MM`, pass tickets in `held`, and the exact ticket coordinates when you have them). Fix every *blocking* problem first (a tour time that doesn't exist, a free site that's closed when they arrive, a hop that can't be made, a ticket held for a canceled site). Warnings (a tight hop, a long leg to confirm in a maps app, a ticket address still needed) go into the stop's note in a few words.
 
 Once they choose, save the plan to the platform's memory (stops, times, tickets, party size, mode) if persistent memory is available, otherwise keep it for this conversation, and present a **followable itinerary**:

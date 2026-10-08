@@ -1,5 +1,5 @@
 import { normalizeRecord } from './core/normalize.js';
-import { mergeLive } from './core/lineup.js';
+import { mergeLive, canceledNow, groupChanges, HELD_TICKET_NOTE } from './core/lineup.js';
 import { resolveNow, FESTIVAL, isFestivalDay, fromWallMinutes, phaseAt } from './core/time.js';
 import { statusAt, statusLine } from './core/status.js';
 import { nearby, search, card } from './core/search.js';
@@ -8,6 +8,9 @@ import { enrichSites } from './core/enrich.js';
 import { policyFlags } from './core/policy.js';
 import { handleMcp } from './mcp.js';
 import { parseSpecs, resolveTickets, checkPlan, TICKET_BUFFER_MIN, DEFAULT_STAY_MIN, NEARBY_MIN_STAY_MIN } from './core/tickets.js';
+import { renderIndex, renderChanges } from './feed.js';
+import { planDay } from './core/plan.js';
+import { planText, nearbyText, searchText, changesText } from './text.js';
 import { landingHtml } from './landing.js';
 import { ICON_SVG } from './icon.js';
 import { STANDALONE } from './standalone-data.js';
@@ -33,6 +36,7 @@ const json = (body, status = 200, extra = {}) => new Response(JSON.stringify(bod
     ...extra,
   },
 });
+const asText = (body) => new Response(body, { headers: { 'content-type': 'text/plain; charset=utf-8', 'access-control-allow-origin': '*', 'cache-control': 'public, max-age=15', 'x-content-type-options': 'nosniff' } });
 const fail = (status, error, hint) => json({ error, hint }, status, { 'cache-control': 'no-store' });
 
 const num = (v) => (v == null || v === '' || Number.isNaN(Number(v)) ? undefined : Number(v));
@@ -94,6 +98,11 @@ function findSite(sites, key) {
 }
 
 export async function handle(request, deps) {
+  // HEAD is GET without the body (some page fetchers probe with it before reading).
+  if (request.method === 'HEAD') {
+    const res = await handle(new Request(request.url, { method: 'GET', headers: request.headers }), deps);
+    return new Response(null, { status: res.status, headers: res.headers });
+  }
   deps = { fetchImpl: fetch, base: 'https://ohny.org', realNow: new Date(), ...deps };
   // Cloudflare throws "Illegal invocation" if fetch is called as a method of another object
   // (deps.fetchImpl(...)), so always call it as a plain function.
@@ -137,6 +146,15 @@ export async function handle(request, deps) {
     });
   }
 
+  // Markdown feed for chatbots that can only read public web pages (Gemini). Public data only, rendered per request.
+  const FEED = { '/feed/index.md': renderIndex, '/feed/changes.md': renderChanges };
+  if (FEED[path]) {
+    const lineup = await getLineup(deps);
+    return new Response(FEED[path](lineup), {
+      headers: { 'content-type': 'text/markdown; charset=utf-8', 'cache-control': 'public, max-age=60', 'access-control-allow-origin': '*', 'x-content-type-options': 'nosniff' },
+    });
+  }
+
   // Browsers get the human page at the root; scripts and API clients (and ?format=json) get JSON.
   if (path === '/' && q.get('format') !== 'json' && (request.headers.get('accept') ?? '').includes('text/html')) {
     return new Response(landingHtml(), {
@@ -158,10 +176,12 @@ export async function handle(request, deps) {
         'GET /v1/nearby?lat=&lng=&interests=&limit=3&offset=0': 'Closest sites that will be open when you arrive, matching interests (also near=<slug>, max_walk_min, radius_km, min_time_left_min, include_ticketed, borough, child_age, wheelchair=true, interests_mode=prefer|require, exclude=slug,slug)',
         'GET /v1/nearby ... &fixed=<slug>@<date-time>[;...][@lat,lng]': 'Tickets the visitor already holds are hard constraints: suggestions leave time to reach them; the reply has your_tickets with leave_by (also mode=walk|transit|car, min_stay_min, ticket_buffer_min)',
         'GET /v1/plan/check?stops=<slug>@<date-time>;...&held=<slug>,...': 'Validate an itinerary: open at arrival, session times exist, travel between stops, tickets held (also mode, stay_min, buffer_min)',
+        'GET /v1/plan/day?ticket=<slug or name>@<date-time>&from=lat,lng': 'Plan a day around held tickets in one call: confirms the session (or lists the real times), stops before and after with leave-by times, an order and a check (also near=<slug>, interests, mode, child_age, wheelchair=true, limit, format=text)',
         'GET /v1/search?q=': 'Find sites by name, partner, neighborhood or topic',
         'GET /v1/site/<slug>': 'Full, freshly fetched details for one site',
-        'GET /v1/changes': 'What changed on ohny.org since the saved copy (cancellations, new times, new sites)',
+        'GET /v1/changes': 'Every site canceled now, plus what changed on ohny.org since the saved copy (new times, new sites, sell-outs)',
         'POST /mcp': 'MCP connector endpoint (Streamable HTTP) for Claude, ChatGPT and other MCP clients',
+        'format=text': 'On plan/day, nearby, search and changes: short plain lines instead of JSON, times in New York time',
         'any request': 'Add now=2026-10-17T14:30 (New York time) to test as if it were another moment',
       },
     });
@@ -181,16 +201,20 @@ export async function handle(request, deps) {
 
   if (path === '/v1/changes') {
     const lineup = await getLineup(deps);
-    return json(envelope(lineup, now, { changes: lineup.changes }));
+    const canceled = canceledNow(lineup.sites, lineup.changes);
+    const { summary, groups } = groupChanges(lineup.changes, canceled);
+    const body = envelope(lineup, now, { summary, canceled_now: canceled, note: HELD_TICKET_NOTE, groups, changes: lineup.changes });
+    return q.get('format') === 'text' ? asText(changesText(body)) : json(body);
   }
 
   if (path === '/v1/search') {
     const term = q.get('q');
     if (!term) return fail(400, 'Missing q.', 'e.g. /v1/search?q=grolier');
     const lineup = await getLineup(deps);
-    return json(envelope(lineup, now, search(lineup.sites.filter((s) => !s.removed), {
+    const body = envelope(lineup, now, search(lineup.sites.filter((s) => !s.removed), {
       q: term, nowAbs: now.abs, limit: clamp(num(q.get('limit')), 1, 10, 5),
-    })));
+    }));
+    return q.get('format') === 'text' ? asText(searchText(body)) : json(body);
   }
 
   const MODES = ['walk', 'transit', 'car'];
@@ -253,7 +277,27 @@ export async function handle(request, deps) {
       borough: q.get('borough') ?? undefined,
       exclude: (q.get('exclude') ?? '').split(',').filter(Boolean).concat(nearSlug ? [nearSlug] : []),
     });
-    return json(envelope(lineup, now, result));
+    const body = envelope(lineup, now, result);
+    return q.get('format') === 'text' ? asText(nearbyText(body)) : json(body);
+  }
+
+  if (path === '/v1/plan/day') {
+    if (!q.get('ticket')) {
+      return fail(400, 'ticket is required.', `ticket=<site slug or name>@YYYY-MM-DDTHH:MM (the session start, New York time; several separated by ";"), plus from=lat,lng (where the visitor starts) or near=<slug>. Optional: interests, mode=walk|transit|car, child_age, wheelchair=true, limit, format=text.`);
+    }
+    const lineup = await getLineup(deps);
+    const live = lineup.sites.filter((s) => !s.removed);
+    let from;
+    const fromParam = /^(-?\d+(?:\.\d+)?),(-?\d+(?:\.\d+)?)$/.exec(q.get('from') ?? '');
+    if (fromParam) from = { lat: Number(fromParam[1]), lng: Number(fromParam[2]) };
+    else if (num(q.get('lat')) != null && num(q.get('lng')) != null) from = { lat: num(q.get('lat')), lng: num(q.get('lng')) };
+    else if (q.get('near')) { const ref = findSite(live, q.get('near')); if (ref?.geo) from = { lat: ref.geo.lat, lng: ref.geo.lng }; }
+    const result = planDay(live, {
+      ticket: q.get('ticket'), from, nowAbs: now.abs, interests: q.get('interests') ?? '', mode: travelMode,
+      childAge: num(q.get('child_age')), wheelchair: q.get('wheelchair') === 'true', limit: clamp(num(q.get('limit')), 1, 5, 3),
+    });
+    const body = envelope(lineup, now, result);
+    return q.get('format') === 'text' ? asText(planText(body)) : json(body);
   }
 
   const siteMatch = /^\/v1\/site\/([^/]+)$/.exec(path);
