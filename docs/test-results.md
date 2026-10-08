@@ -351,3 +351,19 @@ Product: Gemini web app (gemini.google.com), Gemini Flash, owner's personal acco
 Phone (Gemini app): NOT RUN. Accounts outside the US or work/school accounts: NOT RUN. Landing-page Gemini tab: tests `test/gemini-connector.test.js` (4, failed before the change), `npm test` 202/202; not deployed.
 
 Deployed Worker 3346d0b6-93d2-433b-af1f-33e770ebd364; `npm run smoke` naidionov.com 19/19, workers.dev 17/17. The landing page on both hosts serves the new Gemini tab (`Open Gemini Connected Apps` → https://gemini.google.com/apps); checked visually in the desktop browser pane. Phone: NOT RUN.
+
+## 2026-10-07 — Function-by-function timing, Gemini (custom app), web
+
+Method: one fresh chat per question, Gemini web (Flash, owner's Pro account) in the Claude desktop built-in browser, Worker 3346d0b6. Each question carries a pretend time where it matters. Duration = from the script clicking Send to the last change on the page, measured by a MutationObserver (a stop button still present means not finished). Each answer was graded against the live API.
+
+| Q | Function | Question | Time | Result |
+|---|---|---|---|---|
+| Q1 | Nearby | Washington Sq Park, pretend Sat 2:30 PM, history, 15 min walk | 44.6 s | PASS: same three sites and hours as `/v1/nearby`, left-out list. Small slip: "three sold-out tours" (API: 2). |
+| Q2 | About a site | General Grant National Memorial, Saturday hours, ticket? | 12.9 s | PASS: 12-4 drop-in, no ticket, 1 PM tour, access notes, check-in link. |
+| Q3 | Plan around a ticket | Vertical Tour 2 PM, start Columbus Circle 10 AM, architecture | 52.0 s | PASS: Prime Produce → 1 train → tour (arrive 1:45) → Synod Hall; matches `/v1/plan/day`. No leave-by time. |
+| Q4 | Directions | Columbus Circle → Synod Hall | 33.9 s | PASS: 1 train 7 stops, B/C and M11 options, Synod hours and talk times correct. |
+| Q5 | Check-in | "I'm at Synod Hall. Check me in." | 6.2 s | PASS: fillout link, no questions, doesn't claim check-in. |
+| Q6 | Festival question | Weekend Passport | 9.7 s | PARTIAL: front of line at drop-in sites, not for tickets, ohny.org link; added "plus one guest" and "concierge services", which aren't in our guide (unverified). |
+| Q7 | Changes | New or canceled? | HANG, then 7.6 s | 1st try: stuck at "Connecting to Ask OHNY Unofficial" for over 165 s (our server answers `ohny_changes` in 0.2 s), FAIL. Retry: PASS, matches `/v1/changes`. |
+
+Summary: 7/7 functions answered, 6 PASS, 1 PARTIAL; 1 hang in 8 attempts. Completed answers: median 12.9 s, mean 23.8 s, range 6.2–52.0 s. Opal, Claude and ChatGPT: NOT RUN in this pass (Opal needs a Google sign-in for the app in this browser; claude.ai and chatgpt.com are signed out). Phone: NOT RUN.
