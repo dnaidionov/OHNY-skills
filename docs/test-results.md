@@ -439,3 +439,7 @@ Each app was set back to its original model afterwards (Claude Sonnet 5.5, Gemin
 ## 2026-10-08 — `canceled_now` in `/v1/changes` (local, not deployed)
 
 Tests first: `test/changes-canceled.test.js` (5: canceled-in-snapshot, newly canceled and dropped sites all listed with days/flags; diff unchanged; feed section; `format=text`; tool description) — 4 failed before the change. Tool-budget test caught the longer description; shortened. `npm test` 207/207. Not deployed; the live service still omits the two canceled sites from `/v1/changes`.
+
+## 2026-10-08 — `canceled_now` and model advice deployed
+
+Deployed Worker 146b17ac-d39d-42d0-b4a5-17eccc7b13b4. `npm run smoke`: naidionov.com 19/19, workers.dev 17/17. Live `/v1/changes?format=text` on both hosts: "CANCELED NOW: 2" (Monumental Labs, Sun Oct 18; Murry Bergtraum, Fri Oct 16). The landing page on both hosts shows the three "Which model?" notes. Assistant re-runs of "anything canceled?": NOT RUN.
