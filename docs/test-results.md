@@ -460,3 +460,14 @@ Before the fix (2026-10-07/08) Claude, Gemini and Opal said nothing was canceled
 ## 2026-10-08 — Grouped changes and held-ticket note (tests)
 
 Tests first: `test/changes-summary.test.js` (3: JSON summary counts and note; text grouped with per-kind counts, no overall total; reminder sentence under 400 chars). All 3 failed before the change; one assertion of mine was too narrow for the wording and was loosened. `npm test` 215/215.
+
+## 2026-10-08 — Grouped changes deployed; Claude and Opal re-run
+
+Deployed Worker 57950452-17a9-46b6-a79a-bdaa1e9bcce6. `npm run smoke`: naidionov.com 19/19, workers.dev 17/17. Live `summary` on both hosts: canceled_now 2, newly_sold_out 14, back_on_sale 1, times_changed 0, other_updates 4. The text format groups by kind and ends with the held-ticket note.
+
+| Assistant | Time | Result |
+|---|---|---|
+| Claude (Sonnet 5.5) | 8.4 s | PASS: 2 canceled, 14 sold out "(this doesn't affect anyone who already holds a ticket)", 1 back on sale, 4 name/address updates. The earlier "check your tickets" advice is gone. |
+| Opal app (Agent / Flash) | 23.0 s | PASS: both cancellations; "Fourteen other sites, including Bella Abzug Park, just sold out". The earlier "nineteen … sold out" error is gone. |
+
+ChatGPT and Gemini not re-run (both passed before this change). Phones: NOT RUN.
