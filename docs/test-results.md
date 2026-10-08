@@ -443,3 +443,16 @@ Tests first: `test/changes-canceled.test.js` (5: canceled-in-snapshot, newly can
 ## 2026-10-08 — `canceled_now` and model advice deployed
 
 Deployed Worker 146b17ac-d39d-42d0-b4a5-17eccc7b13b4. `npm run smoke`: naidionov.com 19/19, workers.dev 17/17. Live `/v1/changes?format=text` on both hosts: "CANCELED NOW: 2" (Monumental Labs, Sun Oct 18; Murry Bergtraum, Fri Oct 16). The landing page on both hosts shows the three "Which model?" notes. Assistant re-runs of "anything canceled?": NOT RUN.
+
+## 2026-10-08 — "Anything new or canceled?" re-run after the `canceled_now` deploy
+
+Worker 146b17ac. Same question as Q7 ("ohny: anything new or canceled in the OHNY lineup?"), fresh chat each, web apps in the Claude desktop built-in browser, default models.
+
+| Assistant (model) | Time | Result |
+|---|---|---|
+| Claude (Sonnet 5.5, Ask OHNY always allowed) | 10.2 s | PASS: "Two cancellations": Monumental Labs (Sun Oct 18) and Murry Bergtraum (Fri Oct 16). Also Park Haven back on, all 14 sell-outs, address updates. Still says "if you hold tickets to any of these, check that one first" (sell-outs don't affect held tickets). |
+| ChatGPT (GPT-6, Instant) | 12.0 s | PASS: both cancellations with days, and noted both "were already in the saved lineup". Said 13 sell-outs (API: 14). Correctly says held tickets for sold-out tours stay valid. |
+| Gemini (3.8 Flash, custom app) | 18.7 s | PASS: both cancellations with days; reopened Park Haven; sell-outs and address updates. |
+| Opal app (Agent / Flash) | 17.0 s | PASS on cancellations (both named). Error: "nineteen places like Temple Emanu-El and the Swedish Cottage are now sold out". 19 is all changed listings, and Swedish Cottage was an address change. |
+
+Before the fix (2026-10-07/08) Claude, Gemini and Opal said nothing was canceled. Phones: NOT RUN.
