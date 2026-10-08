@@ -363,7 +363,32 @@ Method: one fresh chat per question, Gemini web (Flash, owner's Pro account) in 
 | Q3 | Plan around a ticket | Vertical Tour 2 PM, start Columbus Circle 10 AM, architecture | 52.0 s | PASS: Prime Produce → 1 train → tour (arrive 1:45) → Synod Hall; matches `/v1/plan/day`. No leave-by time. |
 | Q4 | Directions | Columbus Circle → Synod Hall | 33.9 s | PASS: 1 train 7 stops, B/C and M11 options, Synod hours and talk times correct. |
 | Q5 | Check-in | "I'm at Synod Hall. Check me in." | 6.2 s | PASS: fillout link, no questions, doesn't claim check-in. |
-| Q6 | Festival question | Weekend Passport | 9.7 s | PARTIAL: front of line at drop-in sites, not for tickets, ohny.org link; added "plus one guest" and "concierge services", which aren't in our guide (unverified). |
-| Q7 | Changes | New or canceled? | HANG, then 7.6 s | 1st try: stuck at "Connecting to Ask OHNY Unofficial" for over 165 s (our server answers `ohny_changes` in 0.2 s), FAIL. Retry: PASS, matches `/v1/changes`. |
+| Q6 | Festival question | Weekend Passport | 9.7 s | PASS: front of line at drop-in sites, not for tickets, ohny.org link. "Plus one guest" and "concierge services" are not in our guide but are on OHNY's Passport page (confirmed by the Claude and ChatGPT runs below). |
+| Q7 | Changes | New or canceled? | HANG, then 7.6 s | 1st try: stuck at "Connecting to Ask OHNY Unofficial" for over 165 s (our server answers `ohny_changes` in 0.2 s), FAIL. Retry: matches `/v1/changes`, but says nothing was canceled while 2 sites are canceled (see the cross-assistant entry below), so PARTIAL. |
 
-Summary: 7/7 functions answered, 6 PASS, 1 PARTIAL; 1 hang in 8 attempts. Completed answers: median 12.9 s, mean 23.8 s, range 6.2–52.0 s. Opal, Claude and ChatGPT: NOT RUN in this pass (Opal needs a Google sign-in for the app in this browser; claude.ai and chatgpt.com are signed out). Phone: NOT RUN.
+Summary: 7/7 functions answered, 6 PASS, 1 PARTIAL (regraded after the cross-assistant run); 1 hang in 8 attempts. Completed answers: median 12.9 s, mean 23.8 s, range 6.2–52.0 s. Opal, Claude and ChatGPT: NOT RUN in this pass (Opal needs a Google sign-in for the app in this browser; claude.ai and chatgpt.com are signed out). Phone: NOT RUN.
+
+## 2026-10-07 — Function-by-function timing: Claude and ChatGPT (web), cross-assistant comparison
+
+Same seven questions and method as the Gemini entry above (fresh chat each, Worker 3346d0b6, built-in browser of the Claude desktop app, owner's accounts). Claude: claude.ai, Sonnet 5.5, Ask OHNY connector. ChatGPT: chatgpt.com, Instant, Ask OHNY connector on the owner's account. On Claude, tool approvals ("Allow once") were clicked by the tester, and the time spent waiting on them is excluded. The Q3 figure is approximate because approvals were frequent (about 11).
+
+| Q | Claude | ChatGPT |
+|---|---|---|
+| Q1 Nearby | 20.5 s, PASS (connector; same 3 sites; unofficial note) | 17.4 s, PASS (connector; same 3 sites + 4th named; no unofficial note) |
+| Q2 Site | 14.0 s, PARTIAL: web search, not the connector; read "Saturday" as Oct 10 and gave the regular NPS hours; noted OHNY is Oct 16-18 | 14.9 s, PASS (connector; 12-4, no ticket, 1 PM tour, access) |
+| Q3 Plan around ticket | ~82 s, PASS (search, `ohny_plan_day`, site lookups, check; 7 stops; left-out list). Minor contradiction about the leave-by time | 18.8 s, PASS (session confirmed, "sold out doesn't affect your ticket", Swedish Cottage → Synod → tour, plan check, asked for the ticket's meeting address) |
+| Q4 Directions | 7.4 s, PARTIAL: no connector; 1 train/M104 from general knowledge; no OHNY hours | 7.9 s, PASS (1 train; Synod entrance at NE corner of 110th & Amsterdam from the cathedral site) |
+| Q5 Check-in | 5.6 s, PASS (fillout link only) | 5.2 s, PASS ("can't submit on your behalf" + form link; link inside a widget frame, target not inspectable) |
+| Q6 Passport | 10.6 s, PASS (connector + ohny.org page: guest, concierge, tax-deductible, order by Oct 8 for mail) | 6.7 s, PASS (same facts, cites OHNY) |
+| Q7 Changes | 8.8 s, PARTIAL: matched `/v1/changes` but said nothing canceled; told sold-out ticket holders to "check still valid" (against the held-ticket rule) | 9.7 s, PASS: `/v1/changes` + OHNY's updates page, which lists Monumental Labs (Sun) and Murry Bergtraum (Fri) as canceled; said 15 sold out (API: 14) |
+
+**Finding (service bug):** `/v1/changes` / `ohny_changes` compares against the snapshot, so sites already canceled when the snapshot was taken (Monumental Labs, Murry Bergtraum; both `Canceled` in live festival.json and `canceled` in `/v1/site`) never appear. Visitors asking "anything canceled?" get "nothing canceled" from Gemini and Claude. Not fixed in this entry.
+
+| Assistant | PASS / 7 | Median | Mean | Range | Failures |
+|---|---|---|---|---|---|
+| ChatGPT (web, connector) | 7 | 9.7 s | 11.5 s | 5.2–18.8 s | none |
+| Gemini (web, custom app) | 6 | 12.9 s | 23.8 s | 6.2–52.0 s | 1 hang (>165 s) in 8 attempts |
+| Claude (web, connector) | 4 | 10.6 s | 21.3 s | 5.6–~82 s | 2 answers without the connector (Q2, Q4); approval prompts on most tools |
+| Opal app | BLOCKED | | | | First send shows "This Opal may access external sites" (Cancel / Always Allow); not clicked without owner approval. Every visitor will see it. |
+
+Phones: NOT RUN for all four.
