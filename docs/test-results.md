@@ -392,3 +392,46 @@ Same seven questions and method as the Gemini entry above (fresh chat each, Work
 | Opal app | BLOCKED | | | | First send shows "This Opal may access external sites" (Cancel / Always Allow); not clicked without owner approval. Every visitor will see it. |
 
 Phones: NOT RUN for all four.
+
+## 2026-10-08 — Models used, Opal run, Claude with Always allow, and model comparison
+
+**Models in the 2026-10-07 runs (read from each app's picker):** Claude: Sonnet 5.5, effort Medium (Pro plan). ChatGPT: GPT-6, thinking effort "Instant" (Plus plan). Gemini: 3.8 Flash (Pro plan). Opal: the "Retrieve events" step is set to "Agent" ("can use any models"); its console shows `Calling model: alias-text-flash`. The step's other choices, Gemini 3 Flash and Gemini 3.1 Pro, are plain generate steps without the agent tools.
+
+### Opal app (owner's account, app view of the current draft; the header reads "Draft", meaning unpublished edits exist)
+
+"This Opal may access external sites" did not appear again in this session. Timing: from Enter until Opal's "Thinking…" screen goes away.
+
+| Q | Time | Result |
+|---|---|---|
+| Q1 Nearby | 33.5 s | PASS: same 3 sites/hours as the API, left-out note |
+| Q2 Site | 103.5 s | PASS on facts (12-4, no ticket); slow; ended the chat on a question (no reply box) |
+| Q3 Plan | 75.0 s | PASS: Prime Produce 10:09 → tour 2:00 → Synod 3:01 (= `/v1/plan/day`); says "walk uptown is about 70 minutes" (walk mode default) |
+| Q4 Directions | 31.5 s | PARTIAL: Synod hours, entrance and access notes, but only a raw Google Maps URL, no route; chat ended |
+| Q5 Check-in | 17.0 s | PASS: "cannot check you in", fillout link |
+| Q6 Passport | HANG ×2 (>235 s, >194 s) | FAIL: stuck at "Searching for Passport information: 99–100%" (nested Get Webpage) |
+| Q7 Changes | 20.5 s | PARTIAL: "Nothing is canceled" (the changes bug) |
+
+### Claude with Ask OHNY set to "Always allow" (all 7 tools, set in Customize, Connectors)
+
+| Model | Q2 Site | Q3 Plan | Q4 Directions |
+|---|---|---|---|
+| Sonnet 5.5 (default) | 14.0 s, web search, wrong date frame (2026-10-07 run) | **39.7 s**, PASS (connector; 7 stops; check ran) — was ~82 s with approvals | 7.4 s, no connector (2026-10-07 run) |
+| Opus 5.5 | **12.8 s, PASS (connector)** | 45.2 s, PASS (CCNY → Synod → tour → Grant → Second Presbyterian; check passed) | **13.1 s, PASS (connector; hours, entrance, access)** |
+| Haiku 5.5 | 8.0 s, web search, Oct 10, unverified "Recreation.gov reservations", FAIL | 28.0 s, FAIL: sent ticket as "St. John the Divine" → resolved to Synod Hall, said "no 2 PM tour" | 6.3 s, no connector; wrong walking direction |
+
+### Gemini other models (Pro plan)
+
+| Model | Q1 Nearby | Q3 Plan |
+|---|---|---|
+| 3.8 Flash (default) | 44.6 s | 52.0 s |
+| 3.1 Pro | 308.0 s, PASS (same 3 sites) | not run |
+| 3.5 Flash-Lite | not run | 146.3 s, PASS (= `/v1/plan/day`) |
+
+### ChatGPT thinking effort (GPT-6)
+
+| Effort | Q3 Plan |
+|---|---|
+| Instant (default) | 18.8 s, PASS |
+| Medium | 77.9 s ("Worked for 57s"), PASS, richer (5 stops, talk time, 8-min slack) |
+
+Each app was set back to its original model afterwards (Claude Sonnet 5.5, Gemini 3.8 Flash, ChatGPT Instant). Single runs; times vary run to run (see Gemini Q1 44.6 s vs Flash-Lite Q3 146 s). Phones: NOT RUN.
