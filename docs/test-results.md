@@ -435,3 +435,7 @@ Phones: NOT RUN for all four.
 | Medium | 77.9 s ("Worked for 57s"), PASS, richer (5 stops, talk time, 8-min slack) |
 
 Each app was set back to its original model afterwards (Claude Sonnet 5.5, Gemini 3.8 Flash, ChatGPT Instant). Single runs; times vary run to run (see Gemini Q1 44.6 s vs Flash-Lite Q3 146 s). Phones: NOT RUN.
+
+## 2026-10-08 — `canceled_now` in `/v1/changes` (local, not deployed)
+
+Tests first: `test/changes-canceled.test.js` (5: canceled-in-snapshot, newly canceled and dropped sites all listed with days/flags; diff unchanged; feed section; `format=text`; tool description) — 4 failed before the change. Tool-budget test caught the longer description; shortened. `npm test` 207/207. Not deployed; the live service still omits the two canceled sites from `/v1/changes`.

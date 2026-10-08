@@ -48,7 +48,7 @@ HELPER SERVICE REFERENCE
 
 A tiny read-only service at https://naidionov.com/ohny/skills. It holds **no visitor data**. It reads OHNY's public lineup live, adds saved descriptions and map positions, and does the "open now / closing soon / nearest first" maths so answers are consistent.
 
-All calls are `GET`, return JSON, and accept `now=YYYY-MM-DDTHH:MM` (New York time) to test as if it were another moment. `plan/day`, `nearby` and `search` also accept `format=text`: short plain lines with exact times, slugs and the as-of time already in New York time, for page readers that summarise what they fetch.
+All calls are `GET`, return JSON, and accept `now=YYYY-MM-DDTHH:MM` (New York time) to test as if it were another moment. `plan/day`, `nearby`, `search` and `changes` also accept `format=text`: short plain lines with exact times, slugs and the as-of time already in New York time, for page readers that summarise what they fetch.
 
 Every response has:
 - `as_of`: when the lineup was last read from ohny.org. `live`: true if that was just now.
@@ -65,7 +65,7 @@ Calls
 | `GET https://naidionov.com/ohny/skills/v1/plan/day?ticket=<slug or site name>%40<YYYY-MM-DDTHH:MM>&from=<lat>,<lng>` | **Plan a day around tickets the visitor holds, in one call.** Finds each ticketed site by slug or name, confirms the session (if there is none at that time it lists the real times and plans nothing), then suggests places before the first ticket (from `from`, or `near=<slug>`) with `leave_by`, places after the last one (from that site, when it ends), a suggested order and a plan check. Several tickets separated by `;`. Also `interests`, `mode`, `child_age`, `wheelchair=true`, `limit` (default 3), `format=text`. |
 | `GET https://naidionov.com/ohny/skills/v1/search?q=` | Find a site by name, partner, neighborhood or topic. Returns up to 5 cards with live status. |
 | `GET https://naidionov.com/ohny/skills/v1/site/<slug>` | Everything about one site, fetched fresh: description, access notes, accessibility, websites, all visit times with ticket links, status now, maps links, related nearby sites, and `checkin` (OHNY's check-in form link), `heads_up`, and `related_sites` (OHNY's own nearby suggestions with walking time and status). |
-| `GET https://naidionov.com/ohny/skills/v1/changes` | What changed on ohny.org since the saved copy: new, removed, status changes, new times. Use for "anything new?" and before finalising a plan. |
+| `GET https://naidionov.com/ohny/skills/v1/changes` | `canceled_now`: every site canceled right now (with its days), then what changed on ohny.org since the saved copy: new, removed, status changes, new times. Use for "anything new or canceled?" and before finalising a plan; answer cancellations from `canceled_now`, not from the diff. |
 | `GET https://naidionov.com/ohny/skills/v1/meta` | Freshness and counts. |
 
 Reading a result card

@@ -1,5 +1,6 @@
 import { fmtTime } from './core/time.js';
 import { isCanceled } from './core/status.js';
+import { canceledNow } from './core/lineup.js';
 
 // Plain-markdown rendering of the lineup for chatbots that can only read public web pages (Gemini grounding).
 // Data only: no visitor input, and no "open now" (the page can't know the visitor's time) - the Gem works that out.
@@ -49,6 +50,10 @@ export function renderIndex(lineup) {
 export function renderChanges(lineup) {
   const { added, removed, modified } = lineup.changes;
   const out = header('OHNY Weekend 2026: what changed', lineup);
+  const canceled = canceledNow(lineup.sites, lineup.changes);
+  out.push('## Canceled now', '', ...(canceled.length
+    ? canceled.map((c) => `- ${c.name} (${c.slug})${c.days.length ? `: ${c.days.join(', ')}` : ''}`)
+    : ['Nothing is canceled.']), '');
   if (!added.length && !removed.length && !modified.length) {
     out.push('No changes since the saved copy was made.');
   }

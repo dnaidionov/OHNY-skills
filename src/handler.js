@@ -1,5 +1,5 @@
 import { normalizeRecord } from './core/normalize.js';
-import { mergeLive } from './core/lineup.js';
+import { mergeLive, canceledNow } from './core/lineup.js';
 import { resolveNow, FESTIVAL, isFestivalDay, fromWallMinutes, phaseAt } from './core/time.js';
 import { statusAt, statusLine } from './core/status.js';
 import { nearby, search, card } from './core/search.js';
@@ -10,7 +10,7 @@ import { handleMcp } from './mcp.js';
 import { parseSpecs, resolveTickets, checkPlan, TICKET_BUFFER_MIN, DEFAULT_STAY_MIN, NEARBY_MIN_STAY_MIN } from './core/tickets.js';
 import { renderIndex, renderChanges } from './feed.js';
 import { planDay } from './core/plan.js';
-import { planText, nearbyText, searchText } from './text.js';
+import { planText, nearbyText, searchText, changesText } from './text.js';
 import { landingHtml } from './landing.js';
 import { ICON_SVG } from './icon.js';
 import { STANDALONE } from './standalone-data.js';
@@ -179,9 +179,9 @@ export async function handle(request, deps) {
         'GET /v1/plan/day?ticket=<slug or name>@<date-time>&from=lat,lng': 'Plan a day around held tickets in one call: confirms the session (or lists the real times), stops before and after with leave-by times, an order and a check (also near=<slug>, interests, mode, child_age, wheelchair=true, limit, format=text)',
         'GET /v1/search?q=': 'Find sites by name, partner, neighborhood or topic',
         'GET /v1/site/<slug>': 'Full, freshly fetched details for one site',
-        'GET /v1/changes': 'What changed on ohny.org since the saved copy (cancellations, new times, new sites)',
+        'GET /v1/changes': 'Every site canceled now, plus what changed on ohny.org since the saved copy (new times, new sites, sell-outs)',
         'POST /mcp': 'MCP connector endpoint (Streamable HTTP) for Claude, ChatGPT and other MCP clients',
-        'format=text': 'On plan/day, nearby and search: short plain lines instead of JSON, times in New York time',
+        'format=text': 'On plan/day, nearby, search and changes: short plain lines instead of JSON, times in New York time',
         'any request': 'Add now=2026-10-17T14:30 (New York time) to test as if it were another moment',
       },
     });
@@ -201,7 +201,8 @@ export async function handle(request, deps) {
 
   if (path === '/v1/changes') {
     const lineup = await getLineup(deps);
-    return json(envelope(lineup, now, { changes: lineup.changes }));
+    const body = envelope(lineup, now, { canceled_now: canceledNow(lineup.sites, lineup.changes), changes: lineup.changes });
+    return q.get('format') === 'text' ? asText(changesText(body)) : json(body);
   }
 
   if (path === '/v1/search') {

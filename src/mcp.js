@@ -134,7 +134,7 @@ const TOOLS_ALL = [
   {
     name: 'ohny_changes',
     title: 'What changed on OHNY\'s lineup',
-    description: `Only for Open House New York (OHNY) Weekend. Use before finalising a plan, or when asked about cancellations or new sites. Lists cancellations, new sites and changed times on ohny.org since the saved copy.`,
+    description: `Only for Open House New York (OHNY) Weekend. Use before finalising a plan, or when asked about cancellations or new sites. Lists all sites canceled now, then new sites and changed times since the saved copy.`,
     inputSchema: { type: 'object', properties: { now: NOW } },
     path: '/v1/changes',
   },

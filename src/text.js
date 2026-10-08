@@ -77,3 +77,13 @@ export function searchText(b) {
   }
   return `${lines.join('\n')}\n`;
 }
+
+export function changesText(b) {
+  const c = b.changes;
+  const lines = [...header('OHNY changes', b), `CANCELED NOW: ${b.canceled_now.length}${b.canceled_now.length ? '' : ' (nothing is canceled)'}`];
+  for (const x of b.canceled_now) lines.push(`- ${x.name} (${x.slug})${x.days.length ? `: ${x.days.join(', ')}` : ''}${x.removed ? ', removed from the lineup' : ''}`);
+  lines.push(`CHANGED SINCE THE SAVED COPY: ${c.added.length} new, ${c.removed.length} removed, ${c.modified.length} changed.`);
+  for (const s of c.added) lines.push(`- NEW: ${s.name} (${s.slug})`);
+  for (const m of c.modified) lines.push(`- ${m.name} (${m.slug}): ${m.changes.map((x) => `${x.field} ${x.from} -> ${x.to}`).join('; ')}`);
+  return `${lines.join('\n')}\n`;
+}

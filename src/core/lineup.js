@@ -1,5 +1,6 @@
 import { normalizeRecord, windowSig } from './normalize.js';
 import { fmtTime } from './time.js';
+import { isCanceled } from './status.js';
 
 const sameSet = (a = [], b = []) => a.length === b.length && [...a].sort().join('|') === [...b].sort().join('|');
 
@@ -72,4 +73,29 @@ export function mergeLive(snapSites, liveRecords) {
 
 function describeWins(wins) {
   return wins.map((w) => `${w.date} ${fmtTime(w.start)}-${fmtTime(w.end)}${w.kind === 'session' ? ' (tour)' : ''}`).join('; ') || 'none';
+}
+
+const WEEKDAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const dayName = (date) => {
+  const [y, m, d] = date.split('-').map(Number);
+  return `${WEEKDAYS[new Date(Date.UTC(y, m - 1, d)).getUTCDay()]} ${MONTHS[m - 1]} ${d}`;
+};
+
+/**
+ * Every site canceled right now, whether it was canceled before or after the snapshot was taken.
+ * The since-snapshot diff alone misses sites that were already canceled when the snapshot was built.
+ */
+export function canceledNow(sites, changes) {
+  const recent = new Set([
+    ...changes.removed.map((s) => s.slug),
+    ...changes.modified.filter((m) => m.changes.some((c) => c.field === 'status' && /cancel/i.test(c.to))).map((m) => m.slug),
+  ]);
+  return sites.filter(isCanceled).map((s) => ({
+    slug: s.slug,
+    name: s.name,
+    days: [...new Set((s.windows ?? []).map((w) => w.date))].sort().map(dayName),
+    since_snapshot: recent.has(s.slug),
+    ...(s.removed ? { removed: true } : {}),
+  })).sort((a, b) => a.name.localeCompare(b.name));
 }
