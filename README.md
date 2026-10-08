@@ -2,7 +2,7 @@
 
 A pocket guide to Open House New York Weekend (Oct 16-18, 2026): the check-in link, "what's open near me", site and festival Q&A, day planning, directions. Built for phones and voice. **Not affiliated with OHNY.** Made by [Dmitry Naidionov](https://naidionov.com).
 
-**ChatGPT visitor target:** first-time setup entirely on a phone, followed by use in the native ChatGPT mobile app. That installation route is **not yet verified or ready for a supported launch**. See [the mobile requirements and trial instructions](docs/chatgpt-mobile.md).
+**ChatGPT visitor target:** first-time setup entirely on a phone, followed by use in the native ChatGPT mobile app. That installation route (the plugin-directory listing) is **not yet approved or verified**. Until then, the manual gives an interim web setup (Plugins, Add custom MCP server). See [the mobile requirements and trial instructions](docs/chatgpt-mobile.md).
 
 ## Develop with Codex, ChatGPT desktop, or Claude Code
 
@@ -16,7 +16,7 @@ See [the publisher guide](docs/chatgpt/publisher-guide.md), [phone-only acceptan
 
 ## Install
 
-Choose the route for your app. The ChatGPT mobile route is still being verified; the no-install option below is a one-chat trial, not persistent setup.
+Choose the route for your app. ChatGPT's plugin-directory listing is pending, so ChatGPT users add the connector themselves on chatgpt.com for now; the no-install option below is a one-chat trial, not persistent setup.
 
 ### 1. Connector (recommended; works on Claude Free, and then on your phone)
 
@@ -27,7 +27,7 @@ The helper is also an MCP server, so it can be added as a **custom connector**. 
 - **Claude (all plans, Free gets one custom connector):** on claude.ai in a browser or the desktop app, open **Settings, Connectors, Add custom connector**, paste the URL, and save. Then open the Claude app on your phone, signed in to the same account: the connector is there, and voice works as usual. (As of writing, the mobile apps use connectors but can't add new ones.) Start a chat with "ohny, what's open near me?" or pick the **ohny** prompt from the + menu.
 - **Location (phone, optional):** the first time you ask what's open near you, Claude may ask to use your location. Allow it and it won't need to ask where you are. Change it later in Android: Settings, Apps, Claude, Permissions, or iPhone: Settings, Claude, Location. Not available on Team/Enterprise plans, or on claude.ai and the desktop app; there, name a cross street or landmark.
 - **Gemini (US, 18+, personal Google account):** on gemini.google.com in a browser, open Connected Apps ([gemini.google.com/apps](https://gemini.google.com/apps)), choose **Add a custom app** under Custom apps, and paste the server URL. No sign-in is needed. Once added, it also works in the Gemini phone app. Google offers no prefilled link, so the landing page gives the address to copy and the settings link. Tested on the web on 2026-10-07 (see `docs/test-results.md`). Not yet tested in the phone app.
-- **ChatGPT mobile:** there is no verified phone-only installation route yet. Use the [mobile guide](docs/chatgpt-mobile.md) for the current trial and release requirements. Desktop developer connections are for implementation/testing and do not meet visitor setup requirements.
+- **ChatGPT (interim, until the plugin directory listing is approved):** on chatgpt.com in a browser, open **Plugins** ([chatgpt.com/plugins](https://chatgpt.com/plugins)), choose **Add**, then **Add custom MCP server**. Name it Ask OHNY, paste the server URL under Connection (Server URL), set Authentication to **No authentication**, tick **I understand and want to continue**, and choose **Create as a plugin**. OpenAI's docs say this needs no developer mode. Tested on chatgpt.com (web); use in the ChatGPT phone app has not been tested. The landing page's ChatGPT tab shows these steps. See the [mobile guide](docs/chatgpt-mobile.md) for the phone-only target and release requirements.
 - **Public directory distribution** has not been completed. For ChatGPT, an account-available remote plugin is a candidate; a real listing/link and successful phone-only onboarding must be verified before offering an install button.
 - Check it with the official inspector: `npx @modelcontextprotocol/inspector --cli https://naidionov.com/ohny/skills/mcp --transport http --method tools/list`
 
@@ -150,7 +150,7 @@ It checks the web page, live freshness from ohny.org, nearby, search, site detai
 | Platform | Free accounts | What to do |
 |---|---|---|
 | **Claude** | **No.** Uploading a custom skill needs Pro, Max, Team or Enterprise with code execution on. | Zip `skills/ohny` and add it under Customize, Skills. An org on Team/Enterprise can provision it for everyone. The helper's domain may need allowing for network access; if it can't be reached, the skill falls back to OHNY's public files. |
-| **ChatGPT mobile** | **Not verified for OHNY.** Check every advertised plan using a real phone. | Phone-only setup is required. No supported installation is ready yet; see [the mobile guide](docs/chatgpt-mobile.md). Local skill uploads and developer setup are not visitor instructions. |
+| **ChatGPT** | **Interim route:** add the connector on chatgpt.com (Plugins, Add, Add custom MCP server; no developer mode per OpenAI's docs). Plans not verified. | Follow the steps above or the landing page's ChatGPT tab. The plugin-directory listing is pending; phone-only setup and use in the phone app are still to be tested (see [the mobile guide](docs/chatgpt-mobile.md)). |
 | **Gemini** | **Yes, with limits:** custom apps need age 18+, the US, a personal Google account, English and Keep Activity on. A paid plan wasn't needed in Google's help page; only a Pro account was tested. | Add the connector as a custom app on gemini.google.com (see above). Elsewhere, use the pasted guide (one chat, may not reach live information) or the Opal app. |
 
 ## Choosing a model

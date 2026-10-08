@@ -6,6 +6,16 @@
 
 The publisher package, listing metadata, policy drafts and recording/publishing guides are now prepared. Follow [the publisher guide](chatgpt/publisher-guide.md) and [phone-only test walkthrough](chatgpt/phone-acceptance.md). A ZIP does not complete identity/domain verification, policy publication, demo recording, portal scans, review or native acceptance.
 
+## Interim setup (until the plugin directory listing is approved)
+
+Owner's decision, 2026-10-08: until Ask OHNY is approved for ChatGPT's plugin directory, the visitor manual gives the current self-serve route. This temporarily relaxes the phone-only rule above. The phone-only target and the acceptance tests below still apply to the final listing, and the owner will update the instructions once it's approved.
+
+1. On chatgpt.com in a browser, open **Plugins** (https://chatgpt.com/plugins), choose **Add**, then **Add custom MCP server**.
+2. Name: Ask OHNY. Connection: Server URL `https://naidionov.com/ohny/skills/mcp`. Authentication: **No authentication**.
+3. Read the risk warning, tick **I understand and want to continue**, and choose **Create as a plugin**.
+
+OpenAI's guide ("Add custom MCP server", checked 2026-10-08) says to "Use ChatGPT on the web" and doesn't mention developer mode or plans. The owner's own account shows "Ask OHNY — development test" installed this way and passed the 7-question web run (`docs/test-results.md`). **Not tested:** adding it from a phone browser, using it in the ChatGPT phone app, and which plans allow it. Record these as NOT RUN until tested.
+
 ## Try a single conversation on your phone
 
 This is a test of one conversation, not the finished reusable setup. It depends on the ChatGPT app being able to open web sources; that capability and live-data access must be checked in the actual account.

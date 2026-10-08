@@ -176,3 +176,8 @@ Owner's decision: deprioritize the Google Opal app. It is an experiment, not a m
 - Mention it only as an experimental fallback.
 
 Context: Opal is being wound down (its banner: "graduating out of Labs on November 17, 2026"). On 2026-10-08 the editor's Publish button was disabled ("You can't publish your Opal because it isn't shared yet") although the Drive file is shared with anyone with the link. So the Passport-facts edit stays in the draft, and the Oct 7 published version stays live.
+## 2026-10-08 — Interim ChatGPT setup in the visitor manual
+
+Owner's decision: until Ask OHNY is approved for ChatGPT's plugin directory, the manual (landing page ChatGPT tab, README, `docs/chatgpt-mobile.md`) gives the current self-serve route. On chatgpt.com: Plugins, Add, Add custom MCP server; Server URL `https://naidionov.com/ohny/skills/mcp`; No authentication; "I understand and want to continue"; Create as a plugin. The owner will replace it with the listing link once it's approved.
+
+This temporarily relaxes the AGENTS.md rule that ChatGPT setup must happen entirely on the phone. It was chosen over keeping only the one-chat paste trial because a persistent connector is what the owner's own tests used and it passed all 7 questions on the web. Costs and caveats, stated on the page: setup is on chatgpt.com in a browser; phone-app use and plan eligibility are untested. OpenAI's guide (checked 2026-10-08) says web, no developer mode. The one-chat trial stays as a fallback. Tests: `test/chatgpt-setup.test.js`. Two older tests in `test/mcp.test.js` were updated: they required the "being verified" label and forbade a copyable server address.

@@ -11,6 +11,7 @@ export const LINKS = {
   claude: 'https://claude.ai/customize/connectors?modal=add-custom-connector&connectorName=Ask%20OHNY&connectorUrl=https%3A%2F%2Fnaidionov.com%2Fohny%2Fskills%2Fmcp',
   standalone: 'https://naidionov.com/ohny/skills/guide',
   geminiApps: 'https://gemini.google.com/apps',
+  chatgptPlugins: 'https://chatgpt.com/plugins',
 };
 
 export const PASTE_LINE = `Use ${LINKS.standalone} as your guide to Open House New York Weekend for this chat. Then ask me what I'd like to do.`;
@@ -196,13 +197,25 @@ export function landingHtml() {
     </section>
 
     <section class="card panel" role="tabpanel" id="panel-chatgpt" aria-labelledby="tab-chatgpt" hidden>
-      <h3>ChatGPT mobile <span class="tag">setup being verified</span></h3>
-      <p>The full phone-only setup is not ready yet.</p>
-      <p><strong>One-chat trial:</strong> open a new chat in the ChatGPT app on your phone and paste this message. It needs access to web pages.</p>
+      <h3>ChatGPT <span class="tag">directory listing pending</span></h3>
+      <p>Until Ask OHNY is approved for ChatGPT's plugin directory, add it yourself once on chatgpt.com in a browser:</p>
+      <ol>
+        <li>Copy this address:</li>
+      </ol>
+      <code class="copybox" id="mcp-chatgpt">${esc(LINKS.mcp)}</code>
+      <button class="btn ghost" type="button" data-copy="mcp-chatgpt">Copy address</button>
+      <ol start="2">
+        <li>Open ChatGPT's Plugins page, choose <strong>Add</strong>, then <strong>Add custom MCP server</strong>.</li>
+        <li>Name it <strong>Ask OHNY</strong>, paste the address under Connection (Server URL), and set Authentication to <strong>No authentication</strong>.</li>
+        <li>Read the warning, tick <strong>I understand and want to continue</strong>, then choose <strong>Create as a plugin</strong>.</li>
+      </ol>
+      <a class="btn" href="${esc(LINKS.chatgptPlugins)}" target="_blank" rel="noopener noreferrer">Open ChatGPT Plugins</a>
+      <p>Then start a chat and say <em>"ohny, what's open near me?"</em> It's read-only and needs no sign-in. We've tested this on chatgpt.com; using it in the ChatGPT phone app has not been tested yet.</p>
+      <p><strong>Which model?</strong> Keep thinking effort on Instant. More thinking made a day plan about four times slower (19 s to 78 s) with the same facts, just a little more detail.</p>
+
+      <p><strong>Just trying it?</strong> Paste this into a new chat instead. It works for that chat only and needs access to web pages.</p>
       <code class="copybox" id="paste-chatgpt">${esc(PASTE_LINE)}</code>
       <button class="btn ghost" type="button" data-copy="paste-chatgpt">Copy trial message</button>
-      <p><strong>Which model?</strong> Keep thinking effort on Instant. More thinking made a day plan about four times slower (19 s to 78 s) with the same facts, just a little more detail.</p>
-      <p>This only applies to the current chat; it does not install OHNY. If ChatGPT cannot open the guide or check live information, current hours and availability cannot be confirmed.</p>
     </section>
 
     <section class="card panel" role="tabpanel" id="panel-gemini" aria-labelledby="tab-gemini" hidden>
@@ -444,7 +457,7 @@ export function landingHtml() {
   </details>
   <details>
     <summary>It's not working in ChatGPT or Gemini</summary>
-    <p>ChatGPT mobile setup is still being verified. You can try the one-chat message under <a href="#chatgpt" data-tab="chatgpt">ChatGPT</a> if your account can open web pages. In Gemini, check that Ask OHNY is switched on under Connected Apps (Custom apps) on gemini.google.com, and start your message with "ohny". If the guide or live information cannot be read, a pasted trial can't confirm what is open now.</p>
+    <p>In ChatGPT, check that Ask OHNY appears under Plugins on chatgpt.com, and start your message with "ohny". You can also try the one-chat message under <a href="#chatgpt" data-tab="chatgpt">ChatGPT</a> if your account can open web pages. In Gemini, check that Ask OHNY is switched on under Connected Apps (Custom apps) on gemini.google.com, and start your message with "ohny". If the guide or live information cannot be read, a pasted trial can't confirm what is open now.</p>
   </details>
   <details>
     <summary>It said something wrong, or something else isn't working</summary>
