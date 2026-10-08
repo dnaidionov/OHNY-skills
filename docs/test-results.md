@@ -349,3 +349,5 @@ Product: Gemini web app (gemini.google.com), Gemini Flash, owner's personal acco
 | Gaps | Gave "arrive by 1:45" but no leave-by time from the first stop. Called Cast Hall (W 44th St) "just south" of Columbus Circle (~1.5 mi). Ended with a question and suggestion chips. Did not confirm which tools were called (Gemini shows only "Connecting to"). |
 
 Phone (Gemini app): NOT RUN. Accounts outside the US or work/school accounts: NOT RUN. Landing-page Gemini tab: tests `test/gemini-connector.test.js` (4, failed before the change), `npm test` 202/202; not deployed.
+
+Deployed Worker 3346d0b6-93d2-433b-af1f-33e770ebd364; `npm run smoke` naidionov.com 19/19, workers.dev 17/17. The landing page on both hosts serves the new Gemini tab (`Open Gemini Connected Apps` → https://gemini.google.com/apps); checked visually in the desktop browser pane. Phone: NOT RUN.
