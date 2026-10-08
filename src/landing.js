@@ -10,6 +10,7 @@ export const LINKS = {
   mcp: 'https://naidionov.com/ohny/skills/mcp',
   claude: 'https://claude.ai/customize/connectors?modal=add-custom-connector&connectorName=Ask%20OHNY&connectorUrl=https%3A%2F%2Fnaidionov.com%2Fohny%2Fskills%2Fmcp',
   standalone: 'https://naidionov.com/ohny/skills/guide',
+  geminiApps: 'https://gemini.google.com/apps',
 };
 
 export const PASTE_LINE = `Use ${LINKS.standalone} as your guide to Open House New York Weekend for this chat. Then ask me what I'd like to do.`;
@@ -202,11 +203,22 @@ export function landingHtml() {
     </section>
 
     <section class="card panel" role="tabpanel" id="panel-gemini" aria-labelledby="tab-gemini" hidden>
-      <h3>Gemini</h3>
-      <p>Gemini can't add connectors like this yet, so use the no-install route. Paste this into a new chat. It works for that chat only.</p>
+      <h3>Gemini <span class="tag">US, 18+</span></h3>
+      <p>Add it once on gemini.google.com in a browser (a computer is easiest); it then works in the Gemini phone app too.</p>
+      <ol>
+        <li>Copy this address:</li>
+      </ol>
+      <code class="copybox" id="mcp-gemini">${esc(LINKS.mcp)}</code>
+      <button class="btn ghost" type="button" data-copy="mcp-gemini">Copy address</button>
+      <ol start="2">
+        <li>Open Gemini's Connected Apps page, scroll to <strong>Custom apps</strong> and choose <strong>Add a custom app</strong>.</li>
+        <li>Paste the address, then confirm. No sign-in is needed.</li>
+      </ol>
+      <a class="btn" href="${esc(LINKS.geminiApps)}" target="_blank" rel="noopener noreferrer">Open Gemini Connected Apps</a>
+      <p>Then start a chat and say <em>"ohny, what's open near me?"</em></p>
+      <p>Google allows custom apps for people 18 or older in the US, signed in with a personal Google account (not work or school), with Gemini in English and Keep Activity on. Otherwise, paste this into a new chat instead; it works for that chat only and may not reach live information:</p>
       <code class="copybox" id="paste-gemini">${esc(PASTE_LINE)}</code>
       <button class="btn ghost" type="button" data-copy="paste-gemini">Copy</button>
-      <p>It needs Gemini's web browsing to be on, and live "what's open now" checks may be limited.</p>
     </section>
 
     <section class="card panel" role="tabpanel" id="panel-others" aria-labelledby="tab-others" hidden>
@@ -428,7 +440,7 @@ export function landingHtml() {
   </details>
   <details>
     <summary>It's not working in ChatGPT or Gemini</summary>
-    <p>ChatGPT mobile setup is still being verified. You can try the one-chat message under <a href="#chatgpt" data-tab="chatgpt">ChatGPT</a> if your account can open web pages. Gemini uses a pasted message too. If the guide or live information cannot be read, neither trial can confirm what is open now.</p>
+    <p>ChatGPT mobile setup is still being verified. You can try the one-chat message under <a href="#chatgpt" data-tab="chatgpt">ChatGPT</a> if your account can open web pages. In Gemini, check that Ask OHNY is switched on under Connected Apps (Custom apps) on gemini.google.com, and start your message with "ohny". If the guide or live information cannot be read, a pasted trial can't confirm what is open now.</p>
   </details>
   <details>
     <summary>It said something wrong, or something else isn't working</summary>

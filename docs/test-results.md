@@ -337,3 +337,15 @@ Tests first: `test/connectors-plan-day.test.js` (8: tool schema and read-only an
 ## 2026-10-07 — `ohny_plan_day` deployed
 
 Deployed Worker c2178986-c6fd-477f-9bab-50e6a94291be. The first `npm run smoke` passed on naidionov.com (19/19), but workers.dev still listed 6 tools for a moment while the deploy reached it. Both lists showed 7 tools a minute later, and the re-run passed: naidionov.com 19/19, workers.dev 17/17. Live connector call `ohny_plan_day` (ticket "vertical tour st john the divine@2026-10-17T14:00", from Columbus Circle, pretend 10:00): no error, the name resolved, itinerary 10:09 AM Prime Produce → 2:00 PM Vertical Tour → 3:01 PM Synod Hall, check ok. Claude and ChatGPT apps: NOT RUN.
+
+## 2026-10-07 — Gemini custom app (connector) on gemini.google.com, web
+
+Product: Gemini web app (gemini.google.com), Gemini Flash, owner's personal account (Pro plan), run in the Claude desktop built-in browser. The custom app "Ask OHNY Unofficial" (`https://naidionov.com/ohny/skills/mcp`) had already been added by the owner; its details listed 7 actions including `ohny_plan_day` (last synced 9:30 PM). Worker c2178986.
+
+| Turn | Result |
+|---|---|
+| "ohny: i have tickets for vertical tour of st john the divine for saturday afternoon. plan my saturday around that" | PASS (~25 s, "Connecting to Ask OHNY Unofficial"): asked which session, listing the real Saturday times 12:00 PM and 2:00 PM; entry rules (security, bags, age 12+); Synod Hall 10-4 next door; unofficial note. |
+| "2pm. I'll start from Columbus Circle around 10am. I like architecture and history." | PASS (~25 s): two options. Every site named is an OHNY site (Cast Hall, Synod Hall, General Grant National Memorial (12-4, matches live), Sotheby's Breuer, Second Presbyterian), and it noted places skipped for time. |
+| Gaps | Gave "arrive by 1:45" but no leave-by time from the first stop. Called Cast Hall (W 44th St) "just south" of Columbus Circle (~1.5 mi). Ended with a question and suggestion chips. Did not confirm which tools were called (Gemini shows only "Connecting to"). |
+
+Phone (Gemini app): NOT RUN. Accounts outside the US or work/school accounts: NOT RUN. Landing-page Gemini tab: tests `test/gemini-connector.test.js` (4, failed before the change), `npm test` 202/202; not deployed.
