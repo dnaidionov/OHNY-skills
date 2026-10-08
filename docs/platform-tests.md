@@ -45,6 +45,6 @@ Phone and voice coverage still uses `docs/phone-test.md`, including its location
 
 ## Results as of this setup
 
-ChatGPT mobile M1–M9 are **NOT RUN**. There is no verified phone-only OHNY installation route in this repository yet. Mobile release readiness remains blocked until that route and native acceptance evidence exist.
+On 2026-10-08 the owner tested use of Ask OHNY (added beforehand on the web) in the Claude, ChatGPT and Gemini Android apps: all three work by text; Claude and ChatGPT also by voice; Gemini's voice mode can't use custom connected apps (see `docs/test-results.md`; Android only, app versions partly unrecorded). That is not a pass of the checks below. ChatGPT mobile M1–M9, including phone-only setup, are otherwise **NOT RUN**. There is no verified phone-only OHNY installation route in this repository yet. Mobile release readiness remains blocked until that route and native acceptance evidence exist.
 
 The repository's shared checks and discovery-path tests are recorded in `docs/test-results.md`. Fresh native D1–D4 and V1–V9 runs for Codex, Claude Code, and ChatGPT desktop have **NOT RUN** as part of this setup. Existing Claude phone observations remain historical evidence for their recorded configurations only.

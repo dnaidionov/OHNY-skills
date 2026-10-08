@@ -194,7 +194,7 @@ export function landingHtml() {
 
     <section class="card panel" role="tabpanel" id="panel-claude" aria-labelledby="tab-claude">
       <h3>Claude <span class="tag">works on free accounts</span></h3>
-      <p>One tap opens Claude's "Add custom connector" box with everything filled in. Check it and confirm. Easiest on a computer; once added it also works in the Claude phone app.</p>
+      <p>One tap opens Claude's "Add custom connector" box with everything filled in. Check it and confirm. Easiest on a computer; once added it also works in the Claude phone app, by typing and by voice (tested on Android, 2026-10-08).</p>
       <a class="btn" href="${esc(LINKS.claude)}" target="_blank" rel="noopener noreferrer">${CLAUDE_ICON_SVG}Add to Claude</a>
       <p>Then start a chat and say <em>"ohny, what's open near me?"</em> The first time, Claude asks to approve each tool: choose <strong>Always allow</strong>, since none of them change anything.</p>
       <p><strong>Location (phone, optional):</strong> the first time you ask what's open near you, Claude may ask to use your location. Allow it and it won't need to ask where you are. Change it later in Android Settings, Apps, Claude, Permissions, or iPhone Settings, Claude, Location. Not available on Team or Enterprise plans, or on claude.ai and the desktop app: there, name a cross street or landmark.</p>
@@ -217,7 +217,7 @@ export function landingHtml() {
         <li>Read the warning, tick <strong>I understand and want to continue</strong>, then choose <strong>Create as a plugin</strong>.</li>
       </ol>
       <a class="btn" href="${esc(LINKS.chatgptPlugins)}" target="_blank" rel="noopener noreferrer">Open ChatGPT Plugins</a>
-      <p>Then start a chat and say <em>"ohny, what's open near me?"</em> It's read-only and needs no sign-in. We've tested this on chatgpt.com; using it in the ChatGPT phone app has not been tested yet.</p>
+      <p>Then start a chat and say <em>"ohny, what's open near me?"</em> It's read-only and needs no sign-in. We've tested this on chatgpt.com, and in the ChatGPT Android app by typing and by voice (2026-10-08), with the plugin added beforehand on the web. Setting it up from the phone alone hasn't been tested.</p>
       <p><strong>Which model?</strong> Keep thinking effort on Instant. More thinking made a day plan about four times slower (19 s to 78 s) with the same facts, just a little more detail.</p>
 
       <p><strong>Just trying it?</strong> Paste this into a new chat instead. It works for that chat only and needs access to web pages.</p>
@@ -228,6 +228,7 @@ export function landingHtml() {
     <section class="card panel" role="tabpanel" id="panel-gemini" aria-labelledby="tab-gemini" hidden>
       <h3>Gemini <span class="tag">US, 18+</span></h3>
       <p>Add it once on gemini.google.com in a browser (a computer is easiest); it then works in the Gemini phone app too.</p>
+      <p><strong>Voice:</strong> in our Android test (2026-10-08) Gemini used Ask OHNY when we typed, but its voice mode can't use custom connected apps. For voice, use Claude or ChatGPT.</p>
       <ol>
         <li>Copy this address:</li>
       </ol>

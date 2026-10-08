@@ -255,7 +255,7 @@ test('ChatGPT setup is labeled as pending the directory listing and keeps a clea
   const panel = html.match(/<section[^>]*id="panel-chatgpt"[\s\S]*?<\/section>/)?.[0];
   assert.ok(panel, 'ChatGPT setup panel must be available');
   assert.match(panel, /directory listing pending/);
-  assert.match(panel, /phone app has not been tested/i);
+  assert.match(panel, /setting it up from the phone alone hasn't been tested/i);
   assert.match(panel, /works for that chat only/i);
   assert.match(panel, /id="paste-chatgpt"/);
   assert.match(panel, /data-copy="paste-chatgpt"/);

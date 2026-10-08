@@ -14,7 +14,7 @@ Owner's decision, 2026-10-08: until Ask OHNY is approved for ChatGPT's plugin di
 2. Name: Ask OHNY. Connection: Server URL `https://naidionov.com/ohny/skills/mcp`. Authentication: **No authentication**.
 3. Read the risk warning, tick **I understand and want to continue**, and choose **Create as a plugin**.
 
-OpenAI's guide ("Add custom MCP server", checked 2026-10-08) says to "Use ChatGPT on the web" and doesn't mention developer mode or plans. The owner's own account shows "Ask OHNY — development test" installed this way and passed the 7-question web run (`docs/test-results.md`). **Not tested:** adding it from a phone browser, using it in the ChatGPT phone app, and which plans allow it. Record these as NOT RUN until tested.
+OpenAI's guide ("Add custom MCP server", checked 2026-10-08) says to "Use ChatGPT on the web" and doesn't mention developer mode or plans. The owner's own account shows "Ask OHNY — development test" installed this way and passed the 7-question web run (`docs/test-results.md`). **Tested (2026-10-08, owner, Android):** using the plugin, added beforehand on the web, in the ChatGPT phone app by text and by voice; both used Ask OHNY (`docs/test-results.md`). **Not tested:** adding it from a phone browser or the app alone, iPhone, and which plans allow it. Record these as NOT RUN until tested.
 
 ## Try a single conversation on your phone
 

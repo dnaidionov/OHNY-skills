@@ -507,3 +507,15 @@ Checked on the owner's chatgpt.com account (Plus): Plugins page, Add menu (Creat
 ## 2026-10-08 — Interim ChatGPT setup deployed
 
 PR dnaidionov/OHNY-skills#5 merged into `main` (67953f9); CI `validate` passed; `npm test` 220/220 on the merged tree. Deployed Worker 5ff8378d-399f-4074-87b6-01082080b527. `npm run smoke`: naidionov.com 19/19, workers.dev 17/17. The landing page on both hosts contains the "Add custom MCP server" steps; the ChatGPT tab was checked visually in the desktop browser pane ("directory listing pending", copy box, numbered steps, "Open ChatGPT Plugins" button). Phone browser and ChatGPT phone app: NOT RUN.
+
+## 2026-10-08 — Android phone apps (owner's manual test)
+
+Tested by the owner on an Android phone, with the same questions as the web runs (plan Saturday, "I have tickets for the Vertical tour", what's around Washington Square, and so on). Route: Ask OHNY added beforehand as a connector/plugin/custom app (Claude, ChatGPT: on the web; Gemini: as a custom app), used from the phone apps. Production Worker as deployed that day. Per-question timings and grades were not recorded.
+
+| App (Android) | Text | Voice |
+|---|---|---|
+| Claude | PASS: used Ask OHNY | PASS: used Ask OHNY |
+| ChatGPT | PASS: used the Ask OHNY plugin | PASS: used the Ask OHNY plugin |
+| Gemini (app version 1.0.971139365) | PASS: used Ask OHNY | **BLOCKED by the product:** Gemini's voice mode cannot access custom connected apps, so Ask OHNY can't be used by voice there |
+
+Not recorded: the Claude and ChatGPT app versions, models, plans, Android version, and phone model. Not run: setting up any of the three from the phone alone (NOT RUN; ChatGPT's M1-M9 in `docs/chatgpt-mobile.md` still apply), the location-denied case, and iPhone apps (NOT RUN). This run does not establish ChatGPT mobile release readiness; it shows the connector works in the phone app once added.
