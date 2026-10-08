@@ -503,3 +503,7 @@ PR dnaidionov/OHNY-skills#2 merged into `main` (d3e6c73); CI `validate` passed, 
 ## 2026-10-08 — Interim ChatGPT setup in the manual (local)
 
 Checked on the owner's chatgpt.com account (Plus): Plugins page, Add menu (Create plugin / Upload plugin archive / Add custom MCP server), and the Add custom MCP server form (Name, Connection: Server URL or Tunnel, Authentication, risk checkbox). The form was opened and closed without saving. "Ask OHNY — development test" is already installed there. Tests first: `test/chatgpt-setup.test.js` (3) failed before the change. `npm test` all pass. Phone browser, phone app and other plans: NOT RUN.
+
+## 2026-10-08 — Interim ChatGPT setup deployed
+
+PR dnaidionov/OHNY-skills#5 merged into `main` (67953f9); CI `validate` passed; `npm test` 220/220 on the merged tree. Deployed Worker 5ff8378d-399f-4074-87b6-01082080b527. `npm run smoke`: naidionov.com 19/19, workers.dev 17/17. The landing page on both hosts contains the "Add custom MCP server" steps; the ChatGPT tab was checked visually in the desktop browser pane ("directory listing pending", copy box, numbered steps, "Open ChatGPT Plugins" button). Phone browser and ChatGPT phone app: NOT RUN.
