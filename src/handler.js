@@ -16,13 +16,13 @@ import { landingHtml } from './landing.js';
 const PREVIEW_BOTS = /LinkedInBot|facebookexternalhit|Facebot|Twitterbot|Slackbot|WhatsApp|TelegramBot|Discordbot|Pinterestbot|SkypeUriPreview|Applebot|iMessage/i;
 import { ICON_SVG } from './icon.js';
 import { STANDALONE } from './standalone-data.js';
-import { ICON_PNG_512, ICON_PNG_48, FAVICON_ICO } from './icon-data.js';
+import { ICON_PNG_512, ICON_PNG_48, FAVICON_ICO, OG_PNG } from './icon-data.js';
 
 const b64bytes = (b64) => Uint8Array.from(atob(b64), (c) => c.charCodeAt(0));
 
 const ICONS = {
   '/icon.svg': ['image/svg+xml', ICON_SVG], '/favicon.svg': ['image/svg+xml', ICON_SVG],
-  '/icon.png': ['image/png', b64bytes(ICON_PNG_512)], '/favicon.png': ['image/png', b64bytes(ICON_PNG_48)],
+  '/icon.png': ['image/png', b64bytes(ICON_PNG_512)], '/og.png': ['image/png', b64bytes(OG_PNG)], '/favicon.png': ['image/png', b64bytes(ICON_PNG_48)],
   '/favicon.ico': ['image/x-icon', b64bytes(FAVICON_ICO)],
 };
 

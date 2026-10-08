@@ -13,14 +13,22 @@ for (const ua of ['LinkedInBot/1.0 (compatible; Mozilla/5.0; Apache-HttpClient +
     assert.match(r.headers.get('content-type'), /text\/html/);
     const t = await r.text();
     for (const p of ['og:title', 'og:description', 'og:url', 'og:image', 'twitter:card']) assert.ok(t.includes(p), `missing ${p}`);
-    assert.match(t, /property="og:image" content="https:\/\/naidionov\.com\/ohny\/skills\/[^"]+\.png"/);
+    assert.match(t, /property="og:image" content="https:\/\/naidionov\.com\/ohny\/skills\/og\.png"/);
+    assert.match(t, /property="og:image:width" content="1200"/);
+    assert.match(t, /property="og:image:height" content="630"/);
+    assert.match(t, /name="twitter:card" content="summary_large_image"/);
   });
 }
 
-test('the preview image is a real PNG served at the advertised address', async () => {
-  const r = await handle(new Request('https://naidionov.com/ohny/skills/icon.png'), deps);
+test('the share image is a 1200x630 PNG served at the advertised address (wide, so LinkedIn does not crop it)', async () => {
+  const r = await handle(new Request('https://naidionov.com/ohny/skills/og.png'), deps);
   assert.equal(r.status, 200);
   assert.match(r.headers.get('content-type'), /image\/png/);
+  const b = Buffer.from(await r.arrayBuffer());
+  assert.equal(b.subarray(1, 4).toString(), 'PNG');
+  assert.equal(b.readUInt32BE(16), 1200);
+  assert.equal(b.readUInt32BE(20), 630);
+  assert.ok(b.length < 300_000, 'keep the share image small');
 });
 
 test('API clients and ordinary scripts still get JSON; ?format=json wins even for bots', async () => {
