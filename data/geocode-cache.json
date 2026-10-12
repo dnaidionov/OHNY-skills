@@ -1351,5 +1351,11 @@
   "label": "West Drive, Upper West Side, Manhattan, New York County, New York, 11025, United States"
  },
  "Samaritan Daytop Village Highbridge Development Hard Hat Tour, Bronx, New York": null,
- "Sotheby's and Docomomo US/New York Tri-State, Manhattan, New York": null
+ "Sotheby's and Docomomo US/New York Tri-State, Manhattan, New York": null,
+ "West 108th Street and Riverside Drive, New York, NY, 10025": null,
+ "Andy Kessler Skatepark, Manhattan, New York": {
+  "lat": 40.8050658,
+  "lng": -73.9705689,
+  "label": "Andy Kessler Skate Park, Henry Hudson Parkway, Morningside Heights, Manhattan Community Board 7, Manhattan, New York County, New York, 10115, United States"
+ }
 }
