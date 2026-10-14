@@ -1357,5 +1357,17 @@
   "lat": 40.8050658,
   "lng": -73.9705689,
   "label": "Andy Kessler Skate Park, Henry Hudson Parkway, Morningside Heights, Manhattan Community Board 7, Manhattan, New York County, New York, 10115, United States"
+ },
+ "Sky Farm LIC by the Variety Boys and Girls Club of Queens, Queens, New York": null,
+ "Variety Boys and Girls Club of Queens, Queens, New York": {
+  "lat": 40.7684533,
+  "lng": -73.9280671,
+  "label": "Variety Boys and Girls Club, 30-35, 21st Street, Astoria, Queens, Queens County, New York, 11102, United States"
+ },
+ "West Drive and 79th Street Transverse, New York, NY, 10028": null,
+ "Swedish Cottage Marionette Theatre, Manhattan, New York": {
+  "lat": 40.7799611,
+  "lng": -73.9703474,
+  "label": "Swedish Cottage Marionette Theatre, 79th Street Transverse, Upper West Side, Manhattan, New York County, New York, 10024, United States"
  }
 }

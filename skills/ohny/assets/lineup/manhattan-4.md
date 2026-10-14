@@ -1,12 +1,12 @@
 # OHNY Weekend 2026: Manhattan, area manhattan-4 (40 sites)
 
 Covers latitude 40.77633 to 40.86738, longitude -73.97471 to -73.92289. Mostly: Harlem, Washington Heights, East Harlem, Upper West Side.
-SAVED COPY from 2026-10-13 19:25 UTC. OHNY changes things up to the last minute: cancellations, sold-out tours and new times will NOT show here. Before sending anyone to a site, open the LIVE link at the end of its line (a small file at ohny.org, always current).
+SAVED COPY from 2026-10-14 18:06 UTC. OHNY changes things up to the last minute: cancellations, sold-out tours and new times will NOT show here. Before sending anyone to a site, open the LIVE link at the end of its line (a small file at ohny.org, always current).
 Unofficial helper, not affiliated with Open House New York. Times are New York time.
 Line format: slug | name | neighborhood | address | lat,lng (a trailing ~ means approximate position) | access | when | tags | short description | LIVE link
 "when": drop-in hours are open without a ticket; TOURS need a ticket for that time slot.
 
-- swedish-cottage-26 | Swedish Cottage Marionette Theatre | Central Park | 79-1 West Drive 10028 | 40.78426,-73.96739 | Drop-In | Sat 10:00 AM-4:00 PM; Sun 10:00 AM-4:00 PM | tags: architecture,history,performance,kids,nature | Visit a charming 19th-century cottage in Central Park and learn about its history as a ma… | LIVE: https://ohny.org/data/rec3HIY179aw7fURv.json
+- swedish-cottage-26 | Swedish Cottage Marionette Theatre | Central Park | West Drive and 79th Street Transverse 10028 | 40.77996,-73.97035~ | Drop-In | Sat 10:00 AM-4:00 PM; Sun 10:00 AM-4:00 PM | tags: architecture,history,performance,kids,nature | Visit a charming 19th-century cottage in Central Park and learn about its history as a ma… | LIVE: https://ohny.org/data/rec3HIY179aw7fURv.json
 - cccadi-26 | Caribbean Cultural Center African Diaspora Institute | East Harlem | 120 East 125th Street 10035 | 40.80441,-73.93818 | Drop-In | Sun 12:00 PM-4:00 PM | tags: architecture,history,art,design,civic | Be immersed in a multi-sensory exhibition exploring Carnival as a living legacy of resist… | LIVE: https://ohny.org/data/recuDHiUBhGktXc81.json
 - el-museo-26 | El Museo del Barrio: En Familia, Día de Muertos | East Harlem | 1230 Fifth Avenue 10029 | 40.80216,-73.94537 | Drop-In | Sat 10:00 AM-2:00 PM | tags: art,performance,kids | Join the museum's annual Día de los Muertos celebration with interactive art workshops, l… | LIVE: https://ohny.org/data/recr8AahBtrbcj7Ji.json
 - mta-park-avenue-26 | MTA Park Avenue Viaduct | East Harlem | address given with ticket | 40.7995,-73.94535~ | Sold Out | TOURS (ticket): Fri 9:00 AM-9:45 AM | tags: architecture,waterfront,transit,science,nature | Ages 18+ | Join an in-depth walking tour along a 133-year-old elevated viaduct and learn about the e… | LIVE: https://ohny.org/data/recPkW06V29ceKJZq.json
