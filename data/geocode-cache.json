@@ -1369,5 +1369,10 @@
   "lat": 40.7799611,
   "lng": -73.9703474,
   "label": "Swedish Cottage Marionette Theatre, 79th Street Transverse, Upper West Side, Manhattan, New York County, New York, 10024, United States"
+ },
+ "80 58th Street, Brooklyn, NY, 11232": {
+  "lat": 40.6461357,
+  "lng": -74.0245334,
+  "label": "Brooklyn Army Terminal Annex Building, 80, 58th Street, Sunset Park, Brooklyn, Kings County, New York, 11220, United States"
  }
 }
