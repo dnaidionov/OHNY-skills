@@ -1374,5 +1374,11 @@
   "lat": 40.6461357,
   "lng": -74.0245334,
   "label": "Brooklyn Army Terminal Annex Building, 80, 58th Street, Sunset Park, Brooklyn, Kings County, New York, 11220, United States"
+ },
+ "West 122nd Street and Riverside Drive, New York, NY, 10027": null,
+ "General Grant National Memorial, Manhattan, New York": {
+  "lat": 40.8134538,
+  "lng": -73.9630506,
+  "label": "General Grant National Memorial, 501, Riverside Drive, Morningside Heights, Manhattan Community Board 9, Manhattan, New York County, New York, 10024, United States"
  }
 }
